@@ -1,0 +1,12 @@
+#receitas - AMANDA
+    representar receitas
+#ingredientes - JULIA
+    representar ingredientes
+#despensa - GABI
+    o que o usuario tem em casa
+#catalogo - JOAO
+    adicionar, remover e editar receitas
+#filtrar - AMANDA, GABI
+    filtrar ingredientes, filtrar receitas
+#interface - JULIA, JOAO
+    botoes e paginas
