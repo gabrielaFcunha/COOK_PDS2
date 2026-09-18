@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Receitas",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "\"Armazenar o nome\"",
+      "\"Armazenar tempo de preparo\"",
+      "\"Armazenar o modo de preparo\"",
+      "\"Lista de ingredientes necessários para a receita\"",
+      "\"Informar a categoria que a receita pertence\""
+    ],
+    "collaborators": [
+      "\"Ingrediente\"",
+      "\"Catalogo\"",
+      "\"Filtro\""
+    ]
+  }
+]
