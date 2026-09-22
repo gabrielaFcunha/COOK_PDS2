@@ -1,0 +1,24 @@
+[
+  {
+    "name": "Catalogo",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Organizar as receitas",
+      "Ordenar as receitas salvas pelo usuário em diferentes modos",
+      "Pesquisar receitas por nome",
+      "Pesquisar receitas por filtros",
+      "Adicionar receitas",
+      "Remover receitas",
+      "Favoritar receitas",
+      "Recomendar receitas semelhantes",
+      "Gerar lista de compras com base nas receitas selecionadas"
+    ],
+    "collaborators": [
+      "Receita",
+      "Filtro",
+      "Despensa"
+    ]
+  }
+]
