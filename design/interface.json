@@ -1,0 +1,24 @@
+[
+  {
+    "name": "Interface",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+        "Exibir as receitas disponíveis",
+        "Permitir o cadastro de receitas",
+        "Permitir a consulta das receitas",
+        "Exibir sugestões de receitas com base nos ingredientes disponíveis",
+        "Permitir filtrar receitas por tipo e tempo de preparo",
+        "Permitir a edição de receitas",
+        "Permitir a exclusão de receitas",
+        "Permitir a avaliação das receitas"
+    ],
+    "collaborators": [
+      "Receita",
+      "Despensa",
+      "Filtro",
+      "AdministradorDeReceitas"
+    ]
+  }
+]
