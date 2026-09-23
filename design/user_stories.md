@@ -6,7 +6,7 @@ Como usuário, quero cadastrar uma nova receita no catálogo para que ela fique 
 * Permitir adicionar uma lista de ingredientes (com quantidade e unidade) à receita.
 * Impedir valores inválidos, como quantidades e tempo negativo.
 * Impedir o cadastro de uma receita sem nome ou sem ao menos um ingrediente.
---
+
 # Consulta geral de receitas
 ### Descrição:
 Como usuário, quero consultar as receitas cadastradas para visualizar suas informações e escolher o que preparar.
@@ -16,7 +16,7 @@ Como usuário, quero consultar as receitas cadastradas para visualizar suas info
 * Exibir nome, ingredientes, modo de preparo, tempo de preparo, porções e categoria.
 * Exibir uma mensagem caso não existam receitas cadastradas.
 * Permitir buscar receitas pelo nome.
---
+
 # Busca de Receitas por Ingredientes
 ### Descrição: 
 Como usuário, quero buscar receitas a partir dos ingredientes que tenho disponíveis para saber o que posso cozinhar no momento.
@@ -24,7 +24,7 @@ Como usuário, quero buscar receitas a partir dos ingredientes que tenho dispon�
 * Mostrar todas as receitas que podem ser feitas apenas com os ingredientes presentes na despensa do usuário.
 * Permitir busca mesmo com apenas parte dos ingredientes da receita disponíveis.
 * Indicar quais ingredientes estão faltando, caso a receita não possa ser feita por completo.
---
+
 # Gerenciamento da Despensa
 ### Descrição: 
 Como usuário, quero cadastrar e atualizar os ingredientes que tenho em casa para manter minha despensa sempre atualizada.
@@ -34,7 +34,7 @@ Como usuário, quero cadastrar e atualizar os ingredientes que tenho em casa par
 * Permitir remover ou atualizar a quantidade de um ingrediente existente.
 * Impedir quantidades negativas de ingredientes.
 * Permitir visualizar os ingredientes atualmente cadastrados.
---
+
 # Filtro por Categoria
 ### Descrição: 
 Como usuário, quero filtrar as receitas por categoria para encontrar mais rápido o tipo de prato que desejo preparar.
@@ -42,7 +42,7 @@ Como usuário, quero filtrar as receitas por categoria para encontrar mais rápi
 * Mostrar apenas as receitas pertencentes à categoria escolhida.
 * Permitir combinar o filtro de categoria com a busca por ingredientes.
 * Exibir mensagem caso nenhuma receita seja encontrada na categoria escolhida.
---
+
 # Gerenciamento de Receitas
 ## Descrição: 
 Como usuário, quero editar ou excluir receitas cadastradas para manter o catálogo atualizado.
@@ -50,4 +50,10 @@ Como usuário, quero editar ou excluir receitas cadastradas para manter o catál
 * Permitir editar as informações de uma receita existente.
 * Permitir excluir uma receita.
 * Atualizar catálogo após alterações.
---
+
+# Avaliação de Receitas
+## Descrição: 
+Como usuário, quero avaliar receitas cadastradas com base no quanto gosto delas.
+### Critérios de aceitação:
+* Permitir avaliar de 0 a 3 estrelas.
+* Permitir visualizar apenas as receitas bem avaliadas.
