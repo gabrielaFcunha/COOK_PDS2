@@ -1,0 +1,19 @@
+[
+    {
+        "name": "Ingrediente",
+        "superclasses": "",
+        "subclasses": "",
+        "type": "1",
+        "responsabilities": [
+            "Cadastrar ingredientes: armazenar nome, quantidade e unidade de medida",
+            "Editar ingredientes: permitir a atualização de informações existentes",
+            "Excluir ingredientes: remover ingredientes do sistema",
+            "Consultar ingredientes disponíveis",
+            "Verificar se a quantidade de um ingrediente é suficiente para uma receita"
+        ],
+        "collaborators": [
+            "Receita",
+            "Despensa"
+        ]
+    }
+]
