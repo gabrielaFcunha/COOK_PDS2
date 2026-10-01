@@ -11,11 +11,12 @@
 
 #ifndef DESPENSA_HPP
 #define DESPENSA_HPP
-#include "ingrediente.hpp"
+#include "ingredientes.hpp"
+#include <vector>
 
 class Despensa {
 private:
-    vector<Ingredientes> ingredientes;
+    std::vector<Ingredientes> ingredientes;
     
     public:
     
@@ -28,7 +29,7 @@ private:
     void imprimirDespensa();
     bool receitaPodeSerFeita();
 
-    ingredientes = getIngredientesDisponiveis();
+    std::vector<Ingredientes>getIngredientesDisponiveis();
 
 };
 #endif
