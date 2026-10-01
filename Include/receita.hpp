@@ -1,3 +1,14 @@
+/*
+ * @file receita.hpp
+ * @brief  Declaração da Classe Receita
+ * 
+ * A classe Receita representa uma receita culinária, contendo informações como nome, tempo de preparo, modo de preparo, ingredientes e categoria.
+ * A classe fornece métodos para acessar e modificar essas informações, bem como para gerenciar os ingredientes associados à receita.
+ * 
+ * @author Amanda Gonçalves
+ * @date 2026-10-01
+ */
+
 #ifndef RECEITA_HPP
 #define RECEITA_HPP
 
