@@ -1,4 +1,4 @@
-/*
+/**
  * @file receita.hpp
  * @brief  Declaração da Classe Receita
  * 

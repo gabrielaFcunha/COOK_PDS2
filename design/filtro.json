@@ -1,22 +1,22 @@
-[
-  {
-    "name": "Filtro",
-    "superclasses": "",
-    "subclasses": "",
-    "type": 1,
-    "responsibilities": [
-      "Filtrar receitas por categoria",
-      "Filtrar receitas pelo nome",
-      "Buscar receitas a partir da despensa",
-      "Comparar os ingredientes da despensa com os da receita",
-      "identificar quais ingredientes estão faltando para uma receita",
-      ""
-    ],
-    "collaborators": [
-      "Receita",
-      "Ingredientes",
-      "Despensa",
-      "Catálogo"
-    ]
-  }
-]
+  [
+    {
+      "name": "Filtro",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Filtrar receitas por categoria",
+        "Filtrar receitas pelo nome",
+        "Buscar receitas a partir do catalogo",
+        "Comparar os ingredientes da despensa com os da receita",
+        "Identificar quais ingredientes estão faltando para uma receita",
+        ""
+      ],
+      "collaborators": [
+        "Receita",
+        "Ingredientes",
+        "Despensa",
+        "Catalogo"
+      ]
+    }
+  ]
