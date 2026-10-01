@@ -1,3 +1,12 @@
+/*
+ * @file interface.hpp
+ * @brief Declaração da classe Interface.
+ *
+ * Este arquivo contém a declaração da classe Interface, que é responsável por gerenciar as interações com o usuário e fornecer funcionalidades relacionadas a receitas, despensa, filtro e catálogo.
+ *
+ * @author Julia V. F.
+ * @date 2026-10-01
+ */
 #ifndef INTERFACE_HPP
 #define INTERFACE_HPP
 #include "receitas.hpp"
@@ -7,10 +16,10 @@
 
 class Interface {
 private:
-    Receitas receitas;
-    Despensa despensa;
-    Filtro filtro;
-    Catalogo catalogo;
+    std::vector<Receitas> receitas;
+    std::vector<Despensa> despensa;
+    std::vector<Filtro> filtro;
+    std::vector<Catalogo> catalogo;
 public:
     Interface();
     void exibirReceitas();
