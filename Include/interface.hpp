@@ -13,6 +13,7 @@
 #include "despensa.hpp"
 #include "filtro.hpp"
 #include "catalogo.hpp"
+#include <vector>
 
 class Interface {
 private:
