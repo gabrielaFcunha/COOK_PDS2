@@ -26,8 +26,7 @@ private:
 
     std::string nome_;
     int tempoPreparo_;   //minutos
-    std::string modoPreparo_;  //tem que decidir se vai querer passo a passo, que ai da pra usar um vetor talvez
-    std::vector<Ingredientes> ingrediente_;
+    std::string modoPreparo_;
     Categoria categoria_; 
 
 public:
@@ -46,6 +45,6 @@ public:
     void adicionarIngrediente (const Ingredientes& ingrediente);
     bool removerIngrediente (const std::string& nomeIngrediente);  
 
-}
+};
 
 #endif
