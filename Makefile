@@ -1,18 +1,27 @@
+
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -Iinclude -Itests
 
 SRC = $(wildcard src/*.cpp)
-TEST_SRC = $(wildcard tests/*.cpp)
+TEST_SRC = $(wildcard tests/test_*.cpp)
 
-TARGET = testes
+APP_SRC = $(filter-out src/main.cpp,$(SRC))
 
-all: $(TARGET)
+APP = receitas
+TEST = testes
 
-$(TARGET): $(SRC) $(TEST_SRC)
-	$(CXX) $(CXXFLAGS) $(SRC) $(TEST_SRC) -o $(TARGET)
+all: app test
 
-test: $(TARGET)
-	./$(TARGET)
+app: $(APP)
+
+$(APP): $(SRC)
+	$(CXX) $(CXXFLAGS) $(APP_SRC) src/main.cpp -o $(APP)
+
+$(TEST): $(APP_SRC) $(TEST_SRC)
+	$(CXX) $(CXXFLAGS) $(APP_SRC) $(TEST_SRC) -o $(TEST)
+
+test: $(TEST)
+	./$(TEST)
 
 clean:
-	rm -f $(TARGET)
+	rm -f $(APP) $(TEST)
