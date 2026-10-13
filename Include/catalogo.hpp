@@ -56,7 +56,7 @@ public:
     /**
      * @brief pesquisa receitas no vetor catálogo com base no nome da receita.
      * 
-     * @param nome nome a ser comparado para a busca;
+     * @param nome nome a ser comparado para a busca; pode ser so uma parte.
      * @return std::vector<Receita>: vetor contendo as receitas que correspondem ao nome pesquisado.
      */
     std::vector<Receita> pesquisarPorNome(const std::string& nome) const;
