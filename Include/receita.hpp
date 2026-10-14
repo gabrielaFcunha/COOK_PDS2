@@ -33,7 +33,7 @@ private:
 public:
 
     //construtor
-    Receita (const std::string& nome, int tempoPreparo, const std::string& modoPreparo, Categoria categoria);
+    Receita (const std::string& nome, int tempoPreparo, const std::string& modoPreparo, std::vector<Ingredientes> ingredientes, Categoria categoria);
 
     //getters
     const std::string& getNome () const;
