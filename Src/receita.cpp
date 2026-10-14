@@ -4,7 +4,7 @@
 #include <vector>
 
 
-Receita::Receita (const std::string& nome, int tempoPreparo, const std::string& modoPreparo, std::vector<Ingredientes> ingredientes, Categoria categoria)
+Receita::Receita (const std::string& nome, int tempoPreparo, const std::string& modoPreparo, Categoria categoria, const std::vector<Ingredientes>& ingredientes)
     : nome_(nome), tempoPreparo_(tempoPreparo), modoPreparo_(modoPreparo), ingrediente_(ingredientes), categoria_(categoria) {}
     
 
