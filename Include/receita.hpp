@@ -27,6 +27,7 @@ private:
     std::string nome_;
     int tempoPreparo_;   //minutos
     std::string modoPreparo_;
+    std::vector<Ingredientes> ingrediente_;
     Categoria categoria_; 
 
 public:
