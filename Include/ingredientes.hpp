@@ -20,16 +20,31 @@ private:
     std::string unidade;
 
 public:
-
+    Ingredientes();
+    Ingredientes(const std::string& nome, float quantidade, const std::string& unidade);
+    
+    //getters:
     const std::string& getNome() const;
     float getQuantidade() const;
     const std::string& getUnidade() const;
+    /**
+     * bool cadastrar:
+     * @brief Cadastra uma instância ainda vazia; exige nome/unidade
+     *  e quantidade finita não negativa.
+     */
+    bool cadastrar(const std::string& nome, float quantidade, const std::string& unidade);
 
-    int cadastrar (std::string nome, float quantidade, std::string unidade);
-    int editar(std::string nome, float quantidade, std::string unidade);
-    int excluir(std::string nome, float quantidade, std::string unidade);
-    int consultar(std::string nome);
-    bool verificar(float quantidadeNecessaria);
+    /**
+     * bool editar:
+     * @brief Atualiza uma instância cadastrada; 
+     * @return false para dados inválidos ou instância vazia.
+     */
+    bool editar(const std::string& nome, float quantidade, const std::string& unidade);
+    
+    //bool excluir();-> RECEITA QUE E RESPONSAVEL POR ESSA FUNCAO
+//    bool consultar(const std::string& nome) const; -> NAO SEI SE FAZ SENTIDO TER EM INGREDIENTES
+   
+//    bool verificar(float quantidadeNecessaria) const; -> NAO SEI SE FAZ SENTIDO TER EM INGREDIENTES
 };
 
 #endif
