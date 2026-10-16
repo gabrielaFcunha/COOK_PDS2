@@ -12,24 +12,48 @@
 #ifndef DESPENSA_HPP
 #define DESPENSA_HPP
 #include "ingredientes.hpp"
-#include <vector>
+#include <list>
+#include <string>
 
 class Despensa {
 private:
-    std::vector<Ingredientes> ingredientes;
+    std::list<Ingredientes> ingredientes;
     
     public:
     
     Despensa();
     
+    /**
+     * @brief coloquei o retorno bool
+     * para indicar se a operação foi bem-sucedida ou não, 
+     * caso o ingrediente já exista na despensa, por exemplo.
+     * 
+     */
     
-    void adicionarIngrediente();
-    void removerIngrediente();
-    bool possuiIngrediente();
-    void imprimirDespensa();
-    bool receitaPodeSerFeita();
+    bool adicionarIngrediente(const Ingredientes& ingrediente);
+    bool removerIngrediente(const std::string& nome);
 
-    std::vector<Ingredientes>getIngredientesDisponiveis();
+    bool possuiIngrediente(const std::string& nome) const;
+
+    bool atualizarQuantidade(const std::string& nome, float novaQuantidade);
+
+    void imprimirDespensa() const;
+
+    const std::list<Ingredientes>& getIngredientesDisponiveis() const;
+
+    /**
+     * salvarEmArquivo e carregarDeArquivo:
+     * @brief adicionei essas funções para salvar e carregar a despensa em um arquivo,
+     * sera necessario para que os dados persistam entre execuções do programa.
+     * @note INTERESSANTE PENSAR EM FAZER ISSO EM UMA NOVA CLASSE,
+     * JÁ QUE A RECEITA TAMBÉM VAI PRECISAR.
+     */
+    bool salvarEmArquivo() const;
+
+    bool carregarDeArquivo();
+    //bool receitaPodeSerFeita();-> RESPONSABILIDADE DO FILTRO
+
+    std::list<Ingredientes>getIngredientesDisponiveis();
 
 };
 #endif
