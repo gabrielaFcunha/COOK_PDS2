@@ -4,10 +4,10 @@
 #include <string>
 
 enum class Categoria {
+    Entrada,
+    PratoPrincipal,
     Sobremesa,
     Lanche,
-    PratoPrincipal,
-    Entrada,
     Bebida
 };
 
