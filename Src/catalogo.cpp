@@ -1,15 +1,7 @@
 #include "catalogo.hpp"
 #include "categoria.hpp"
 #include <algorithm>
-
-std::string paraMinusculas(std::string texto){
-    for(int i = 0; i < texto.size(); i++){
-        if (texto[i] >= 'A' && texto[i] <= 'Z'){
-            texto[i] = texto[i] + 32;
-        }
-    }
-    return texto;
-}
+#include "texto.hpp"
 
 Catalogo::Catalogo(){
 }
