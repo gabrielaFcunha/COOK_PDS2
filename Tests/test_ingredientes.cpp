@@ -20,8 +20,11 @@ TEST_CASE("Teste 02: Ingrediente - Atualizacao de quantidade") {
 
 TEST_CASE("Teste 03: Ingrediente - Nome vazio") {
     Ingredientes ingrediente("", 50, "gramas");
-    CHECK(ingrediente.getNome() == "");
+    ingrediente.cadastrar("", 50, "gramas");
+    CHECK(ingrediente.cadastrar("", 50, "gramas") == false);
 }
+
+
 
 TEST_CASE("Teste 04: Quantidades inválidas") {
     Ingredientes ingrediente("Tomate", 50, "gramas");
@@ -37,4 +40,16 @@ TEST_CASE("Teste 05: Cadastro inválido") {
     ingrediente.cadastrar("Tomate", 0, "gramas");
     // Complete com o valor esperado para esse teste
     CHECK(ingrediente.cadastrar("Tomate", 0, "gramas") == false);
+}
+
+TEST_CASE("Teste 06: Ingrediente - sem nada na inicialização") {
+    Ingredientes ingrediente;
+    ingrediente.cadastrar("Tomate", 50, "gramas");
+    CHECK(ingrediente.cadastrar("Tomate", 50, "gramas") == true);
+}
+
+TEST_CASE("Teste 06: Ingrediente - sem nada na inicialização") {
+    Ingredientes ingrediente;
+    ingrediente.cadastrar("Tomate", 50, "gramas");
+    CHECK(ingrediente.getNome() == "Tomate");
 }
