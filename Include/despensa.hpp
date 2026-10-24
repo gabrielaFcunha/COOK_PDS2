@@ -12,6 +12,7 @@
 #ifndef DESPENSA_HPP
 #define DESPENSA_HPP
 #include "ingredientes.hpp"
+#include "unidade.hpp"
 #include <list>
 #include <string>
 

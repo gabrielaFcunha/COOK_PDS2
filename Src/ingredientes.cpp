@@ -10,13 +10,14 @@
  */
 
 #include "ingredientes.hpp"
+
 /*
 Ingredientes::Ingredientes()
     : nome(""), quantidade(0), unidade("") {
 }*/
 
 Ingredientes::Ingredientes(const std::string& nome, float quantidade,
-                           const std::string& unidade)
+                           Unidade unidade)
     : _nome(nome), _quantidade(quantidade), _unidade(unidade) {
 }
 
@@ -28,11 +29,11 @@ float Ingredientes::getQuantidade() const {
     return _quantidade;
 }
 
-const std::string& Ingredientes::getUnidade() const {
+Unidade Ingredientes::getUnidade() const {
     return _unidade;
 }
 
-bool Ingredientes::cadastrar(const std::string& nome, float quantidade, const std::string& unidade) {
+bool Ingredientes::cadastrar(const std::string& nome, float quantidade, Unidade unidade) {
 /**
  * @brief funcao para cadastrar um ingrediente. Esse metodo deve ser chamado dentro
  * de uma receita, para que o ingrediente seja adicionado a ela. Ainda esta
@@ -43,7 +44,9 @@ bool Ingredientes::cadastrar(const std::string& nome, float quantidade, const st
  * que verifica se a string esta vazia.
  */
 
-    if (nome.empty() || unidade.empty() || quantidade <= 0) {
+    if (nome.empty() || (unidade != Unidade::Grama &&
+         unidade != Unidade::Mililitro && unidade != Unidade::Unidade) 
+        || quantidade <= 0) {
         return false;
     }
     this->_nome = nome;
@@ -53,7 +56,7 @@ bool Ingredientes::cadastrar(const std::string& nome, float quantidade, const st
     return true;
 }
 
-bool Ingredientes::editar(const std::string& nome, float quantidade, const std::string& unidade) {
+bool Ingredientes::editar(const std::string& nome, float quantidade, Unidade unidade) {
 /**
  * @brief funcao para editar um ingrediente. Esse metodo deve ser chamado dentro
  * de uma receita, para que o ingrediente seja editado nela.

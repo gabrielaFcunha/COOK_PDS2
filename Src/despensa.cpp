@@ -10,6 +10,7 @@
  */
 
 #include "despensa.hpp"
+
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -20,7 +21,9 @@ bool Despensa::adicionarIngrediente(const Ingredientes& ingrediente) {
  * @brief ingrediente é adicionado à despensa do usuário
  */
     if(ingrediente.getNome().empty() ||
-     ingrediente.getQuantidade() <= 0 || ingrediente.getUnidade().empty()) {
+     ingrediente.getQuantidade() <= 0 || ingrediente.getUnidade() != Unidade::Grama &&
+         ingrediente.getUnidade() != Unidade::Mililitro 
+         && ingrediente.getUnidade() != Unidade::Unidade) {
         return false; // Ingrediente inválido
     }
     if(possuiIngrediente(ingrediente.getNome())) {
@@ -100,7 +103,7 @@ void Despensa::imprimirDespensa() const {
         return;
     }
     for(auto i = ingredientes.begin(); i != ingredientes.end(); ++i) {
-        std::cout << i->getNome() << "-" << i->getQuantidade() << " " << i->getUnidade() << std::endl;
+        std::cout << i->getNome() << "-" << i->getQuantidade() << " " << unidadeToString(i->getUnidade()) << std::endl;
     }
 }
 
@@ -117,7 +120,7 @@ bool Despensa::salvarEmArquivo() const {
         return false; // Falha ao abrir o arquivo
     }
     for(auto i = ingredientes.begin(); i != ingredientes.end(); ++i) {
-        arquivo << i->getNome() << ";" << i->getQuantidade() << ";" << i->getUnidade() << std::endl;
+        arquivo << i->getNome() << ";" << i->getQuantidade() << ";" << unidadeToString(i->getUnidade()) << std::endl;
     }
     arquivo.close();
     return true;

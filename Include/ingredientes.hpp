@@ -12,34 +12,35 @@
 #ifndef INGREDIENTES_HPP
 #define INGREDIENTES_HPP
 #include <string>
+#include "unidade.hpp"
 
 class Ingredientes {
 private:
     std::string _nome;
     float _quantidade;
-    std::string _unidade;
+    Unidade _unidade;
 
 public:
     //Ingredientes();
-    Ingredientes(const std::string& nome, float quantidade, const std::string& unidade);
+    Ingredientes(const std::string& nome, float quantidade, Unidade unidade);
     
     //getters:
     const std::string& getNome() const;
     float getQuantidade() const;
-    const std::string& getUnidade() const;
+    Unidade getUnidade() const;
     /**
      * bool cadastrar:
      * @brief Cadastra uma instância ainda vazia; exige nome/unidade
      *  e quantidade finita não negativa.
      */
-    bool cadastrar(const std::string& nome, float quantidade, const std::string& unidade);
+    bool cadastrar(const std::string& nome, float quantidade, Unidade unidade);
 
     /**
      * bool editar:
      * @brief Atualiza uma instância cadastrada; 
      * @return false para dados inválidos ou instância vazia.
      */
-    bool editar(const std::string& nome, float quantidade, const std::string& unidade);
+    bool editar(const std::string& nome, float quantidade, Unidade unidade);
     
     //bool excluir();-> RECEITA QUE E RESPONSAVEL POR ESSA FUNCAO
 //    bool consultar(const std::string& nome) const; -> NAO SEI SE FAZ SENTIDO TER EM INGREDIENTES
