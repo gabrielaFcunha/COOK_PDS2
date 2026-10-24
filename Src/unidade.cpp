@@ -1,6 +1,13 @@
 #include "unidade.hpp"
 #include <string>
-
+/**
+ * @brief funções para fazer as conversões necessárias da unidade.
+ * 
+ * @param unidade 
+ * @note não sei se a função converterUnidade() acabou fazendo
+ * tudo que a unidadeToString() faz, mas como essa segunda é mais simples,
+ * talvez seja interessante deixar ela por enquanto.
+ */
 std::string unidadeToString(Unidade unidade){
     if (unidade == Unidade::Grama){
         return "g";
