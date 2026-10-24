@@ -53,7 +53,7 @@ private:
     bool carregarDeArquivo();
     //bool receitaPodeSerFeita();-> RESPONSABILIDADE DO FILTRO
 
-    std::list<Ingredientes>getIngredientesDisponiveis();
+    //std::list<Ingredientes>getIngredientesDisponiveis();
 
 };
 #endif

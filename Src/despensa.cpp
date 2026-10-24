@@ -99,7 +99,6 @@ void Despensa::imprimirDespensa() const {
         std::cout << "A despensa esta vazia." << std::endl;
         return;
     }
-    std::cout << "\n----------------------- MINHA DESPENSA----------------------- \n";
     for(auto i = ingredientes.begin(); i != ingredientes.end(); ++i) {
         std::cout << i->getNome() << "-" << i->getQuantidade() << " " << i->getUnidade() << std::endl;
     }
