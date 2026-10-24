@@ -10,26 +10,26 @@
  */
 
 #include "ingredientes.hpp"
-
+/*
 Ingredientes::Ingredientes()
     : nome(""), quantidade(0), unidade("") {
-}
+}*/
 
 Ingredientes::Ingredientes(const std::string& nome, float quantidade,
                            const std::string& unidade)
-    : nome(nome), quantidade(quantidade), unidade(unidade) {
+    : _nome(nome), _quantidade(quantidade), _unidade(unidade) {
 }
 
 const std::string& Ingredientes::getNome() const {
-    return nome;
+    return _nome;
 }
 
 float Ingredientes::getQuantidade() const {
-    return quantidade;
+    return _quantidade;
 }
 
 const std::string& Ingredientes::getUnidade() const {
-    return unidade;
+    return _unidade;
 }
 
 bool Ingredientes::cadastrar(const std::string& nome, float quantidade, const std::string& unidade) {
@@ -46,9 +46,9 @@ bool Ingredientes::cadastrar(const std::string& nome, float quantidade, const st
     if (nome.empty() || unidade.empty() || quantidade <= 0) {
         return false;
     }
-    this->nome = nome;
-    this->quantidade = quantidade;
-    this->unidade = unidade;
+    this->_nome = nome;
+    this->_quantidade = quantidade;
+    this->_unidade = unidade;
 
     return true;
 }

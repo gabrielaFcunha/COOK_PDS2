@@ -15,12 +15,12 @@
 
 class Ingredientes {
 private:
-    std::string nome;
-    float quantidade;
-    std::string unidade;
+    std::string _nome;
+    float _quantidade;
+    std::string _unidade;
 
 public:
-    Ingredientes();
+    //Ingredientes();
     Ingredientes(const std::string& nome, float quantidade, const std::string& unidade);
     
     //getters:

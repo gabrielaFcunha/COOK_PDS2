@@ -21,7 +21,7 @@ private:
     
     public:
     
-    Despensa();
+    //Despensa();
     
     /**
      * @brief coloquei o retorno bool
@@ -51,9 +51,6 @@ private:
     bool salvarEmArquivo() const;
 
     bool carregarDeArquivo();
-    //bool receitaPodeSerFeita();-> RESPONSABILIDADE DO FILTRO
-
-    //std::list<Ingredientes>getIngredientesDisponiveis();
 
 };
 #endif
