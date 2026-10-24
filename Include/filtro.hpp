@@ -3,7 +3,7 @@
  * @brief Declaração da Classe Filtro.
  *
  * Este arquivo contém a declaração da classe Filtro, que é responsável por fornecer métodos para filtrar receitas 
- * com base em diferentes critérios, como categoria, nome e ingredientes disponíveis.
+ * com base em diferentes critérios, como categoria e ingredientes disponíveis.
  *
  * @author Amanda Gonçalves
  * @date 2026-10-01
@@ -31,20 +31,23 @@ public:
     //operacoes
 
     //"Filtrar receitas por categoria",
-    std::vector<Receita> filtrarPorCategoria (Catalogo catalogo, const std::string& categoria);
+    std::vector<Receita> filtrarPorCategoria (Catalogo catalogo, const Categoria categoria);
     // tecnicamente std::vector<Receita> é o catalogo  sla
 
     //"Filtrar receitas pelo nome", 
-    std::vector<Receita> filtrarPorNome (Catalogo catalogo, const std::string& nome);
+    //eu tirei pq o catalogo ta fazendo a mesma coisa
 
-    //"Buscar receitas a partir do catalogo",
-    std::vector<Receita> buscarReceitas (Catalogo catalogo, std::vector<Ingredientes> ingredientesDisponiveis);
+    //"Filtrar receitas que podem ser feitas com os ingredientes disponíveis na despensa",
+    std::vector<Receita> buscarReceitas (Catalogo catalogo, const Despensa& despensa);
     
     //"Comparar os ingredientes da despensa com os da receita",
     bool compararIngredientes (const Receita& receita, const Despensa& despensa);
 
     //"identificar quais ingredientes estão faltando para uma receita", 
     std::vector<Ingredientes> identificarIngredientesFaltando (const Receita& receita, const Despensa& despensa);
+
+    //"identificar quais ingredientes estão com unidades diferentes entre a receita e a despensa",
+    std::vector<Ingredientes> identificarUnidadesDiferentes (const Receita& receita, const Despensa& despensa);
     
  
 
