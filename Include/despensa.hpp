@@ -30,11 +30,12 @@ private:
      * caso o ingrediente já exista na despensa, por exemplo.
      * 
      */
+    bool possuiIngrediente(const std::string& nome) const;
     
     bool adicionarIngrediente(const Ingredientes& ingrediente);
     bool removerIngrediente(const std::string& nome);
 
-    bool possuiIngrediente(const std::string& nome) const;
+    
 
     bool atualizarQuantidade(const std::string& nome, float novaQuantidade);
 

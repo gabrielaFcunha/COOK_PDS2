@@ -16,6 +16,20 @@
 #include <fstream>
 #include <list>
 
+bool Despensa::possuiIngrediente(const std::string& nome) const{
+/**
+ * @brief verifica se um ingrediente está disponível na despensa do usuário
+ * @param nome nome do ingrediente a ser verificado
+ * @return true se o ingrediente estiver disponível, false caso contrário
+ */
+    for(auto i = ingredientes.begin(); i != ingredientes.end(); ++i) {
+        if(paraMinusculas(i->getNome()) == paraMinusculas(nome)) {
+            return true;
+        }
+    }
+    return false; 
+}
+
 bool Despensa::adicionarIngrediente(const Ingredientes& ingrediente) {
 /**
  * @brief ingrediente é adicionado à despensa do usuário
@@ -43,25 +57,12 @@ bool Despensa::removerIngrediente(const std::string& nome){
  * determinar um tipo específico.
  */
     for(auto i = ingredientes.begin(); i != ingredientes.end(); ++i) {
-        if(i->getNome() == nome) {
+        if(paraMinusculas(i->getNome()) == paraMinusculas(nome)) {
             ingredientes.erase(i);
             return true;
         }
     }
     return false;
-}
-bool Despensa::possuiIngrediente(const std::string& nome) const{
-/**
- * @brief verifica se um ingrediente está disponível na despensa do usuário
- * @param nome nome do ingrediente a ser verificado
- * @return true se o ingrediente estiver disponível, false caso contrário
- */
-    for(auto i = ingredientes.begin(); i != ingredientes.end(); ++i) {
-        if(i->getNome() == nome) {
-            return true;
-        }
-    }
-    return false; 
 }
 
 bool Despensa::atualizarQuantidade(const std::string& nome, float novaQuantidade) {
@@ -75,8 +76,8 @@ bool Despensa::atualizarQuantidade(const std::string& nome, float novaQuantidade
         return false; // Quantidade inválida
     }
     for(auto i = ingredientes.begin(); i != ingredientes.end(); ++i) {
-        if(i->getNome() == nome) {
-            i->editar(nome, novaQuantidade, i->getUnidade());
+        if(paraMinusculas(i->getNome()) == paraMinusculas(nome)) {
+            i->editar(i->getNome(), novaQuantidade, i->getUnidade());
             return true;
         }
     }
@@ -138,13 +139,32 @@ bool Despensa::carregarDeArquivo() {
         return false; // Falha ao abrir o arquivo
     }
     ingredientes.clear(); //TESTE: acho que sem o clear pode deixar duplicado os ingredientes.
-    std::string linha;
-    std::string nome, unidade, quantidadetxt;
+    
+    std::string nome, unidadeTexto, quantidadeTexto;
+
     while(std::getline(arquivo, nome, ';')) {
-        std::getline(arquivo, quantidadetxt, ';');
-        std::getline(arquivo, unidade);
-        float quantidade = std::stof(quantidadetxt);   
-        Ingredientes ingrediente;
+        /**
+         * @note coloquei esses "if" para caso algum ingrediente
+         * esteja incompleto no aquivo da despensa, ele não seja carregado.
+         */
+        if(!std::getline(arquivo, quantidadeTexto, ';')) {
+            break; // Falha ao ler a quantidade
+        }
+        if(!std::getline(arquivo, unidadeTexto)) {
+            break; // Falha ao ler a unidade
+        }
+        float quantidade = std::stof(quantidadeTexto);
+        Unidade unidade;
+        unidade = stringToUnidade(unidadeTexto);
+        if(converterUnidade(quantidade, unidadeTexto, unidade)) {
+            Ingredientes ingrediente(nome, quantidade, unidade);
+            if(!possuiIngrediente(nome)) {
+                ingredientes.push_back(ingrediente);
+            }
+        }
+       
+        
+        Ingredientes ingrediente(nome, quantidade, unidade);
         if (ingrediente.cadastrar(nome, quantidade, unidade)) {
             ingredientes.push_back(ingrediente);
         }

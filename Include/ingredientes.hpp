@@ -42,10 +42,12 @@ public:
      */
     bool editar(const std::string& nome, float quantidade, Unidade unidade);
     
-    //bool excluir();-> RECEITA QUE E RESPONSAVEL POR ESSA FUNCAO
-//    bool consultar(const std::string& nome) const; -> NAO SEI SE FAZ SENTIDO TER EM INGREDIENTES
-   
-//    bool verificar(float quantidadeNecessaria) const; -> NAO SEI SE FAZ SENTIDO TER EM INGREDIENTES
+/**
+ * @note não utilizei converterUnidade() aqui, pois acredito
+ * que isso deve ser feito onde o ingrediente for adicionado,
+ * tipo na Receita ou na Despensa.
+ * 
+ */
 };
 
 #endif
