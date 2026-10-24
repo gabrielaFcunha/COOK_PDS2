@@ -1,6 +1,7 @@
 #include "filtro.hpp"
 #include "catalogo.hpp"
 #include "texto.hpp"
+#include <list>
 
 /**
  * @brief Filtra as receitas de um catálogo com base em uma categoria específica.
@@ -32,13 +33,13 @@ std::vector<Receita> Filtro::filtrarPorCategoria (Catalogo catalogo, const Categ
 std::vector<Ingredientes> Filtro::identificarIngredientesFaltando (const Receita& receita, const Despensa& despensa){
     std::vector<Ingredientes> faltando;
     const std::vector<Ingredientes>& pedidos = receita.getIngredientes(); //lista de ingredientes que a receita pede
-    std::vector<Ingredientes> naDespensa = despensa.getIngredientesDisponiveis();
+    const std::list<Ingredientes>& naDespensa = despensa.getIngredientesDisponiveis();
 
     for (int i = 0; i < pedidos.size(); i++) {
         bool achou = false;
-        for (int j = 0; j < naDespensa.size(); j++) {
-            if (paraMinusculas(pedidos[i].getNome()) == paraMinusculas(naDespensa[j].getNome())) {
-                if (pedidos[i].getQuantidade() > naDespensa[j].getQuantidade() && pedidos[i].getUnidade() == naDespensa[j].getUnidade()) {
+        for (const Ingredientes& item : naDespensa) {
+            if (paraMinusculas(pedidos[i].getNome()) == paraMinusculas(item.getNome())) {
+                if (pedidos[i].getUnidade() == item.getUnidade() && pedidos[i].getQuantidade() > item.getQuantidade()) {
                     faltando.push_back(pedidos[i]);
                 }
                 achou = true;
@@ -63,11 +64,11 @@ std::vector<Ingredientes> Filtro::identificarIngredientesFaltando (const Receita
 std::vector<Ingredientes> Filtro::identificarUnidadesDiferentes (const Receita& receita, const Despensa& despensa){
     std::vector<Ingredientes> diferentes;
     const std::vector<Ingredientes>& pedidos = receita.getIngredientes();
-    std::vector<Ingredientes> naDespensa = despensa.getIngredientesDisponiveis();
+    const std::list<Ingredientes>& naDespensa = despensa.getIngredientesDisponiveis();
     for (int i = 0; i < pedidos.size(); i++) {
-        for (int j = 0; j < naDespensa.size(); j++) {
-            if (paraMinusculas(pedidos[i].getNome()) == paraMinusculas(naDespensa[j].getNome())) {
-                if (pedidos[i].getUnidade() != naDespensa[j].getUnidade()) {
+        for (const Ingredientes& item : naDespensa) {
+            if (paraMinusculas(pedidos[i].getNome()) == paraMinusculas(item.getNome())) {
+                if (pedidos[i].getUnidade() != item.getUnidade()) {
                     diferentes.push_back(pedidos[i]);
                 }
                 break;
