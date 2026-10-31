@@ -29,6 +29,7 @@ private:
     std::string modoPreparo_;
     std::vector<Ingredientes> ingrediente_;
     Categoria categoria_; 
+    int avaliacao_;
 
 public:
 
@@ -45,7 +46,16 @@ public:
 
     //outras operacoes
     void adicionarIngrediente (const Ingredientes& ingrediente);
-    bool removerIngrediente (const std::string& nomeIngrediente);  
+    bool removerIngrediente (const std::string& nomeIngrediente); 
+
+    /**
+     * @brief adicionei embaixo as funções para fazermos a 
+     * avaliação das receitas em numeros de estrelas, de
+     * 0 a 5 - da pra mudar facilmente o numero de estrelas.
+     * @param avaliacao 
+     */
+    bool avaliar(int avaliacao);
+    int getAvaliacao() const;
 
 };
 
