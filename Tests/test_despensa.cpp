@@ -137,6 +137,8 @@ TEST_CASE("Teste 08 - Salvamento e carregamento") {
     CHECK(novaDespensa.possuiIngrediente("Tomate") == true);
     CHECK(novaDespensa.possuiIngrediente("Cebola") == true);
     CHECK(novaDespensa.getIngredientesDisponiveis().size() == 2);
+    //remover o arquivo criado para não atrapalhar os próximos testes
+    std::remove("despensa.txt");
 }
 
 TEST_CASE("Teste 09 - Despensa - Carregar arquivo inexistente") {
@@ -213,6 +215,7 @@ TEST_CASE("Teste 13 - Despensa - Carregar arquivo com fim de linha ou ';'"){
     Despensa novaDespensa;
     CHECK(novaDespensa.carregarDeArquivo() == true);
     CHECK(novaDespensa.getIngredientesDisponiveis().size() == 3); // Deve conter todos os ingredientes válidos
+    std::remove("despensa.txt");
 }
 
 TEST_CASE("Teste 14 - Despensa - Adicionar, remover e procurar ignoram letras maiúsculas e acentos") {
