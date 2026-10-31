@@ -5,7 +5,6 @@
 #include <vector>
 
 #include "receita.hpp"
-#include "filtro.hpp"
 
 /**
  * @brief definição de critérios de ordenação para as receitas, utilizado na função Catalogo::ordenar.
@@ -60,14 +59,6 @@ public:
      * @return std::vector<Receita>: vetor contendo as receitas que correspondem ao nome pesquisado.
      */
     std::vector<Receita> pesquisarPorNome(const std::string& nome) const;
-
-    /**
-     * @brief pesquisa receitas no vetor catálogo com base em critérios de filtro.
-     * 
-     * @param filtro O filtro a ser aplicado na pesquisa.
-     * @return std::vector<Receita>: vetor contendo as receitas que correspondem aos critérios do filtro.
-     */
-    std::vector<Receita> pesquisar(const Filtro& filtro) const;
 
     /**
      * @brief função que ordena as receitas do catálogo com base em um critério de ordenação especificado.
