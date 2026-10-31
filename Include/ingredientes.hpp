@@ -33,7 +33,7 @@ public:
      * @brief Cadastra uma instância ainda vazia; exige nome/unidade
      *  e quantidade finita não negativa.
      */
-    bool cadastrar(const std::string& nome, float quantidade, Unidade unidade);
+    //bool cadastrar(const std::string& nome, float quantidade, Unidade unidade);
 
     /**
      * bool editar:

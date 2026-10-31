@@ -34,12 +34,6 @@ bool Despensa::adicionarIngrediente(const Ingredientes& ingrediente) {
 /**
  * @brief ingrediente é adicionado à despensa do usuário
  */
-    if(ingrediente.getNome().empty() ||
-     ingrediente.getQuantidade() <= 0 || ingrediente.getUnidade() != Unidade::Grama &&
-         ingrediente.getUnidade() != Unidade::Mililitro 
-         && ingrediente.getUnidade() != Unidade::Unidade) {
-        return false; // Ingrediente inválido
-    }
     if(possuiIngrediente(ingrediente.getNome())) {
         return false; // Ingrediente já existe na despensa
     }
@@ -77,8 +71,8 @@ bool Despensa::atualizarQuantidade(const std::string& nome, float novaQuantidade
     }
     for(auto i = ingredientes.begin(); i != ingredientes.end(); ++i) {
         if(paraMinusculas(i->getNome()) == paraMinusculas(nome)) {
-            i->editar(i->getNome(), novaQuantidade, i->getUnidade());
-            return true;
+           
+            return i->editar(i->getNome(), novaQuantidade, i->getUnidade());
         }
     }
     return false; // Ingrediente não encontrado
@@ -155,24 +149,20 @@ bool Despensa::carregarDeArquivo() {
         }
         float quantidade = std::stof(quantidadeTexto);
         Unidade unidade;
-        unidade = stringToUnidade(unidadeTexto);
+
         if(converterUnidade(quantidade, unidadeTexto, unidade)) {
             Ingredientes ingrediente(nome, quantidade, unidade);
+
             if(!possuiIngrediente(nome)) {
                 ingredientes.push_back(ingrediente);
             }
-        }
-       
         
-        Ingredientes ingrediente(nome, quantidade, unidade);
-        if (ingrediente.cadastrar(nome, quantidade, unidade)) {
-            ingredientes.push_back(ingrediente);
         }
-        
     }
     arquivo.close();
     return true;
 }
+
 
 
 

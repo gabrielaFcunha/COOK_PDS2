@@ -10,6 +10,7 @@
  */
 
 #include "ingredientes.hpp"
+#include <stdexcept>
 
 /*
 Ingredientes::Ingredientes()
@@ -17,8 +18,12 @@ Ingredientes::Ingredientes()
 }*/
 
 Ingredientes::Ingredientes(const std::string& nome, float quantidade,
-                           Unidade unidade)
-    : _nome(nome), _quantidade(quantidade), _unidade(unidade) {
+                           Unidade unidade) : _nome(nome), _quantidade(quantidade), _unidade(unidade) {
+    if (nome.empty() || (unidade != Unidade::Grama &&
+         unidade != Unidade::Mililitro && unidade != Unidade::Unidade) 
+        || quantidade <= 0) {
+        throw std::invalid_argument("Dados invalidos para ingrediente");
+    }
 }
 
 const std::string& Ingredientes::getNome() const {
@@ -33,28 +38,7 @@ Unidade Ingredientes::getUnidade() const {
     return _unidade;
 }
 
-bool Ingredientes::cadastrar(const std::string& nome, float quantidade, Unidade unidade) {
-/**
- * @brief funcao para cadastrar um ingrediente. Esse metodo deve ser chamado dentro
- * de uma receita, para que o ingrediente seja adicionado a ela. Ainda esta
- * em discussao se deve haver um banco que guarda todos esses ingredientes
- * @return true se o ingrediente foi cadastrado com sucesso, false se houve algum erro.
- * Faz mais sentido do que retornar um inteiro.
- * @note *.empty()* eh uma funcao da STL(biblioteca padrao do C++) 
- * que verifica se a string esta vazia.
- */
 
-    if (nome.empty() || (unidade != Unidade::Grama &&
-         unidade != Unidade::Mililitro && unidade != Unidade::Unidade) 
-        || quantidade <= 0) {
-        return false;
-    }
-    this->_nome = nome;
-    this->_quantidade = quantidade;
-    this->_unidade = unidade;
-
-    return true;
-}
 
 bool Ingredientes::editar(const std::string& nome, float quantidade, Unidade unidade) {
 /**
@@ -62,7 +46,18 @@ bool Ingredientes::editar(const std::string& nome, float quantidade, Unidade uni
  * de uma receita, para que o ingrediente seja editado nela.
  * @note funcao ainda em desenvolvimento
 */
-    return cadastrar(nome, quantidade, unidade);
+    if (nome.empty() || quantidade <= 0 ||
+        (unidade != Unidade::Grama &&
+         unidade != Unidade::Mililitro &&
+         unidade != Unidade::Unidade)) {
+        return false;
+    }
+
+    _nome = nome;
+    _quantidade = quantidade;
+    _unidade = unidade;
+
+    return true;
 }
 
 
