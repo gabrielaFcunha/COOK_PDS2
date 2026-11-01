@@ -57,6 +57,6 @@ public:
     bool avaliar(int avaliacao);
     int getAvaliacao() const;
 
-}
+};
 
 #endif
