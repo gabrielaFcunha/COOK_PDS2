@@ -6,8 +6,15 @@
 Catalogo::Catalogo(){
 }
 
-void Catalogo::adicionarReceita(const Receita& receita){
+bool Catalogo::adicionarReceita(const Receita& receita){
+    // Checa se já existe receita de mesmo nome
+    for (const auto& r : receitas) {
+        if (paraMinusculas(r.getNome()) == paraMinusculas(receita.getNome())) {
+            return false;
+        }
+    }
     receitas.push_back(receita);
+    return true;
 }
 
 const std::vector<Receita>& Catalogo::getReceitas() const{
