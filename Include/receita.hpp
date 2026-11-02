@@ -45,8 +45,8 @@ public:
 
     //outras operacoes
     void adicionarIngrediente (const Ingredientes& ingrediente);
-    bool removerIngrediente (const std::string& nomeIngrediente);  
-
+    bool removerIngrediente (const std::string& nomeIngrediente);
+    
 };
 
 #endif

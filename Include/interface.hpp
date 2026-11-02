@@ -19,7 +19,7 @@
 
 class Interface {
 private:
-    //Usuario Usuario;
+    Unidade unidade;
     Filtro filtro;
     Catalogo catalogo;
     Despensa despensa;
@@ -30,24 +30,29 @@ private:
 
     void limparTela();
     void pausar();
+    int lerOpcao();
+    int escolherReceita(const std::vector<Receita>& receitas);
+    void exibirLista(const std::string& titulo, const std::vector<Receita>& receitas);
 
     void menuCatalogo();
     void menuDespensa();
     void menuCozinhar();
 
-
-    void cadastrarReceita();
-
     void exibirCatalogo();
+    void cadastrarReceita();
     void imprimirListaReceitas(const std::vector<Receita>& receitas);
     void exibirDetalhesReceita(const Receita&);
 
     void procurarReceita();
     void filtrarReceitaPorCategoria();
-    void editarReceita();
+    void editarReceita(); //esse que tenho que fazer
     void excluirReceita();
 
     void filtrarIngredientePorReceita();
+    float lerQuantidade();
+    Unidade lerUnidade();
+    Categoria lerCategoria();
+    
     void adicionarNovoIngrediente();
     void removerIngredientes();
     void editarQuantidade();
