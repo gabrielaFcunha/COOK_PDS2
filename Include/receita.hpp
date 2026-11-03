@@ -43,9 +43,17 @@ public:
     const std::vector<Ingredientes>& getIngredientes () const;
     Categoria getCategoria () const;
 
+    //setters
+    bool setNome(const std::string& nome);
+    bool setTempo(int tempoPreparo);
+    bool setModo(const std::string& modoPreparo);
+    void setCategoria(Categoria categoria);
+    bool editarIngrediente(const std::string& nomeIngrediente, float quantidade, Unidade unidade); 
+
     //outras operacoes
     void adicionarIngrediente (const Ingredientes& ingrediente);
     bool removerIngrediente (const std::string& nomeIngrediente);
+
     
 };
 

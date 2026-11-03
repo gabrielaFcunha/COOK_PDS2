@@ -43,7 +43,7 @@ int Interface::lerOpcao() {
 
 int Interface::escolherReceita(const std::vector<Receita>& receitas) {
     if (receitas.empty()) {
-        std::cout << "Nenhuma receita disponivel.\n";
+        std::cout << "| Nenhuma receita disponivel.\n";
         return -1; // Retorna uma receita vazia
     }
 
@@ -59,7 +59,7 @@ int Interface::escolherReceita(const std::vector<Receita>& receitas) {
     }
 
     if (opcao < 1 || opcao > (int)receitas.size()) {
-        std::cout << "| OPÇÃO INVÁLIDA. Pressione Enter para tentar novamente... ";
+        std::cout << "| OPCAO INVALIDA. Pressione Enter para tentar novamente... ";
         std::cin.get();
         return escolherReceita(receitas);
     }
@@ -89,7 +89,7 @@ void Interface::exibirLista(const std::string& titulo, const std::vector<Receita
             exibirDetalhesReceita(receitas[opcao - 1]);
             pausar();
         } else {
-            std::cout << "| OPÇÃO INVÁLIDA. Pressione Enter para tentar novamente... ";
+            std::cout << "| OPCAO INVALIDA. Pressione Enter para tentar novamente... ";
             std::cin.get();
         }
 }
@@ -129,7 +129,7 @@ void Interface::menu() {
                 break;
 
             default:
-                std::cout << "| OPÇÃO INVÁLIDA. Pressione Enter para tentar novamente... ";
+                std::cout << "| OPCAO INVALIDA. Pressione Enter para tentar novamente... ";
                 std::cin.get();
                 break;
         }
@@ -171,7 +171,7 @@ void Interface::menuCatalogo () {
             case 7: return;
 
             default:
-                std::cout << "| OPÇÃO INVÁLIDA. Pressione Enter para tentar novamente... ";
+                std::cout << "| OPCAO INVALIDA. Pressione Enter para tentar novamente... ";
                 std::cin.get();
                 break;
         }
@@ -247,7 +247,7 @@ void Interface::menuCozinhar () {
 
 
             default:
-                std::cout << "| OPÇÃO INVÁLIDA. Pressione Enter para tentar novamente... ";
+                std::cout << "| OPCAO INVALIDA. Pressione Enter para tentar novamente... ";
                 std::cin.get();
                 break;
 
@@ -283,7 +283,7 @@ void Interface::exibirCatalogo () {
             exibirDetalhesReceita(receitas[opcao - 1]);
             pausar();
         } else {
-            std::cout << "| OPÇÃO INVÁLIDA. Pressione Enter para tentar novamente... ";
+            std::cout << "| OPCAO INVALIDA. Pressione Enter para tentar novamente... ";
             std::cin.get();
         }
     }
@@ -381,6 +381,94 @@ void Interface::filtrarReceitaPorCategoria() {
 }
 
 void Interface::editarReceita() {
+    int indice = escolherReceita(catalogo.getReceitas());
+    if (indice == -1) {
+        return; // Usuário cancelou ou não há receitas
+    }
+
+    // Fazemos uma cópia da receita escolhida para editarmos com segurança
+    Receita receitaEditada = catalogo.getReceitas()[indice];
+
+    while (true) {
+        limparTela();
+        std::cout << "|=================== EDITAR RECEITA ===================|\n"
+                  << "| Editando: " << receitaEditada.getNome() << "\n"
+                  << "|------------------------------------------------------|\n"
+                  << "| 1) Alterar Nome\n"
+                  << "| 2) Alterar Tempo de Preparo\n"
+                  << "| 3) Alterar Categoria\n"
+                  << "| 4) Alterar Modo de Preparo\n"
+                  << "| 5) Salvar alterações\n"
+                  << "| 0) Cancelar edicao\n"
+                  << "|======================================================|\n"
+                  << "| Digite sua opcao: ";
+
+        int opcao = lerOpcao();
+
+        switch (opcao) {
+            case 1: {
+                std::cout << "| Novo nome: ";
+                std::string novoNome;
+                std::getline(std::cin, novoNome);
+                if (receitaEditada.setNome(novoNome)) {
+                    std::cout << "| Nome alterado na copia!\n";
+                } else {
+                    std::cout << "| Nome invalido (nao pode ser vazio).\n";
+                }
+                pausar();
+                break;
+            }
+            case 2: {
+                std::cout << "| Novo tempo de preparo (min): ";
+                int novoTempo = lerOpcao();
+                if (receitaEditada.setTempo(novoTempo)) {
+                    std::cout << "| Tempo alterado!\n";
+                } else {
+                    std::cout << "| Tempo invalido (deve ser > 0).\n";
+                }
+                pausar();
+                break;
+            }
+            case 3: {
+                std::cout << "| Nova categoria:\n";
+                Categoria novaCat = lerCategoria();
+                receitaEditada.setCategoria(novaCat);
+                std::cout << "| Categoria alterada!\n";
+                pausar();
+                break;
+            }
+            case 4: {
+                std::cout << "| Novo modo de preparo: ";
+                std::string novoModo;
+                std::getline(std::cin, novoModo);
+                if (receitaEditada.setModo(novoModo)) {
+                    std::cout << "| Modo de preparo alterado!\n";
+                } else {
+                    std::cout << "| Modo nao pode ser vazio.\n";
+                }
+                pausar();
+                break;
+            }
+            case 5: {
+                // Salva definitivamente no catalogo
+                if (catalogo.atualizarReceita(indice, receitaEditada)) {
+                    std::cout << "| Receita salva com sucesso!\n";
+                } else {
+                    std::cout << "| Erro ao salvar receita.\n";
+                }
+                pausar();
+                return;
+            }
+            case 0:
+                std::cout << "| Edicao cancelada.\n";
+                pausar();
+                return;
+            default:
+                std::cout << "| Opcao invalida!\n";
+                pausar();
+                break;
+        }
+    }
 }
 
 void Interface::excluirReceita() {
@@ -402,7 +490,7 @@ void Interface::excluirReceita() {
 void Interface::filtrarIngredientePorReceita() {
     int indice = escolherReceita(catalogo.getReceitas());
     Receita receita = catalogo.getReceitas()[indice];
-    std::cout << "|=============== INGREDIENTES DA RECEITA ==============|\n"
+    std::cout << "|=============== INGREDIENTES DA RECEITA ==============|\n";
     std::vector <Ingredientes> ingReceita = receita.getIngredientes();
     for(auto i = ingReceita.begin(); i != ingReceita.end(); ++i) {
         std::cout << i->getNome() << "-" << i->getQuantidade() << " " << unidadeToString(i->getUnidade()) << std::endl;
@@ -543,6 +631,31 @@ void Interface::filtrarPossiveisPorCategoria() {
     std::cout << "|======================================================|\n";
     std::vector <Receita> possiveis = filtro.buscarReceitas(catalogo, despensa);
     Catalogo catalogoPossiveis(possiveis);
-    exibirLista("RECEITAS POSSIVEIS NA CATEGORIA SELECIONADA", filtro.filtrarPorCategoria(catalogoPossiveis, categoria)); 
+
+    std::vector <Receita> filtradas = filtro.filtrarPorCategoria(catalogoPossiveis, categoria);
+
+    std::cout << "| RECEITAS POSSIVEIS NA CATEGORIA SELECIONADA          |\n";
+
+        imprimirListaReceitas(filtradas);
+
+        std::cout << "|======================================================|\n" 
+                     "| Digite o numero de uma receita para ver detalhes     |\n"
+                     "| ou digite 0 para voltar para MENU                |\n"
+                     "|======================================================|\n" 
+                     "| Digite sua opcao: ";
+ 
+        int opcao = lerOpcao();
+
+        if (opcao == 0) return;
+
+        if (opcao >= 1 && opcao <= (int)filtradas.size()) {
+            limparTela();
+            exibirDetalhesReceita(filtradas[opcao - 1]);
+            pausar();
+        } else {
+            std::cout << "| OPCAO INVALIDA. Pressione Enter para tentar novamente... ";
+            std::cin.get();
+        }
+
 
 }
