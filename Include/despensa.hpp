@@ -15,6 +15,7 @@
 #include "unidade.hpp"
 #include <list>
 #include <string>
+#include "texto.hpp"
 
 class Despensa {
 private:
