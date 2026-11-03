@@ -1,4 +1,4 @@
-/*
+/**
  * @file interface.hpp
  * @brief Declaração da classe Interface.
  *
@@ -7,30 +7,59 @@
  * @author Julia V. F.
  * @date 2026-10-01
  */
+
 #ifndef INTERFACE_HPP
 #define INTERFACE_HPP
-#include "receitas.hpp"
+#include "receita.hpp"
 #include "despensa.hpp"
 #include "filtro.hpp"
 #include "catalogo.hpp"
 #include <vector>
+#include <string>
 
 class Interface {
 private:
-    std::vector<Receitas> receitas;
-    std::vector<Despensa> despensa;
-    std::vector<Filtro> filtro;
-    std::vector<Catalogo> catalogo;
+    Unidade unidade;
+    Filtro filtro;
+    Catalogo catalogo;
+    Despensa despensa;
+
+
+    void limparTela();
+    void pausar();
+    int lerOpcao();
+    int escolherReceita(const std::vector<Receita>& receitas);
+    void exibirLista(const std::string& titulo, const std::vector<Receita>& receitas);
+
+    void menuCatalogo();
+    void menuDespensa();
+    void menuCozinhar();
+
+    void exibirCatalogo();
+    void cadastrarReceita();
+    void imprimirListaReceitas(const std::vector<Receita>& receitas);
+    void exibirDetalhesReceita(const Receita&);
+
+    void procurarReceita();
+    void filtrarReceitaPorCategoria();
+    void editarReceita(); //esse que tenho que fazer
+    void excluirReceita();
+
+    void filtrarIngredientePorReceita();
+    float lerQuantidade();
+    Unidade lerUnidade();
+    Categoria lerCategoria();
+    
+    void adicionarNovoIngrediente();
+    void removerIngredientes();
+    void editarQuantidade();
+
+    void exibirReceitasPossiveis();
+    void filtrarPossiveisPorCategoria();
+
 public:
     Interface();
-    void exibirReceitas();
-    void cadastrarReceita();
-    void consultarReceita();
-    void sugestaoReceita();
-    void filtrarReceita();
-    void editarReceita();
-    void excluirReceita();
-    void avaliarReceita();
+    void menu();
 
 };
 
