@@ -33,10 +33,28 @@ void substituir(std::string& texto, const std::string& letraAntiga, const std::s
 como são muitos casos de acento, priorizei substituir apenas os que são mais normais 
 na primeira letra do nome, que é a mais importante para a ordenação em ordem alfabética.
 */
-void tirarAcentosParaOrdenar(std::string texto){
+std::string tirarAcentosParaOrdenar(std::string texto){
+    // Letras maiúsculas
+    substituir(texto, "Á", "a");
+    substituir(texto, "É", "e");
+    substituir(texto, "Ó", "o");
+    substituir(texto, "Ú", "u");
+    substituir(texto, "Ô", "o");
+    substituir(texto, "Ê", "e");
+    substituir(texto, "Â", "a");
+    substituir(texto, "À", "a");
+
+    // Letras minúsculas
     texto = paraMinusculas(texto);
+
     substituir(texto, "á", "a");
     substituir(texto, "é", "e");
     substituir(texto, "ó", "o");
     substituir(texto, "ú", "u");
+    substituir(texto, "ô", "o");
+    substituir(texto, "ê", "e");
+    substituir(texto, "â", "a");
+    substituir(texto, "à", "a");
+
+    return texto;
 }

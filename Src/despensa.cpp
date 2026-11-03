@@ -23,7 +23,7 @@ bool Despensa::possuiIngrediente(const std::string& nome) const{
  * @return true se o ingrediente estiver disponível, false caso contrário
  */
     for(auto i = ingredientes.begin(); i != ingredientes.end(); ++i) {
-        if(paraMinusculas(i->getNome()) == paraMinusculas(nome)) {
+        if(tirarAcentosParaOrdenar(i->getNome()) == tirarAcentosParaOrdenar(nome)) {
             return true;
         }
     }
@@ -51,7 +51,7 @@ bool Despensa::removerIngrediente(const std::string& nome){
  * determinar um tipo específico.
  */
     for(auto i = ingredientes.begin(); i != ingredientes.end(); ++i) {
-        if(paraMinusculas(i->getNome()) == paraMinusculas(nome)) {
+        if(tirarAcentosParaOrdenar(i->getNome()) == tirarAcentosParaOrdenar(nome)) {
             ingredientes.erase(i);
             return true;
         }
@@ -70,7 +70,7 @@ bool Despensa::atualizarQuantidade(const std::string& nome, float novaQuantidade
         return false; // Quantidade inválida
     }
     for(auto i = ingredientes.begin(); i != ingredientes.end(); ++i) {
-        if(paraMinusculas(i->getNome()) == paraMinusculas(nome)) {
+        if(tirarAcentosParaOrdenar(i->getNome()) == tirarAcentosParaOrdenar(nome)) {
            
             return i->editar(i->getNome(), novaQuantidade, i->getUnidade());
         }
