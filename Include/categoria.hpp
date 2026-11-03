@@ -4,14 +4,14 @@
 #include <string>
 
 enum class Categoria {
+    Entrada,
+    PratoPrincipal,
     Sobremesa,
     Lanche,
-    PratoPrincipal,
-    Entrada,
     Bebida
 };
 
 std::string categoriaToString(Categoria categoria);
-std::string stringToCategoria(const std::string& categoriaStr);
+Categoria stringToCategoria(const std::string& categoriaStr);
 
 #endif
