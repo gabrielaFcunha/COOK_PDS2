@@ -56,9 +56,9 @@ public:
      * @brief pesquisa receitas no vetor catálogo com base no nome da receita.
      * 
      * @param nome nome a ser comparado para a busca; pode ser so uma parte.
-     * @return std::vector<Receita>: vetor contendo as receitas que correspondem ao nome pesquisado.
+     * @return const Receita*: ponteiro para a receita encontrada, ou nullptr se não for encontrada.
      */
-    std::vector<Receita> pesquisarPorNome(const std::string& nome) const;
+    const Receita* Catalogo::pesquisarPorNome(const std::string& nome) const;
 
     /**
      * @brief função que ordena as receitas do catálogo com base em um critério de ordenação especificado.
@@ -74,6 +74,14 @@ public:
      * @return const std::vector<Receita>& referência constante para o vetor de receitas do catálogo.
      */
     const std::vector<Receita>& getReceitas() const;
+    bool salvarEmArquivo() const;
+    bool carregarDeArquivo();
+
+    /**
+     * @brief atualizar receita pra que apareça a receita atualizada
+     * no catálogo, caso o usuário queira editar alguma receita.
+     */
+    bool atualizarReceita(size_t index, const Receita& receitaModificada);
 };
 
 #endif // CATALOGO_HPP

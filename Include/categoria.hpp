@@ -12,6 +12,6 @@ enum class Categoria {
 };
 
 std::string categoriaToString(Categoria categoria);
-std::string stringToCategoria(const std::string& categoriaStr);
+Categoria stringToCategoria(const std::string& categoriaStr);
 
 #endif

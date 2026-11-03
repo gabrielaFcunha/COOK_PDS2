@@ -43,6 +43,7 @@ bool Receita::removerIngrediente (const std::string& nomeIngrediente) {
     return false;
 }
 
+
 bool Receita::avaliar(int avaliacao) {
     if(avaliacao >= 1 && avaliacao <= 5) {
         avaliacao_ = avaliacao;
