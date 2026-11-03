@@ -11,6 +11,7 @@
 #include "catalogo.hpp"
 #include "receita.hpp"
 #include "unidade.hpp"
+#include "texto.hpp"
 
 //preciso que alguem me ajude com as questões dos arquivos, não entendi muito bem, tem que mexer no construtor e em menu
 Interface::Interface() {
