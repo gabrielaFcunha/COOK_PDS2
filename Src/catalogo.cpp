@@ -9,7 +9,7 @@ Catalogo::Catalogo(){
 bool Catalogo::adicionarReceita(const Receita& receita){
     // Checa se já existe receita de mesmo nome
     for (const auto& r : receitas) {
-        if (paraMinusculas(r.getNome()) == paraMinusculas(receita.getNome())) {
+        if (tirarAcentosParaOrdenar(r.getNome()) == tirarAcentosParaOrdenar(receita.getNome())) {
             return false;
         }
     }
@@ -23,7 +23,7 @@ const std::vector<Receita>& Catalogo::getReceitas() const{
 
 bool Catalogo::removerReceita(const std::string& nome){
     for (int i = 0; i < receitas.size(); i++) {
-        if (paraMinusculas(receitas[i].getNome()) == paraMinusculas(nome)){
+        if (tirarAcentosParaOrdenar(receitas[i].getNome()) == tirarAcentosParaOrdenar(nome)){
             receitas.erase(receitas.begin() + i);
             return true;
         }
@@ -34,7 +34,7 @@ bool Catalogo::removerReceita(const std::string& nome){
 std::vector<Receita> Catalogo::pesquisarPorNome(const std::string& nome) const{
     std::vector<Receita> resultado;
     for (int i = 0; i < receitas.size(); i++) {
-        if (paraMinusculas(receitas[i].getNome()).find(paraMinusculas(nome)) != std::string::npos) { //vê se a busca por nome dentro do nome da receita não deu ‘não encontrado’
+        if (tirarAcentosParaOrdenar(receitas[i].getNome()).find(tirarAcentosParaOrdenar(nome)) != std::string::npos) { //vê se a busca por nome dentro do nome da receita não deu ‘não encontrado’
             resultado.push_back(receitas[i]);
         }
     }
@@ -45,14 +45,14 @@ std::vector<Receita> Catalogo::ordenar(CriterioOrdenacao criterio) const{
     std::vector<Receita> resultado = receitas;
     std::sort(resultado.begin(), resultado.end(), [criterio](const Receita& a, const Receita& b){
         if ((criterio) == CriterioOrdenacao::NOME){
-            return paraMinusculas(a.getNome()) < paraMinusculas(b.getNome());
+            return tirarAcentosParaOrdenar(a.getNome()) < tirarAcentosParaOrdenar(b.getNome());
         }
         if (criterio == CriterioOrdenacao::TEMPO_PREPARO){
             return a.getTempo() < b.getTempo();
         }
         if (criterio == CriterioOrdenacao::CATEGORIA){
             if(a.getCategoria() == b.getCategoria()){
-                return paraMinusculas(a.getNome()) < paraMinusculas(b.getNome());
+                return tirarAcentosParaOrdenar(a.getNome()) < tirarAcentosParaOrdenar(b.getNome());
             }else{
                 return a.getCategoria() < b.getCategoria();
             }

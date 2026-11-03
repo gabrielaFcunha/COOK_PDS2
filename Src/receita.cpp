@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "texto.hpp"
 
 
 Receita::Receita (const std::string& nome, int tempoPreparo, const std::string& modoPreparo, Categoria categoria, const std::vector<Ingredientes>& ingredientes)
@@ -34,7 +35,7 @@ void Receita::adicionarIngrediente (const Ingredientes& ingrediente) {
 
 bool Receita::removerIngrediente (const std::string& nomeIngrediente) {
     for (size_t i = 0; i < ingrediente_.size();i++) {
-        if (ingrediente_[i].getNome() == nomeIngrediente) {
+        if (tirarAcentosParaOrdenar(ingrediente_[i].getNome()) == tirarAcentosParaOrdenar(nomeIngrediente)) {
             ingrediente_.erase(ingrediente_.begin() + i);
             return true;
         }
