@@ -41,7 +41,7 @@ public:
      * 
      * @param receita A receita a ser adicionada.
      */
-    void adicionarReceita(const Receita& receita);
+    bool adicionarReceita(const Receita& receita);
 
     /**
      * @brief remove uma receita do vetor catálogo com base no nome da receita.

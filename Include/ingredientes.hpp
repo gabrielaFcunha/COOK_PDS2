@@ -12,24 +12,42 @@
 #ifndef INGREDIENTES_HPP
 #define INGREDIENTES_HPP
 #include <string>
+#include "unidade.hpp"
 
 class Ingredientes {
 private:
-    std::string nome;
-    float quantidade;
-    std::string unidade;
+    std::string _nome;
+    float _quantidade;
+    Unidade _unidade;
 
 public:
-
+    //Ingredientes();
+    Ingredientes(const std::string& nome, float quantidade, Unidade unidade);
+    
+    //getters:
     const std::string& getNome() const;
     float getQuantidade() const;
-    const std::string& getUnidade() const;
+    Unidade getUnidade() const;
+    /**
+     * bool cadastrar:
+     * @brief Cadastra uma instância ainda vazia; exige nome/unidade
+     *  e quantidade finita não negativa.
+     */
+    //bool cadastrar(const std::string& nome, float quantidade, Unidade unidade);
 
-    int cadastrar (std::string nome, float quantidade, std::string unidade);
-    int editar(std::string nome, float quantidade, std::string unidade);
-    int excluir(std::string nome, float quantidade, std::string unidade);
-    int consultar(std::string nome);
-    bool verificar(float quantidadeNecessaria);
+    /**
+     * bool editar:
+     * @brief Atualiza uma instância cadastrada; 
+     * @return false para dados inválidos ou instância vazia.
+     */
+    bool editar(const std::string& nome, float quantidade, Unidade unidade);
+    
+/**
+ * @note não utilizei converterUnidade() aqui, pois acredito
+ * que isso deve ser feito onde o ingrediente for adicionado,
+ * tipo na Receita ou na Despensa.
+ * 
+ */
 };
 
 #endif

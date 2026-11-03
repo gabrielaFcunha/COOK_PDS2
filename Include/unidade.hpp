@@ -10,5 +10,6 @@ enum class Unidade {
 };
 
 std::string unidadeToString(Unidade unidade);
-
+bool converterUnidade(float& quantidade, const std::string& unidadeTexto,
+     Unidade& unidade);
 #endif
