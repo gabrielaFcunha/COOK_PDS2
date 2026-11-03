@@ -16,8 +16,8 @@
 
 //preciso que alguem me ajude com as questões dos arquivos, não entendi muito bem, tem que mexer no construtor e em menu
 Interface::Interface() {
-    //catalogo.carregarDeArquivo(arquivoReceitas);
-    //despensa.carregarDeArquivo(arquivoDespensa);
+    catalogo.carregarDeArquivo();
+    despensa.carregarDeArquivo();
 }
 
 //FUNÇÕES AUXILIARES
@@ -124,8 +124,8 @@ void Interface::menu() {
             case 3: menuCozinhar (); break;
 
             case 4:
-                //catalogo.salvarEmArquivo(arquivoReceitas);
-                //despensa.salvarEmArquivo(arquivoDespensa);
+                catalogo.salvarEmArquivo();
+                despensa.salvarEmArquivo();
                 rodando = false;
                 break;
 

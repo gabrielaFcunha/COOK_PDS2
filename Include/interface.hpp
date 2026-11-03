@@ -24,9 +24,6 @@ private:
     Catalogo catalogo;
     Despensa despensa;
 
-    const std::string arquivoReceitas = "receitas.txt";
-    const std::string arquivoDespensa = "despensa.txt";
-
 
     void limparTela();
     void pausar();
