@@ -304,7 +304,7 @@ void Interface::cadastrarReceita () {
     std::string preparo;
     std::getline(std::cin, preparo);
     std::cout << "| Ingredientes: ";
-    vector <Ingredientes> ingredientes = {};
+    std::vector <Ingredientes> ingredientes = {};
 
     while (true) {
         std::cout << "  Nome do ingrediente (ou digite 'fim' para terminar): ";
@@ -366,9 +366,9 @@ void Interface::exibirDetalhesReceita(const Receita& receita) {
 void Interface::procurarReceita() {
     std::cout << "|============== DIGITE O NOME DA RECEITA ==============|\n"
               << "| Pesquisar: "; 
-    string nome;
+    std::string nome;
     std::getline(std::cin, nome); 
-    vector<Receita> receitasEncontradas = catalogo.pesquisarPorNome(nome);
+    std::vector<Receita> receitasEncontradas = catalogo.pesquisarPorNome(nome);
     exibirLista ("RESULTADOS DA PESQUISA", receitasEncontradas);         
 }
 
