@@ -52,7 +52,7 @@ public:
     bool editarIngrediente(const std::string& nomeIngrediente, float quantidade, Unidade unidade); 
 
     //outras operacoes
-    void adicionarIngrediente (const Ingredientes& ingrediente);
+    bool adicionarIngrediente (const Ingredientes& ingrediente);
     bool removerIngrediente (const std::string& nomeIngrediente); 
 
     /**
