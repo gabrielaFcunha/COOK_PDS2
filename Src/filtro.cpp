@@ -38,7 +38,11 @@ std::vector<Ingredientes> Filtro::identificarIngredientesFaltando (const Receita
     for (int i = 0; i < pedidos.size(); i++) {
         bool achou = false;
         for (const Ingredientes& item : naDespensa) {
-            if (paraMinusculas(pedidos[i].getNome()) == paraMinusculas(item.getNome())) {
+            std::string nomePedido = pedidos[i].getNome();
+            std::string nomeItem = item.getNome();
+            nomePedido = tirarAcentosParaOrdenar(nomePedido);
+            nomeItem = tirarAcentosParaOrdenar(nomeItem);
+            if (nomePedido == nomeItem) {
                 if (pedidos[i].getUnidade() == item.getUnidade() && pedidos[i].getQuantidade() > item.getQuantidade()) {
                     faltando.push_back(pedidos[i]);
                 }
@@ -67,7 +71,11 @@ std::vector<Ingredientes> Filtro::identificarUnidadesDiferentes (const Receita& 
     const std::list<Ingredientes>& naDespensa = despensa.getIngredientesDisponiveis();
     for (int i = 0; i < pedidos.size(); i++) {
         for (const Ingredientes& item : naDespensa) {
-            if (paraMinusculas(pedidos[i].getNome()) == paraMinusculas(item.getNome())) {
+            std::string nomePedido = pedidos[i].getNome();
+            std::string nomeItem = item.getNome();
+            nomePedido = tirarAcentosParaOrdenar(nomePedido);
+            nomeItem = tirarAcentosParaOrdenar(nomeItem);
+            if (nomePedido == nomeItem) {
                 if (pedidos[i].getUnidade() != item.getUnidade()) {
                     diferentes.push_back(pedidos[i]);
                 }
