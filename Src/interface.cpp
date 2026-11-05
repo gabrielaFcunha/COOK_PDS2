@@ -94,6 +94,8 @@ void Interface::exibirLista(const std::string& titulo, const std::vector<Receita
 //MENU PRINCIPAL
 void Interface::menu() {
 
+    limparTela();
+
     bool rodando = true;
 
     while (rodando) {
@@ -398,7 +400,7 @@ void Interface::editarReceita() {
                   << "| 2) Alterar Tempo de Preparo\n"
                   << "| 3) Alterar Categoria\n"
                   << "| 4) Alterar Modo de Preparo\n"
-                  << "| 5) Salvar alterações\n"
+                  << "| 5) Salvar alteracoes\n"
                   << "| 0) Cancelar edicao\n"
                   << "|======================================================|\n"
                   << "| Digite sua opcao: ";

@@ -1,27 +1,30 @@
-
+# O compilador que vamos usar
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra -Iinclude -Itests
 
-SRC = $(wildcard src/*.cpp)
-TEST_SRC = $(wildcard tests/test_*.cpp)
+# Flags de compilação (-std=c++11 e os diretórios de include)
+CXXFLAGS = -std=c++11 -I. -IInclude
 
-APP_SRC = $(filter-out src/main.cpp,$(SRC))
+# Nome do executável final que será gerado
+TARGET = cook_app
 
-APP = receitas
-TEST = testes
+# Lista de todos os arquivos fonte necessários na pasta Src
+SRC = Src/main.cpp \
+      Src/interface.cpp \
+      Src/catalogo.cpp \
+      Src/despensa.cpp \
+      Src/receita.cpp \
+      Src/ingredientes.cpp \
+      Src/filtro.cpp \
+      Src/texto.cpp \
+      Src/unidade.cpp \
+      Src/categoria.cpp
 
-all: app test
+# Regra principal (executada ao rodar apenas 'make')
+all: $(TARGET)
 
-app: $(APP)
+$(TARGET): $(SRC)
+	$(CXX) $(CXXFLAGS) $(SRC) -o $(TARGET)
 
-$(APP): $(SRC)
-	$(CXX) $(CXXFLAGS) $(APP_SRC) src/main.cpp -o $(APP)
-
-$(TEST): $(APP_SRC) $(TEST_SRC)
-	$(CXX) $(CXXFLAGS) $(APP_SRC) $(TEST_SRC) -o $(TEST)
-
-test: $(TEST)
-	./$(TEST)
-
+# Regra para limpar os arquivos compilados (executada ao rodar 'make clean')
 clean:
-	rm -f $(APP) $(TEST)
+	rm -f $(TARGET)

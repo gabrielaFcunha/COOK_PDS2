@@ -85,6 +85,9 @@ bool Receita::editarIngrediente (const std::string& nomeIngrediente,
         if (tirarAcentosParaOrdenar(ingrediente_[i].getNome()) == tirarAcentosParaOrdenar(nomeIngrediente)) {
             return ingrediente_[i].editar(ingrediente_[i].getNome(), quantidade, unidade);
         }
+    }
+    return false;
+}
 
 bool Receita::avaliar(int avaliacao) {
     if(avaliacao >= 1 && avaliacao <= 5) {
