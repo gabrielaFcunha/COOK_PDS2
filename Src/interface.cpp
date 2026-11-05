@@ -1,5 +1,3 @@
-
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -14,7 +12,6 @@
 #include "texto.hpp"
 #include "categoria.hpp"
 
-//preciso que alguem me ajude com as questões dos arquivos, não entendi muito bem, tem que mexer no construtor e em menu
 Interface::Interface() {
     catalogo.carregarDeArquivo();
     despensa.carregarDeArquivo();
@@ -68,10 +65,10 @@ int Interface::escolherReceita(const std::vector<Receita>& receitas) {
     return opcao - 1; // retorna o indice da receita escolhida;
 }
 
-void Interface::exibirLista(const std::string& titulo, const std::vector<Receita>& receitas) {
+void Interface::exibirLista(const std::string& titulo, const std::vector<Receita>& listaReceitas) {
     std::cout << "| " << titulo << "\n";
 
-        imprimirListaReceitas(receitas);
+        imprimirListaReceitas(listaReceitas);
 
         std::cout << "|======================================================|\n" 
                      "| Digite o numero de uma receita para ver detalhes     |\n"
@@ -81,13 +78,11 @@ void Interface::exibirLista(const std::string& titulo, const std::vector<Receita
  
         int opcao = lerOpcao();
 
-        const auto& receitas = catalogo.getReceitas(); 
-
         if (opcao == 0) return;
 
-        if (opcao >= 1 && opcao <= (int)receitas.size()) {
+        if (opcao >= 1 && opcao <= (int)listaReceitas.size()) {
             limparTela();
-            exibirDetalhesReceita(receitas[opcao - 1]);
+            exibirDetalhesReceita(listaReceitas[opcao - 1]);
             pausar();
         } else {
             std::cout << "| OPCAO INVALIDA. Pressione Enter para tentar novamente... ";
@@ -304,7 +299,7 @@ void Interface::cadastrarReceita () {
     std::string preparo;
     std::getline(std::cin, preparo);
     std::cout << "| Ingredientes: ";
-    vector <Ingredientes> ingredientes = {};
+    std::vector <Ingredientes> ingredientes = {};
 
     while (true) {
         std::cout << "  Nome do ingrediente (ou digite 'fim' para terminar): ";
@@ -366,9 +361,13 @@ void Interface::exibirDetalhesReceita(const Receita& receita) {
 void Interface::procurarReceita() {
     std::cout << "|============== DIGITE O NOME DA RECEITA ==============|\n"
               << "| Pesquisar: "; 
-    string nome;
+    std::string nome;
     std::getline(std::cin, nome); 
-    vector<Receita> receitasEncontradas = catalogo.pesquisarPorNome(nome);
+    std::vector<Receita> receitasEncontradas;
+    const Receita* encontrada = catalogo.pesquisarPorNome(nome);
+    if (encontrada != nullptr) {
+        receitasEncontradas.push_back(*encontrada);
+    }
     exibirLista ("RESULTADOS DA PESQUISA", receitasEncontradas);         
 }
 
@@ -493,7 +492,7 @@ void Interface::filtrarIngredientePorReceita() {
     Receita receita = catalogo.getReceitas()[indice];
     std::cout << "|=============== INGREDIENTES DA RECEITA ==============|\n";
     std::vector <Ingredientes> ingReceita = receita.getIngredientes();
-    for(auto i = ingReceita.begin(); i != ingReceita.end(); ++i) {
+    for(auto i = ingReceita.begin(); i != ingReceita.end(); i++) {
         std::cout << i->getNome() << "-" << i->getQuantidade() << " " << unidadeToString(i->getUnidade()) << std::endl;
     }
 }
@@ -631,7 +630,11 @@ void Interface::filtrarPossiveisPorCategoria() {
     Categoria categoria = lerCategoria();
     std::cout << "|======================================================|\n";
     std::vector <Receita> possiveis = filtro.buscarReceitas(catalogo, despensa);
-    Catalogo catalogoPossiveis(possiveis);
+
+    Catalogo catalogoPossiveis;
+
+    for(auto i = possiveis.begin(); i != possiveis.end(); i++)
+       catalogoPossiveis.adicionarReceita(possiveis[i]);
 
     std::vector <Receita> filtradas = filtro.filtrarPorCategoria(catalogoPossiveis, categoria);
 
