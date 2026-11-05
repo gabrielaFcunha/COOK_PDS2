@@ -633,8 +633,9 @@ void Interface::filtrarPossiveisPorCategoria() {
 
     Catalogo catalogoPossiveis;
 
-    for(auto i = possiveis.begin(); i != possiveis.end(); i++)
-       catalogoPossiveis.adicionarReceita(possiveis[i]);
+    for (const auto& receita : possiveis) {
+        catalogoPossiveis.adicionarReceita(receita);
+    }
 
     std::vector <Receita> filtradas = filtro.filtrarPorCategoria(catalogoPossiveis, categoria);
 
