@@ -21,7 +21,7 @@ const std::vector<Receita>& Catalogo::getReceitas() const{
 }
 
 bool Catalogo::removerReceita(const std::string& nome){
-    for (int i = 0; i < receitas.size(); i++) {
+    for (size_t i = 0; i < receitas.size(); i++) {
         if (paraMinusculas(receitas[i].getNome()) == paraMinusculas(nome)){
             receitas.erase(receitas.begin() + i);
             return true;
@@ -32,7 +32,7 @@ bool Catalogo::removerReceita(const std::string& nome){
 
 std::vector<Receita> Catalogo::pesquisarPorNome(const std::string& nome) const{
     std::vector<Receita> resultado;
-    for (int i = 0; i < receitas.size(); i++) {
+    for (size_t i = 0; i < receitas.size(); i++) {
         if (paraMinusculas(receitas[i].getNome()).find(paraMinusculas(nome)) != std::string::npos) { //vê se a busca por nome dentro do nome da receita não deu ‘não encontrado’
             resultado.push_back(receitas[i]);
         }
