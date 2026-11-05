@@ -5,4 +5,6 @@
 std::string paraMinusculas(std::string texto);
 std::string tirarAcentosParaOrdenar(std::string texto);
 void substituir(std::string& texto, const std::string& letraAntiga, const std::string& letraNova);
+std::string normalizar(const std::string& texto);
+
 #endif

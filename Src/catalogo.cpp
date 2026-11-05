@@ -1,6 +1,5 @@
 #include "catalogo.hpp"
 #include "categoria.hpp"
-#include <algorithm>
 #include "texto.hpp"
 #include <fstream>
 #include <sstream>
@@ -25,7 +24,7 @@ const std::vector<Receita>& Catalogo::getReceitas() const{
 
 bool Catalogo::removerReceita(const std::string& nome){
     for (int i = 0; i < receitas.size(); i++) {
-        if (tirarAcentosParaOrdenar(receitas[i].getNome()) == tirarAcentosParaOrdenar(nome)){
+        if (paraMinusculas(receitas[i].getNome()) == paraMinusculas(nome)){
             receitas.erase(receitas.begin() + i);
             return true;
         }
@@ -37,7 +36,7 @@ bool Catalogo::removerReceita(const std::string& nome){
 std::vector<Receita> Catalogo::pesquisarPorNome(const std::string& nome) const{
     std::vector<Receita> resultado;
     for (int i = 0; i < receitas.size(); i++) {
-        if (tirarAcentosParaOrdenar(receitas[i].getNome()).find(tirarAcentosParaOrdenar(nome)) != std::string::npos) { //vê se a busca por nome dentro do nome da receita não deu ‘não encontrado’
+        if (paraMinusculas(receitas[i].getNome()).find(paraMinusculas(nome)) != std::string::npos) { //vê se a busca por nome dentro do nome da receita não deu ‘não encontrado’
             resultado.push_back(receitas[i]);
         }
     }
@@ -58,14 +57,14 @@ std::vector<Receita> Catalogo::ordenar(CriterioOrdenacao criterio) const{
     std::vector<Receita> resultado = receitas;
     std::sort(resultado.begin(), resultado.end(), [criterio](const Receita& a, const Receita& b){
         if ((criterio) == CriterioOrdenacao::NOME){
-            return tirarAcentosParaOrdenar(a.getNome()) < tirarAcentosParaOrdenar(b.getNome());
+            return paraMinusculas(a.getNome()) < paraMinusculas(b.getNome());
         }
         if (criterio == CriterioOrdenacao::TEMPO_PREPARO){
             return a.getTempo() < b.getTempo();
         }
         if (criterio == CriterioOrdenacao::CATEGORIA){
             if(a.getCategoria() == b.getCategoria()){
-                return tirarAcentosParaOrdenar(a.getNome()) < tirarAcentosParaOrdenar(b.getNome());
+                return paraMinusculas(a.getNome()) < paraMinusculas(b.getNome());
             }else{
                 return a.getCategoria() < b.getCategoria();
             }
