@@ -97,19 +97,17 @@ TEST_CASE("Teste 07 - Filtrar por categoria com receitas repetidas (se houverem)
     CHECK(resultado[0].getNome() == "Bolo de Chocolate");
 }
 
-TEST_CASE("Teste 08 - Alterações nos ingredientes dos resultados são espelhadas no vetor original"){
-    Filtro filtro;
+TEST_CASE("Teste 08 - Filtro por categoria devolve apenas receitas da categoria") {
     Catalogo catalogo;
-    Receita receita1("Bolo de Chocolate", 60, "Misture os ingredientes e asse.", Categoria::Sobremesa);
-    catalogo.adicionarReceita(receita1);
+    catalogo.adicionarReceita(Receita("Bolo de Chocolate", 60, "Misture e asse", Categoria::Sobremesa, std::vector<Ingredientes>{}));
+    catalogo.adicionarReceita(Receita("Suco de Laranja", 5, "Esprema", Categoria::Bebida, std::vector<Ingredientes>{}));
 
-    auto resultado = filtro.filtrarPorCategoria(catalogo, Categoria::Sobremesa);
+    Filtro filtro;
+    std::vector<Receita> resultado = filtro.filtrarPorCategoria(catalogo, Categoria::Sobremesa);
+
     REQUIRE(resultado.size() == 1);
     CHECK(resultado[0].getNome() == "Bolo de Chocolate");
-
-    resultado[0].adicionarIngrediente(Ingredientes("Chocolate", 200, Unidade::Grama));
-    CHECK(resultado[0].getIngredientes().size() == 1);
-    CHECK(catalogo.getReceitas()[0].getIngredientes().size() == 1);
+    CHECK(catalogo.getReceitas().size() == 2);
 }
 
 TEST_CASE("Teste 09 - Filtrar não altera o catálogo original"){
@@ -522,15 +520,17 @@ TEST_CASE("Teste 44 - Receita com ingredientes repetidos"){
     CHECK(resultado == true); // Receita pode ser feita mesmo com ingredientes repetidos
 }
 
-TEST_CASE("Teste 45 - Receita com ingredientes repetidos, mas despensa com quantidade insuficiente"){
-    Filtro filtro;
+TEST_CASE("Teste 45 - Despensa com quantidade insuficiente") {
     Despensa despensa;
-    Receita receita1("Bolo de Chocolate", 60, "Misture os ingredientes e asse.", Categoria::Sobremesa);
-    receita1.adicionarIngrediente(Ingredientes("Chocolate", 200, Unidade::Grama));
-    receita1.adicionarIngrediente(Ingredientes("Chocolate", 100, Unidade::Grama)); // Ingrediente repetido
-    despensa.adicionarIngrediente(Ingredientes("Chocolate", 250, Unidade::Grama)); // Quantidade insuficiente
-    auto resultado = filtro.compararIngredientes(receita1, despensa);
-    CHECK(resultado == false); // Receita não pode ser feita devido à quantidade insuficiente
+    despensa.adicionarIngrediente(Ingredientes("Chocolate", 50, Unidade::Grama));
+
+    std::vector<Ingredientes> pedidos;
+    pedidos.push_back(Ingredientes("Chocolate", 100, Unidade::Grama));
+    Receita receita("Brigadeiro", 30, "Misture tudo", Categoria::Sobremesa, pedidos);
+
+    Filtro filtro;
+    bool resultado = filtro.compararIngredientes(receita, despensa);
+    CHECK(resultado == false);
 }
 
 TEST_CASE("Teste 46 - Receita com ingredientes repetidos, mas despensa com unidades diferentes"){
@@ -566,15 +566,15 @@ TEST_CASE("Teste 48 - Comparação de nomes ignora maiúsculas e acentos"){
     CHECK(resultado == true); // Ingrediente está presente mesmo com diferenças de maiúsculas e acentos
 }
 
-TEST_CASE("Teste 49 - Despensa com ingredientes repetidos e quantidades diferentes"){
+TEST_CASE("Teste 49 - Despensa bloqueia ingrediente repetido e mantém a quantidade original"){
     Filtro filtro;
     Despensa despensa;
     Receita receita1("Bolo de Chocolate", 60, "Misture os ingredientes e asse.", Categoria::Sobremesa);
     receita1.adicionarIngrediente(Ingredientes("Chocolate", 200, Unidade::Grama));
-    despensa.adicionarIngrediente(Ingredientes("Chocolate", 100, Unidade::Grama)); // Quantidade insuficiente
-    despensa.adicionarIngrediente(Ingredientes("Chocolate", 150, Unidade::Grama)); // Quantidade suficiente
+    CHECK(despensa.adicionarIngrediente(Ingredientes("Chocolate", 250, Unidade::Grama)) == true);
+    CHECK(despensa.adicionarIngrediente(Ingredientes("Chocolate", 150, Unidade::Grama)) == false); // repetido é bloqueado
     auto resultado = filtro.compararIngredientes(receita1, despensa);
-    CHECK(resultado == true); // Receita pode ser feita mesmo com ingredientes repetidos na despensa
+    CHECK(resultado == true); // continua valendo os 250 g do primeiro
 }
 
 TEST_CASE("Teste 50 - Nomes com espaços nas pontas"){

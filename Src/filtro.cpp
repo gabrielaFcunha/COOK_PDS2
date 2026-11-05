@@ -14,9 +14,18 @@
  */
 std::vector<Receita> Filtro::filtrarPorCategoria (Catalogo catalogo, const Categoria categoria){
     std::vector<Receita> resultado;
-    for (int i = 0; i < catalogo.getReceitas().size(); i++) {
+    for (size_t i = 0; i < catalogo.getReceitas().size(); i++) {
         if (catalogo.getReceitas()[i].getCategoria() == categoria) {
             resultado.push_back(catalogo.getReceitas()[i]);
+        }
+    }
+    for (size_t i = 0; i < resultado.size(); i++) {
+        for (size_t j = 0; j + 1 < resultado.size() - i; j++) {
+            if (normalizar(resultado[j].getNome()) > normalizar(resultado[j + 1].getNome())) {
+                Receita temp = resultado[j];
+                resultado[j] = resultado[j + 1];
+                resultado[j + 1] = temp;
+            }
         }
     }
     return resultado;
@@ -35,15 +44,15 @@ std::vector<Ingredientes> Filtro::identificarIngredientesFaltando (const Receita
     const std::vector<Ingredientes>& pedidos = receita.getIngredientes(); //lista de ingredientes que a receita pede
     const std::list<Ingredientes>& naDespensa = despensa.getIngredientesDisponiveis();
 
-    for (int i = 0; i < pedidos.size(); i++) {
+    for (size_t i = 0; i < pedidos.size(); i++) {
         bool achou = false;
         for (const Ingredientes& item : naDespensa) {
             std::string nomePedido = pedidos[i].getNome();
             std::string nomeItem = item.getNome();
-            nomePedido = tirarAcentosParaOrdenar(nomePedido);
-            nomeItem = tirarAcentosParaOrdenar(nomeItem);
-            if (nomePedido == nomeItem) {
-                if (pedidos[i].getUnidade() == item.getUnidade() && pedidos[i].getQuantidade() > item.getQuantidade()) {
+            nomePedido = normalizar(nomePedido);
+            nomeItem = normalizar(nomeItem);
+            if (nomePedido == nomeItem && pedidos[i].getUnidade() == item.getUnidade()) {
+                if (pedidos[i].getQuantidade() > item.getQuantidade()) {
                     faltando.push_back(pedidos[i]);
                 }
                 achou = true;
@@ -69,12 +78,12 @@ std::vector<Ingredientes> Filtro::identificarUnidadesDiferentes (const Receita& 
     std::vector<Ingredientes> diferentes;
     const std::vector<Ingredientes>& pedidos = receita.getIngredientes();
     const std::list<Ingredientes>& naDespensa = despensa.getIngredientesDisponiveis();
-    for (int i = 0; i < pedidos.size(); i++) {
+    for (size_t i = 0; i < pedidos.size(); i++) {
         for (const Ingredientes& item : naDespensa) {
             std::string nomePedido = pedidos[i].getNome();
             std::string nomeItem = item.getNome();
-            nomePedido = tirarAcentosParaOrdenar(nomePedido);
-            nomeItem = tirarAcentosParaOrdenar(nomeItem);
+            nomePedido = normalizar(nomePedido);
+            nomeItem = normalizar(nomeItem);
             if (nomePedido == nomeItem) {
                 if (pedidos[i].getUnidade() != item.getUnidade()) {
                     diferentes.push_back(pedidos[i]);
@@ -108,7 +117,7 @@ bool Filtro::compararIngredientes (const Receita& receita, const Despensa& despe
  */
 std::vector<Receita> Filtro::buscarReceitas (Catalogo catalogo, const Despensa& despensa){
     std::vector<Receita> resultado;
-    for (int i = 0; i < catalogo.getReceitas().size(); i++) {
+    for (size_t i = 0; i < catalogo.getReceitas().size(); i++) {
         if (compararIngredientes(catalogo.getReceitas()[i], despensa)) {
             resultado.push_back(catalogo.getReceitas()[i]);
         }
