@@ -1,8 +1,13 @@
 #include "texto.hpp"
 #include <string>
 
+/**
+ * @brief Converte todas as letras de uma string para minúsculas.
+ * @param texto A string a ser convertida.
+ * @return A string convertida para minúsculas.
+ */
 std::string paraMinusculas(std::string texto){
-    for(int i = 0; i < texto.size(); i++){
+    for(size_t i = 0; i < texto.size(); i++){
         if (texto[i] >= 'A' && texto[i] <= 'Z'){
             texto[i] = texto[i] + 32;
         }
@@ -33,10 +38,50 @@ void substituir(std::string& texto, const std::string& letraAntiga, const std::s
 como são muitos casos de acento, priorizei substituir apenas os que são mais normais 
 na primeira letra do nome, que é a mais importante para a ordenação em ordem alfabética.
 */
-void tirarAcentosParaOrdenar(std::string texto){
+std::string tirarAcentosParaOrdenar(std::string texto){
+    // Letras maiúsculas
+    substituir(texto, "Á", "a");
+    substituir(texto, "À", "a");
+    substituir(texto, "Â", "a");
+    substituir(texto, "Ã", "a");
+    substituir(texto, "É", "e");
+    substituir(texto, "Ê", "e");
+    substituir(texto, "Í", "i");
+    substituir(texto, "Ó", "o");
+    substituir(texto, "Ô", "o");
+    substituir(texto, "Õ", "o");
+    substituir(texto, "Ú", "u");
+    substituir(texto, "Ü", "u");
+    substituir(texto, "Ç", "c");
+
+    // Letras minúsculas
     texto = paraMinusculas(texto);
+
     substituir(texto, "á", "a");
+    substituir(texto, "à", "a");
+    substituir(texto, "â", "a");
+    substituir(texto, "ã", "a");
     substituir(texto, "é", "e");
+    substituir(texto, "ê", "e");
+    substituir(texto, "í", "i");
     substituir(texto, "ó", "o");
+    substituir(texto, "ô", "o");
+    substituir(texto, "õ", "o");
     substituir(texto, "ú", "u");
+    substituir(texto, "ü", "u");
+    substituir(texto, "ç", "c");
+
+    return texto;
+}
+
+std::string normalizar(const std::string& texto){
+    std::string textoNormalizado = tirarAcentosParaOrdenar(texto);
+
+    size_t inicio = textoNormalizado.find_first_not_of(' '); // acha a primeira posição que NÃO é espaço
+    size_t fim = textoNormalizado.find_last_not_of(' '); // acha a última posição que NÃO é espaço
+
+    if (inicio == std::string::npos) {
+        return "";   // string vazia ou só de espaços
+    }
+    return textoNormalizado.substr(inicio, fim - inicio + 1);
 }
