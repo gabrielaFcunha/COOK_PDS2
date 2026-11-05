@@ -375,7 +375,7 @@ void Interface::filtrarReceitaPorCategoria() {
     
     std::cout << "|====================== CATEGORIAS ====================|\n";
     Categoria categoria = lerCategoria();
-    std::vector <Receita> receitas = filtro.filtrarPorCategoria(catalogo.getReceitas(), categoria);
+    std::vector <Receita> receitas = filtro.filtrarPorCategoria(catalogo, categoria);
     imprimirListaReceitas(receitas);
 
 }
