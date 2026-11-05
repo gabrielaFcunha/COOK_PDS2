@@ -29,7 +29,7 @@ private:
     void pausar();
     int lerOpcao();
     int escolherReceita(const std::vector<Receita>& receitas);
-    void exibirLista(const std::string& titulo, const std::vector<Receita>& receitas);
+    void exibirLista(const std::string& titulo, const std::vector<Receita>& listaReceitas);
 
     void menuCatalogo();
     void menuDespensa();
@@ -38,11 +38,11 @@ private:
     void exibirCatalogo();
     void cadastrarReceita();
     void imprimirListaReceitas(const std::vector<Receita>& receitas);
-    void exibirDetalhesReceita(const Receita&);
+    void exibirDetalhesReceita(const Receita& receita);
 
     void procurarReceita();
     void filtrarReceitaPorCategoria();
-    void editarReceita(); //esse que tenho que fazer
+    void editarReceita();
     void excluirReceita();
 
     void filtrarIngredientePorReceita();
