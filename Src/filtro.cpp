@@ -16,11 +16,42 @@ std::vector<Receita> Filtro::filtrarPorCategoria (Catalogo catalogo, const Categ
     std::vector<Receita> resultado;
     for (size_t i = 0; i < catalogo.getReceitas().size(); i++) {
         if (catalogo.getReceitas()[i].getCategoria() == categoria) {
-            resultado.push_back(catalogo.getReceitas()[i]);
+            resultado.push_back(catalogo.getReceitas()[i]); //serve para adicionar um elemento no final de um vetor:
         }
     }
     for (size_t i = 0; i < resultado.size(); i++) {
         for (size_t j = 0; j + 1 < resultado.size() - i; j++) {
+            if (normalizar(resultado[j].getNome()) > normalizar(resultado[j + 1].getNome())) {
+                Receita temp = resultado[j];
+                resultado[j] = resultado[j + 1];
+                resultado[j + 1] = temp;
+            }
+        }
+    }
+    return resultado;
+}
+/**
+ * @brief Filtra as receitas de um catálogo pela avaliação (estrelas).
+ * O resultado vem em ordem alfabética (ignorando acentos e caixa).
+ * Avaliação 0 devolve as receitas ainda não avaliadas.
+ *
+ * @param catalogo O catálogo de receitas a ser filtrado.
+ * @param avaliacao A nota escolhida pelo usuário.
+ * @return std::vector<Receita> As receitas cuja avaliação é igual à pedida.
+ */
+std::vector<Receita> Filtro::filtrarPorAvaliacao (Catalogo catalogo, int avaliacao){
+    std::vector<Receita> resultado;
+    std::vector<Receita> receitas = catalogo.getReceitas();
+
+    // pega só as receitas com a avaliação pedida
+    for (size_t i = 0; i < receitas.size(); i++) {
+        if (receitas[i].getAvaliacao() == avaliacao) {
+            resultado.push_back(receitas[i]);
+        }
+    }
+    // ordena em ordem alfabética
+    for (size_t i = 0; i < resultado.size(); i++) {
+        for (size_t j = 0; j < resultado.size() - 1 - i; j++) {
             if (normalizar(resultado[j].getNome()) > normalizar(resultado[j + 1].getNome())) {
                 Receita temp = resultado[j];
                 resultado[j] = resultado[j + 1];

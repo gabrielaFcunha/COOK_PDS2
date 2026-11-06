@@ -34,6 +34,8 @@ public:
     std::vector<Receita> filtrarPorCategoria (Catalogo catalogo, const Categoria categoria);
     // tecnicamente std::vector<Receita> é o catalogo  sla
 
+    std::vector<Receita> filtrarPorAvaliacao (Catalogo catalogo, int avaliacao);
+
     //"Filtrar receitas pelo nome", 
     //eu tirei pq o catalogo ta fazendo a mesma coisa
 
