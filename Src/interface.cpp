@@ -521,10 +521,6 @@ void Interface::excluirReceita() {
 //FUNCOES DO DESPENSA
 void Interface::filtrarIngredientePorReceita() {
     int indice = escolherReceita(catalogo.getReceitas());
-    if (receitas.empty()) {
-        std::cout << "| Nenhuma receita disponível\n";
-        return;
-    }
     const Receita& receita = catalogo.getReceitas()[indice];
     std::cout << "|=============== INGREDIENTES DA RECEITA ==============|\n";
     std::vector <Ingredientes> ingReceita = receita.getIngredientes();
