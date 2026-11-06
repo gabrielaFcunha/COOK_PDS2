@@ -394,6 +394,8 @@ void Interface::filtrarReceitaPorCategoria() {
     std::vector <Receita> receitas = filtro.filtrarPorCategoria(catalogo, categoria);
     imprimirListaReceitas(receitas);
 
+    pausar();
+
 }
 
 void Interface::editarReceita() {
@@ -519,12 +521,17 @@ void Interface::excluirReceita() {
 //FUNCOES DO DESPENSA
 void Interface::filtrarIngredientePorReceita() {
     int indice = escolherReceita(catalogo.getReceitas());
-    Receita receita = catalogo.getReceitas()[indice];
+    if (receitas.empty()) {
+        std::cout << "| Nenhuma receita disponível\n";
+        return;
+    }
+    const Receita& receita = catalogo.getReceitas()[indice];
     std::cout << "|=============== INGREDIENTES DA RECEITA ==============|\n";
     std::vector <Ingredientes> ingReceita = receita.getIngredientes();
     for(auto i = ingReceita.begin(); i != ingReceita.end(); i++) {
         std::cout << i->getNome() << "-" << i->getQuantidade() << " " << unidadeToString(i->getUnidade()) << std::endl;
     }
+    pausar();
 }
 
 float Interface::lerQuantidade() {
