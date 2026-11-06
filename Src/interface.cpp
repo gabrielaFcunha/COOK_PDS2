@@ -12,6 +12,7 @@
 #include "texto.hpp"
 #include "categoria.hpp"
 
+//MEXER NAS COISAS DE AVALIACAO
 Interface::Interface() {
     catalogo.carregarDeArquivo();
     despensa.carregarDeArquivo();
@@ -146,8 +147,9 @@ void Interface::menuCatalogo () {
                      "| 3) Buscar uma receita por nome                       |\n" 
                      "| 4) Filtrar receitas por categoria                    |\n" 
                      "| 5) Editar uma receita                                |\n"
-                     "| 6) Remover uma receita                               |\n" 
-                     "| 7) Voltar para o MENU                                |\n"  
+                     "| 6) Remover uma receita                               |\n"
+                     "| 7) Avaliar uma receita                               |\n"
+                     "| 8) Voltar para o MENU                                |\n"  
                      "|======================================================|\n" 
                      "| Digite sua opcao: ";
  
@@ -166,7 +168,9 @@ void Interface::menuCatalogo () {
 
             case 6: limparTela(); excluirReceita(); break;
 
-            case 7: return;
+            case 7: limparTela(); avaliacao(); break;
+
+            case 8: return;
 
             default:
                 std::cout << "| OPCAO INVALIDA. Pressione Enter para tentar novamente... ";
@@ -189,10 +193,11 @@ void Interface::menuDespensa () {
 
         std::cout << "|======================================================|\n" 
                      "| 1) Visualizar apenas os ingredientes de uma receita  |\n"
-                     "| 2) Adicionar ingredientes                            |\n"
-                     "| 3) Remover ingredientes                              |\n" 
-                     "| 4) Editar a quantidade de um ingrediente             |\n" 
-                     "| 5) Voltar para o MENU                                |\n"  
+                     "| 2) Adicionar ingredientes a despensa                 |\n"
+                     "| 3) Remover ingredientes da despensa                  |\n" 
+                     "| 4) Editar a quantidade de um ingrediente             |\n"
+                     "| 5) Disponibilidade dos ingredientes para uma receita |\n" 
+                     "| 6) Voltar para o MENU                                |\n"  
                      "|======================================================|\n" 
                      "| Digite sua opcao: ";
  
@@ -207,7 +212,9 @@ void Interface::menuDespensa () {
 
             case 4: limparTela(); editarQuantidade(); break;
 
-            case 5: return;
+            case 5: limparTela(); verificarDisponibilidade(); break;
+
+            case 6: return;
 
             default:
                 std::cout << "| OPÇÃO INVÁLIDA. Pressione Enter para tentar novamente... ";
@@ -321,6 +328,12 @@ void Interface::cadastrarReceita () {
 
     Receita receita = Receita(nome, tempo, preparo, categoria, ingredientes);
     catalogo.adicionarReceita(receita);
+
+    std::cout << "| Avaliacao (1-5): ";
+    int avaliacao;
+    avaliacao = lerOpcao();
+
+    receita.avaliar(avaliacao);
             
 }
 
@@ -342,7 +355,8 @@ void Interface::exibirDetalhesReceita(const Receita& receita) {
 
     std::cout << "|======================================================|\n" 
               << " " << receita.getNome() << "\n"
-              << "|======================================================|\n" 
+              << "|======================================================|\n"
+              << "| Avaliacao: " << receita.getAvaliacao() << "/5\n"
               << "| Tempo de Preparo: " << receita.getTempo() << "min\n" 
               << "| Categoria: " << categoriaToString(receita.getCategoria()) << "\n" 
               << "| Ingredientes:\n";
@@ -400,7 +414,8 @@ void Interface::editarReceita() {
                   << "| 2) Alterar Tempo de Preparo\n"
                   << "| 3) Alterar Categoria\n"
                   << "| 4) Alterar Modo de Preparo\n"
-                  << "| 5) Salvar alteracoes\n"
+                  << "| 5) Alterar Avaliacao\n"
+                  << "| 6) Salvar alteracoes\n"
                   << "| 0) Cancelar edicao\n"
                   << "|======================================================|\n"
                   << "| Digite sua opcao: ";
@@ -451,7 +466,20 @@ void Interface::editarReceita() {
                 pausar();
                 break;
             }
+
             case 5: {
+                std::cout << "| Nova avaliacao (1-5): ";
+                int novaAvaliacao = lerOpcao();
+                if (receitaEditada.avaliar(novaAvaliacao)) {
+                    std::cout << "| Avaliacao da receita alterada!\n";
+                } else {
+                    std::cout << "| Avaliacao invalida (deve ser entre 1 e 5).\n";
+                }
+                pausar();
+                break;
+            }
+
+            case 6: {
                 // Salva definitivamente no catalogo
                 if (catalogo.atualizarReceita(indice, receitaEditada)) {
                     std::cout << "| Receita salva com sucesso!\n";
@@ -665,4 +693,35 @@ void Interface::filtrarPossiveisPorCategoria() {
         }
 
 
+}
+
+void Interface::avaliacao() {
+    std::cout << "|===================== AVALIACAO ===================|\n";
+    std::cout << "| Escolha a receita que deseja avaliar: ";
+    int indice = escolherReceita(catalogo.getReceitas());
+    if (indice == -1) {
+        return; // Usuário cancelou ou não há receitas
+    }
+}
+
+void Interface::verificarDisponibilidade() {
+    std::cout << "|================= DISPONIBILIDADE ===================|\n"
+              << "| Escolha a receita que deseja verificar a disponibilidade: ";
+    int indice = escolherReceita(catalogo.getReceitas());
+    if (indice == -1) {
+        return;
+    }
+    std::vector<Ingredientes> ingredientesFaltando = filtro.identificarIngredientesFaltando (catalogo.getReceitas()[indice], despensa);
+    if (filtro.compararIngredientes (catalogo.getReceitas()[indice], despensa)) {
+        std::cout << "| Todos os ingredientes estao disponiveis na despensa!\n"
+                  << "| Receita pode ser feita!\n";
+    }
+
+    else {
+        std::cout << "| Receita nao pode ser feita!\n"
+                  << "| Esses ingredientes estao em falta ou menor quantidade que a necessaria:\n";
+        for(auto i = ingredientesFaltando.begin(); i != ingredientesFaltando.end(); i++) {
+            std::cout << i->getNome() << "-" << i->getQuantidade() << " " << unidadeToString(i->getUnidade()) << std::endl;
+        }
+    }
 }

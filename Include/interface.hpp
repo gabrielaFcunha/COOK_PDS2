@@ -57,6 +57,9 @@ private:
     void exibirReceitasPossiveis();
     void filtrarPossiveisPorCategoria();
 
+    void avaliacao();
+    void verificarDisponibilidade()
+
 public:
     Interface();
     void menu();
