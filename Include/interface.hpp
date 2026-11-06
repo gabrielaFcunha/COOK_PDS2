@@ -58,7 +58,8 @@ private:
     void filtrarPossiveisPorCategoria();
 
     void avaliacao();
-    void verificarDisponibilidade()
+    void verificarDisponibilidade();
+    void filtrarAvaliacao();
 
 public:
     Interface();

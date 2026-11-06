@@ -24,7 +24,7 @@ const std::vector<Receita>& Catalogo::getReceitas() const{
 }
 
 bool Catalogo::removerReceita(const std::string& nome){
-    for (int i = 0; i < receitas.size(); i++) {
+    for (size_t i = 0; i < receitas.size(); i++) {
         if (paraMinusculas(receitas[i].getNome()) == paraMinusculas(nome)){
             receitas.erase(receitas.begin() + i);
             return true;

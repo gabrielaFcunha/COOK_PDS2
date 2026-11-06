@@ -149,7 +149,8 @@ void Interface::menuCatalogo () {
                      "| 5) Editar uma receita                                |\n"
                      "| 6) Remover uma receita                               |\n"
                      "| 7) Avaliar uma receita                               |\n"
-                     "| 8) Voltar para o MENU                                |\n"  
+                     "| 8) Filtrar por avaliacao                             |\n"
+                     "| 9) Voltar para o MENU                                |\n"  
                      "|======================================================|\n" 
                      "| Digite sua opcao: ";
  
@@ -170,7 +171,9 @@ void Interface::menuCatalogo () {
 
             case 7: limparTela(); avaliacao(); break;
 
-            case 8: return;
+            case 8: limparTela(); filtrarAvaliacao(); break;
+
+            case 9: return;
 
             default:
                 std::cout << "| OPCAO INVALIDA. Pressione Enter para tentar novamente... ";
@@ -327,14 +330,20 @@ void Interface::cadastrarReceita () {
     }
 
     Receita receita = Receita(nome, tempo, preparo, categoria, ingredientes);
-    catalogo.adicionarReceita(receita);
-
+    
     std::cout << "| Avaliacao (1-5): ";
     int avaliacao;
     avaliacao = lerOpcao();
 
-    receita.avaliar(avaliacao);
-            
+    if (receita.avaliar(avaliacao)) {
+        std::cout << "| Receita salva com sucesso!\n";
+    } else {
+        std::cout << "| Avaliacao invalida (deve ser entre 1 e 5).\n";
+    }
+
+    catalogo.adicionarReceita(receita);
+    
+    pausar();
 }
 
 void Interface::imprimirListaReceitas(const std::vector<Receita>& receitas) {
@@ -375,16 +384,23 @@ void Interface::exibirDetalhesReceita(const Receita& receita) {
 }
 
 void Interface::procurarReceita() {
-    std::cout << "|============== DIGITE O NOME DA RECEITA ==============|\n"
-              << "| Pesquisar: "; 
-    std::string nome;
-    std::getline(std::cin, nome); 
     std::vector<Receita> receitasEncontradas;
-    const Receita* encontrada = catalogo.pesquisarPorNome(nome);
-    if (encontrada != nullptr) {
-        receitasEncontradas.push_back(*encontrada);
+    while(true) {
+        std::cout << "|============== DIGITE O NOME DA RECEITA ==============|\n"
+                  << "| Pesquisar: "; 
+        std::string nome;
+        std::getline(std::cin, nome); 
+        const Receita* encontrada = catalogo.pesquisarPorNome(nome);
+        if (encontrada != nullptr) {
+            receitasEncontradas.push_back(*encontrada);
+            break;
+        } else {
+            std::cout << "| RESULTADOS DA PESQUISA\n"
+                      << "| Nenhuma pesquisa com esse nome... Tente novamente\n"; 
+        }
     }
-    exibirLista ("RESULTADOS DA PESQUISA", receitasEncontradas);         
+        exibirLista ("RESULTADOS DA PESQUISA", receitasEncontradas);
+        pausar();
 }
 
 void Interface::filtrarReceitaPorCategoria() {
@@ -521,14 +537,20 @@ void Interface::excluirReceita() {
 //FUNCOES DO DESPENSA
 void Interface::filtrarIngredientePorReceita() {
     int indice = escolherReceita(catalogo.getReceitas());
+    if (indice == -1) {
+        return; // Usuário cancelou ou não há receitas
+    }
+
     const Receita& receita = catalogo.getReceitas()[indice];
     std::cout << "|=============== INGREDIENTES DA RECEITA ==============|\n";
     std::vector <Ingredientes> ingReceita = receita.getIngredientes();
     for(auto i = ingReceita.begin(); i != ingReceita.end(); i++) {
-        std::cout << i->getNome() << "-" << i->getQuantidade() << " " << unidadeToString(i->getUnidade()) << std::endl;
+        std::cout << i->getNome() << " - " << i->getQuantidade() << " " << unidadeToString(i->getUnidade()) << std::endl;
     }
+    std::cout << "|======================================================|\n";
     pausar();
 }
+
 
 float Interface::lerQuantidade() {
     float quantidade;
@@ -700,16 +722,29 @@ void Interface::filtrarPossiveisPorCategoria() {
 
 void Interface::avaliacao() {
     std::cout << "|===================== AVALIACAO ===================|\n";
-    std::cout << "| Escolha a receita que deseja avaliar: ";
     int indice = escolherReceita(catalogo.getReceitas());
     if (indice == -1) {
         return; // Usuário cancelou ou não há receitas
     }
+
+    // Faz uma cópia para editar, avalia e atualiza no catálogo
+    Receita receitaEditada = catalogo.getReceitas()[indice];
+    
+    std::cout << "| Digite a nova avaliacao (1-5): ";
+    int novaAvaliacao = lerOpcao();
+
+    if (receitaEditada.avaliar(novaAvaliacao)) {
+        catalogo.atualizarReceita(indice, receitaEditada);
+        std::cout << "| Avaliacao salva com sucesso!\n";
+    } else {
+        std::cout << "| Avaliacao invalida (deve ser entre 1 e 5).\n";
+    }
+    pausar();
 }
 
 void Interface::verificarDisponibilidade() {
     std::cout << "|================= DISPONIBILIDADE ===================|\n"
-              << "| Escolha a receita que deseja verificar a disponibilidade: ";
+              << "| Escolha a receita que deseja verificar a disponibilidade:\n";
     int indice = escolherReceita(catalogo.getReceitas());
     if (indice == -1) {
         return;
@@ -718,13 +753,18 @@ void Interface::verificarDisponibilidade() {
     if (filtro.compararIngredientes (catalogo.getReceitas()[indice], despensa)) {
         std::cout << "| Todos os ingredientes estao disponiveis na despensa!\n"
                   << "| Receita pode ser feita!\n";
-    }
-
-    else {
+    } else {
         std::cout << "| Receita nao pode ser feita!\n"
                   << "| Esses ingredientes estao em falta ou menor quantidade que a necessaria:\n";
         for(auto i = ingredientesFaltando.begin(); i != ingredientesFaltando.end(); i++) {
-            std::cout << i->getNome() << "-" << i->getQuantidade() << " " << unidadeToString(i->getUnidade()) << std::endl;
+            std::cout << "| " << i->getNome() << "-" << i->getQuantidade() << " " << unidadeToString(i->getUnidade()) << std::endl;
         }
     }
+    pausar();
+}
+
+//FALTA FAZER ESSA
+void Interface::filtrarAvaliacao() {
+    std::cout << "A ser implementado";
+    pausar();
 }
