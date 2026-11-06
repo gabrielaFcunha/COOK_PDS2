@@ -1,6 +1,5 @@
 #include "catalogo.hpp"
 #include "categoria.hpp"
-#include <algorithm>
 #include "texto.hpp"
 #include <fstream>
 #include <sstream>
@@ -56,22 +55,33 @@ const Receita* Catalogo::pesquisarPorNome(const std::string& nome) const {
 
 std::vector<Receita> Catalogo::ordenar(CriterioOrdenacao criterio) const{
     std::vector<Receita> resultado = receitas;
-    std::sort(resultado.begin(), resultado.end(), [criterio](const Receita& a, const Receita& b){
-        if ((criterio) == CriterioOrdenacao::NOME){
-            return tirarAcentosParaOrdenar(a.getNome()) < tirarAcentosParaOrdenar(b.getNome());
-        }
-        if (criterio == CriterioOrdenacao::TEMPO_PREPARO){
-            return a.getTempo() < b.getTempo();
-        }
-        if (criterio == CriterioOrdenacao::CATEGORIA){
-            if(a.getCategoria() == b.getCategoria()){
-                return tirarAcentosParaOrdenar(a.getNome()) < tirarAcentosParaOrdenar(b.getNome());
-            }else{
-                return a.getCategoria() < b.getCategoria();
+     for (size_t i = 0; i < resultado.size(); i++) {
+        for (size_t j = 0; j + 1 < resultado.size() - i; j++) {
+            const Receita& a = resultado[j];
+            const Receita& b = resultado[j + 1];
+            bool trocar = false;   // true se b deve vir antes de a
+
+            if (criterio == CriterioOrdenacao::NOME) {
+                trocar = paraMinusculas(b.getNome()) < paraMinusculas(a.getNome());
+            }
+            if (criterio == CriterioOrdenacao::TEMPO_PREPARO) {
+                trocar = b.getTempo() < a.getTempo();
+            }
+            if (criterio == CriterioOrdenacao::CATEGORIA) {
+                if (a.getCategoria() == b.getCategoria()) {
+                    trocar = paraMinusculas(b.getNome()) < paraMinusculas(a.getNome());
+                } else {
+                    trocar = b.getCategoria() < a.getCategoria();
+                }
+            }
+
+            if (trocar) {
+                Receita temp = resultado[j];
+                resultado[j] = resultado[j + 1];
+                resultado[j + 1] = temp;
             }
         }
-        return false;
-    });
+    }
     return resultado;
 }
 
