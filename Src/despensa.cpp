@@ -15,6 +15,7 @@
 #include <iostream>
 #include <fstream>
 #include <list>
+#include <stdexcept>
 
 bool Despensa::possuiIngrediente(const std::string& nome) const{
 /**
@@ -37,7 +38,11 @@ bool Despensa::adicionarIngrediente(const Ingredientes& ingrediente) {
     if(possuiIngrediente(ingrediente.getNome())) {
         return false; // Ingrediente já existe na despensa
     }
-    ingredientes.push_back(ingrediente);
+    try{
+        ingredientes.push_back(ingrediente);
+    }catch(const std::exception& e){
+        std::cout << "\n Erro ao cadastrar ingrediente: " << e.what() << "\n";
+    }
 
     return true;
 }
@@ -147,17 +152,21 @@ bool Despensa::carregarDeArquivo() {
         if(!std::getline(arquivo, unidadeTexto)) {
             break; // Falha ao ler a unidade
         }
-        float quantidade = std::stof(quantidadeTexto);
-        Unidade unidade;
+        try{
+           float quantidade = std::stof(quantidadeTexto);
+            Unidade unidade;
 
-        if(converterUnidade(quantidade, unidadeTexto, unidade)) {
-            Ingredientes ingrediente(nome, quantidade, unidade);
-
-            if(!possuiIngrediente(nome)) {
-                ingredientes.push_back(ingrediente);
-            }
-        
+            if(converterUnidade(quantidade, unidadeTexto, unidade)) {
+                Ingredientes ingrediente(nome, quantidade, unidade);
+                if(!possuiIngrediente(nome)) {
+                    ingredientes.push_back(ingrediente);
+                }
+            } 
+        }catch(const std::exception& e){
+            std::cout << "\n Erro ao cadastrar ingrediente: " << e.what() << "\n";
+            std::cout << " Tente cadastrar novamente.\n";
         }
+        
     }
     arquivo.close();
     return true;
