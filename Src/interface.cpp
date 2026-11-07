@@ -396,7 +396,15 @@ void Interface::procurarReceita() {
             break;
         } else {
             std::cout << "| RESULTADOS DA PESQUISA\n"
-                      << "| Nenhuma pesquisa com esse nome... Tente novamente\n"; 
+                      << "| Nenhuma pesquisa com esse nome...\n"
+                      << "| Digite 1 para tentar novamente\n"
+                      << "| ou Digite 0 para voltar para CATALOGO\n"
+                      << "|======================================================|\n" 
+                      << "| Digite sua opcao: ";
+ 
+            int opcao = lerOpcao();
+            if (opcao == 0) return; 
+            if (opcao == 1) continue; 
         }
     }
         exibirLista ("RESULTADOS DA PESQUISA", receitasEncontradas);
