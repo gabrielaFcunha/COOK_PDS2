@@ -763,8 +763,26 @@ void Interface::verificarDisponibilidade() {
     pausar();
 }
 
-//FALTA FAZER ESSA
 void Interface::filtrarAvaliacao() {
-    std::cout << "A ser implementado";
+    std::cout << "|====================== AVALIACOES ====================|\n";
+    int avaliacao;
+
+    while (true) {
+        std::cout << "| Notas: | 1 | 2 | 3 | 4 | 5 |\n"
+                     "| Digite sua opcao: ";
+
+        int opcao = lerOpcao();
+
+        if (opcao >= 1 && opcao <= 5) {
+            avaliacao = opcao;
+            break;
+        } else {
+            std::cout << " Opcao invalida.\n";
+        }
+    }
+
+    std::vector <Receita> receitas = filtro.filtrarPorAvaliacao(catalogo, avaliacao);
+    imprimirListaReceitas(receitas);
+
     pausar();
 }
