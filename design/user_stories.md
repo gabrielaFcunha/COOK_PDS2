@@ -55,5 +55,5 @@ Como usuário, quero editar ou excluir receitas cadastradas para manter o catál
 ## Descrição: 
 Como usuário, quero avaliar receitas cadastradas com base no quanto gosto delas.
 ### Critérios de aceitação:
-* Permitir avaliar de 0 a 3 estrelas.
-* Permitir visualizar apenas as receitas bem avaliadas.
+* Permitir avaliar de 0 a 5 estrelas.
+* Permitir visualizar de acordo com a avaliação.
