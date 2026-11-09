@@ -1,0 +1,19 @@
+[
+  {
+    "name": "Despensa",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Armazenar os ingredientes que um usuário tem em casa",
+      "Adicionar ingredientes à despensa",
+      "Remover ingredientes da despensa",
+      "Comparar a despensa com os ingredientes da receita",
+      "Consultar os ingredientes disponíveis"
+    ],
+    "collaborators": [
+      "Ingrediente",
+      "Filtro"
+    ]
+  }
+]
