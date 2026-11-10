@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <algorithm>
+
 Catalogo::Catalogo(){
 }
 /**
@@ -33,19 +33,33 @@ const std::vector<Receita>& Catalogo::getReceitas() const{
  */
 bool Catalogo::removerReceita(const std::string& nome){
     for (size_t i = 0; i < receitas.size(); i++) {
-        if (paraMinusculas(receitas[i].getNome()) == paraMinusculas(nome)){
+        if (tirarAcentosParaOrdenar(receitas[i].getNome()) == tirarAcentosParaOrdenar(nome)){
             receitas.erase(receitas.begin() + i);
             return true;
         }
     }
     return false;
 }
-
+/**
+ * @brief pesquisa receitas no catálogo com base no nome da receita.
+ * @param nome nome a ser comparado para a busca; pode ser só uma parte.
+ * @return const Receita*: ponteiro para a receita encontrada, ou nullptr se não for encontrada.
+ */
 const Receita* Catalogo::pesquisarPorNome(const std::string& nome) const {
     std::string nomeBusca = tirarAcentosParaOrdenar(nome);
     for (size_t i = 0; i < receitas.size(); i++) {
-        if (tirarAcentosParaOrdenar(receitas[i].getNome()) == nomeBusca) {
-            return &receitas[i];
+        std::string nomeReceita = tirarAcentosParaOrdenar(receitas[i].getNome());
+        for (size_t p = 0; p + nomeBusca.size() <= nomeReceita.size(); p++) {
+            bool achou = true;
+            for (size_t j = 0; j < nomeBusca.size(); j++) {
+                if (nomeReceita[p + j] != nomeBusca[j]) {
+                    achou = false;
+                    break;
+                }
+            }
+            if (achou) {
+                return &receitas[i];
+            }
         }
     }
     return nullptr;
@@ -57,22 +71,34 @@ const Receita* Catalogo::pesquisarPorNome(const std::string& nome) const {
  */
 std::vector<Receita> Catalogo::ordenar(CriterioOrdenacao criterio) const{
     std::vector<Receita> resultado = receitas;
-    std::sort(resultado.begin(), resultado.end(), [criterio](const Receita& a, const Receita& b){
-        if ((criterio) == CriterioOrdenacao::NOME){
-            return paraMinusculas(a.getNome()) < paraMinusculas(b.getNome());
-        }
-        if (criterio == CriterioOrdenacao::TEMPO_PREPARO){
-            return a.getTempo() < b.getTempo();
-        }
-        if (criterio == CriterioOrdenacao::CATEGORIA){
-            if(a.getCategoria() == b.getCategoria()){
-                return paraMinusculas(a.getNome()) < paraMinusculas(b.getNome());
-            }else{
-                return a.getCategoria() < b.getCategoria();
+
+    for (size_t i = 0; i < resultado.size(); i++) {
+        for (size_t j = 0; j + 1 < resultado.size() - i; j++) {
+            const Receita& a = resultado[j];
+            const Receita& b = resultado[j + 1];
+            bool trocar = false;
+
+            if (criterio == CriterioOrdenacao::NOME) {
+                trocar = tirarAcentosParaOrdenar(b.getNome()) < tirarAcentosParaOrdenar(a.getNome());
+            }
+            if (criterio == CriterioOrdenacao::TEMPO_PREPARO) {
+                trocar = b.getTempo() < a.getTempo();
+            }
+            if (criterio == CriterioOrdenacao::CATEGORIA) {
+                if (a.getCategoria() == b.getCategoria()) {
+                    trocar = tirarAcentosParaOrdenar(b.getNome()) < tirarAcentosParaOrdenar(a.getNome());
+                } else {
+                    trocar = b.getCategoria() < a.getCategoria();
+                }
+            }
+
+            if (trocar) {
+                Receita temp = resultado[j];
+                resultado[j] = resultado[j + 1];
+                resultado[j + 1] = temp;
             }
         }
-        return false;
-    });
+    }
     return resultado;
 }
 
