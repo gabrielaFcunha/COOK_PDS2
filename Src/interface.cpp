@@ -390,9 +390,12 @@ void Interface::procurarReceita() {
                   << "| Pesquisar: "; 
         std::string nome;
         std::getline(std::cin, nome); 
-        const Receita* encontrada = catalogo.pesquisarPorNome(nome);
-        if (encontrada != nullptr) {
-            receitasEncontradas.push_back(*encontrada);
+        auto encontradas = catalogo.pesquisarPorNome(nome);
+
+        if (!encontradas.empty()) {
+            for (size_t i = 0; i < encontradas.size(); i++) {
+                receitasEncontradas.push_back(*encontradas[i]);
+            }
             break;
         } else {
             std::cout << "| RESULTADOS DA PESQUISA\n"
