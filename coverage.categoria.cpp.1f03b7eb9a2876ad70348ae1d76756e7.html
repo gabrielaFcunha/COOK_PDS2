@@ -27,7 +27,7 @@
     </tr>
     <tr>
       <th scope="row">Date:</th>
-      <td>2026-11-10 10:08:05</td>
+      <td>2026-11-10 10:36:54</td>
     </tr>
   </table>
 </div>
@@ -41,21 +41,21 @@
     </tr>
     <tr>
       <th scope="row">Lines:</th>
-      <td>0</td>
+      <td>6</td>
       <td>25</td>
-      <td class="coverage-none">0.0%</td>
+      <td class="coverage-low">24.0%</td>
     </tr>
     <tr>
       <th scope="row">Functions:</th>
-      <td>0</td>
+      <td>1</td>
       <td>2</td>
-      <td class="coverage-none">0.0%</td>
+      <td class="coverage-low">50.0%</td>
     </tr>
     <tr>
       <th scope="row">Branches:</th>
-      <td>0</td>
+      <td>4</td>
       <td>28</td>
-      <td class="coverage-none">0.0%</td>
+      <td class="coverage-low">14.3%</td>
     </tr>
   </table>
 </div>
@@ -73,7 +73,7 @@
       <th>Call count</th>
       <th>Block coverage</th>
     </tr>
-    <tr><td><a href="#l3">categoriaToString[abi:cxx11](Categoria) (line 3)</a></td><td>not called</td><td>0.0%</td></tr>
+    <tr><td><a href="#l3">categoriaToString[abi:cxx11](Categoria) (line 3)</a></td><td>called 43 times, returned 43 times</td><td>26.0%</td></tr>
     <tr><td><a href="#l24">stringToCategoria(std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;) (line 24)</a></td><td>not called</td><td>0.0%</td></tr>
   </table>
 </details>
@@ -107,29 +107,47 @@
       <td class="lineno"><a id="l3" href="#l3">3</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount uncoveredLine">&cross;</td>
-      <td class="src uncoveredLine"><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">categoriaToString</span><span class="p">(</span><span class="n">Categoria</span><span class="w"> </span><span class="n">categoria</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></td>
+      <td class="linecount coveredLine">43</td>
+      <td class="src coveredLine"><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">categoriaToString</span><span class="p">(</span><span class="n">Categoria</span><span class="w"> </span><span class="n">categoria</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l4" href="#l4">4</a></td>
       <td class="linebranch">
+        <details class="linebranchDetails">
+        <summary class="linebranchSummary">2/6</summary>
+        <div class="linebranchContents">
+          <div class="takenBranch">&check; Branch 0 taken 3 times.</div>
+          <div class="notTakenBranch">&cross; Branch 1 not taken.</div>
+          <div class="takenBranch">&check; Branch 2 taken 40 times.</div>
+          <div class="notTakenBranch">&cross; Branch 3 not taken.</div>
+          <div class="notTakenBranch">&cross; Branch 4 not taken.</div>
+          <div class="notTakenBranch">&cross; Branch 5 not taken.</div>
+        </div>
+        </details>
       </td>
-      <td class="linecount uncoveredLine">&cross;</td>
-      <td class="src uncoveredLine"><span class="w">    </span><span class="k">switch</span><span class="p">(</span><span class="n">categoria</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></td>
+      <td class="linecount partialCoveredLine">43</td>
+      <td class="src partialCoveredLine"><span class="w">    </span><span class="k">switch</span><span class="p">(</span><span class="n">categoria</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l5" href="#l5">5</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount uncoveredLine">&cross;</td>
-      <td class="src uncoveredLine"><span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">Categoria</span><span class="o">::</span><span class="no">Entrada</span><span class="p">:</span></td>
+      <td class="linecount coveredLine">3</td>
+      <td class="src coveredLine"><span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">Categoria</span><span class="o">::</span><span class="no">Entrada</span><span class="p">:</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l6" href="#l6">6</a></td>
       <td class="linebranch">
+        <details class="linebranchDetails">
+        <summary class="linebranchSummary">1/2</summary>
+        <div class="linebranchContents">
+          <div class="takenBranch">&check; Branch 1 taken 3 times.</div>
+          <div class="notTakenBranch">&cross; Branch 2 not taken.</div>
+        </div>
+        </details>
       </td>
-      <td class="linecount uncoveredLine">&cross;</td>
-      <td class="src uncoveredLine"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Entrada&quot;</span><span class="p">;</span></td>
+      <td class="linecount partialCoveredLine">6</td>
+      <td class="src partialCoveredLine"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Entrada&quot;</span><span class="p">;</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l7" href="#l7">7</a></td>
@@ -163,15 +181,22 @@
       <td class="lineno"><a id="l11" href="#l11">11</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount uncoveredLine">&cross;</td>
-      <td class="src uncoveredLine"><span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">Categoria</span><span class="o">::</span><span class="no">Sobremesa</span><span class="p">:</span></td>
+      <td class="linecount coveredLine">40</td>
+      <td class="src coveredLine"><span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">Categoria</span><span class="o">::</span><span class="no">Sobremesa</span><span class="p">:</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l12" href="#l12">12</a></td>
       <td class="linebranch">
+        <details class="linebranchDetails">
+        <summary class="linebranchSummary">1/2</summary>
+        <div class="linebranchContents">
+          <div class="takenBranch">&check; Branch 1 taken 40 times.</div>
+          <div class="notTakenBranch">&cross; Branch 2 not taken.</div>
+        </div>
+        </details>
       </td>
-      <td class="linecount uncoveredLine">&cross;</td>
-      <td class="src uncoveredLine"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Sobremesa&quot;</span><span class="p">;</span></td>
+      <td class="linecount partialCoveredLine">80</td>
+      <td class="src partialCoveredLine"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Sobremesa&quot;</span><span class="p">;</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l13" href="#l13">13</a></td>
