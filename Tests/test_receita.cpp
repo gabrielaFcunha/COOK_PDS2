@@ -238,3 +238,48 @@ TEST_CASE("Teste 15 - Avaliar uma receita"){
     CHECK(avaliou == false);
     CHECK(receita.getAvaliacao() == 4); // Avaliação não deve mudar
 }
+
+TEST_CASE("Teste 16 - Alterar tempo de preparo") {
+    Receita receita("Salada", 15, "Misture os ingredientes.", Categoria::Entrada);
+
+    CHECK(receita.setTempo(30));
+    CHECK(receita.getTempo() == 30);
+}
+
+TEST_CASE("Teste 17 - Alterar modo de preparo") {
+    Receita receita("Salada", 15, "Misture os ingredientes.", Categoria::Entrada);
+
+    CHECK(receita.setModo("Cortar e misturar."));
+    CHECK(receita.getModo() == "Cortar e misturar.");
+}
+
+TEST_CASE("Teste 18 - Alterar categoria") {
+    Receita receita("Salada", 15, "Misture os ingredientes.", Categoria::Entrada);
+
+    receita.setCategoria(Categoria::Sobremesa);
+
+    CHECK(receita.getCategoria() == Categoria::Sobremesa);
+}
+
+TEST_CASE("Teste 19 - Editar ingrediente existente") {
+    Receita receita("Salada", 15, "Misture os ingredientes.", Categoria::Entrada);
+
+    receita.adicionarIngrediente(
+        Ingredientes("Tomate", 2, Unidade::Unidade)
+    );
+
+    CHECK(receita.editarIngrediente("Tomate", 500, Unidade::Grama));
+
+    CHECK(receita.getIngredientes()[0].getQuantidade() == doctest::Approx(500));
+    CHECK(receita.getIngredientes()[0].getUnidade() == Unidade::Grama);
+}
+
+TEST_CASE("Teste 20 - Editar ingrediente inexistente") {
+    Receita receita("Salada", 15, "Misture os ingredientes.", Categoria::Entrada);
+
+    receita.adicionarIngrediente(
+        Ingredientes("Tomate", 2, Unidade::Unidade)
+    );
+
+    CHECK_FALSE(receita.editarIngrediente("Batata", 3, Unidade::Unidade));
+}

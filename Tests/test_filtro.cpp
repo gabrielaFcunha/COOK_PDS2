@@ -586,3 +586,136 @@ TEST_CASE("Teste 50 - Nomes com espaços nas pontas"){
     auto resultado = filtro.compararIngredientes(receita1, despensa);
     CHECK(resultado == true); // Ingrediente está presente mesmo com espaços nas pontas
 }
+
+TEST_CASE("Teste 51 - Filtrar receitas por avaliacao") {
+    Filtro filtro;
+    Catalogo catalogo;
+
+    Receita receita1("Bolo", 60, "Assar", Categoria::Sobremesa);
+    Receita receita2("Salada", 15, "Misturar", Categoria::Entrada);
+    Receita receita3("Brigadeiro", 30, "Mexer", Categoria::Sobremesa);
+
+    receita1.avaliar(5);
+    receita2.avaliar(3);
+    receita3.avaliar(5);
+
+    catalogo.adicionarReceita(receita1);
+    catalogo.adicionarReceita(receita2);
+    catalogo.adicionarReceita(receita3);
+
+    auto resultado = filtro.filtrarPorAvaliacao(catalogo, 5);
+
+    REQUIRE(resultado.size() == 2);
+    CHECK(resultado[0].getNome() == "Bolo");
+    CHECK(resultado[1].getNome() == "Brigadeiro");
+}
+
+TEST_CASE("Teste 52 - Filtrar por avaliacao ordena alfabeticamente") {
+    Filtro filtro;
+    Catalogo catalogo;
+
+    Receita receita1("Zebra", 30, "Preparo", Categoria::Sobremesa);
+    Receita receita2("Abacaxi", 20, "Preparo", Categoria::Sobremesa);
+    Receita receita3("Morango", 15, "Preparo", Categoria::Sobremesa);
+
+    receita1.avaliar(4);
+    receita2.avaliar(4);
+    receita3.avaliar(4);
+
+    catalogo.adicionarReceita(receita1);
+    catalogo.adicionarReceita(receita2);
+    catalogo.adicionarReceita(receita3);
+
+    auto resultado = filtro.filtrarPorAvaliacao(catalogo, 4);
+
+    REQUIRE(resultado.size() == 3);
+    CHECK(resultado[0].getNome() == "Abacaxi");
+    CHECK(resultado[1].getNome() == "Morango");
+    CHECK(resultado[2].getNome() == "Zebra");
+}
+
+TEST_CASE("Teste 53 - Filtrar por avaliacao sem resultados") {
+    Filtro filtro;
+    Catalogo catalogo;
+
+    Receita receita("Bolo", 60, "Assar", Categoria::Sobremesa);
+    receita.avaliar(3);
+
+    catalogo.adicionarReceita(receita);
+
+    auto resultado = filtro.filtrarPorAvaliacao(catalogo, 5);
+
+    CHECK(resultado.empty());
+}
+
+TEST_CASE("Teste 54 - Filtrar por categoria exige reordenacao") {
+    Filtro filtro;
+    Catalogo catalogo;
+
+    catalogo.adicionarReceita(
+        Receita("Zebra", 30, "Preparo", Categoria::Sobremesa)
+    );
+
+    catalogo.adicionarReceita(
+        Receita("Abacaxi", 20, "Preparo", Categoria::Sobremesa)
+    );
+
+    catalogo.adicionarReceita(
+        Receita("Morango", 15, "Preparo", Categoria::Sobremesa)
+    );
+
+    auto resultado = filtro.filtrarPorCategoria(
+        catalogo,
+        Categoria::Sobremesa
+    );
+
+    REQUIRE(resultado.size() == 3);
+    CHECK(resultado[0].getNome() == "Abacaxi");
+    CHECK(resultado[1].getNome() == "Morango");
+    CHECK(resultado[2].getNome() == "Zebra");
+}
+
+TEST_CASE("Teste 55 - Buscar receitas que podem ser preparadas") {
+    Filtro filtro;
+    Catalogo catalogo;
+    Despensa despensa;
+
+    Receita receita1("Bolo", 60, "Assar", Categoria::Sobremesa);
+    receita1.adicionarIngrediente(
+        Ingredientes("Farinha", 200, Unidade::Grama)
+    );
+
+    Receita receita2("Salada", 15, "Misturar", Categoria::Entrada);
+    receita2.adicionarIngrediente(
+        Ingredientes("Tomate", 2, Unidade::Unidade)
+    );
+
+    catalogo.adicionarReceita(receita1);
+    catalogo.adicionarReceita(receita2);
+
+    despensa.adicionarIngrediente(
+        Ingredientes("Farinha", 300, Unidade::Grama)
+    );
+
+    auto resultado = filtro.buscarReceitas(catalogo, despensa);
+
+    REQUIRE(resultado.size() == 1);
+    CHECK(resultado[0].getNome() == "Bolo");
+}
+
+TEST_CASE("Teste 56 - Nenhuma receita pode ser preparada") {
+    Filtro filtro;
+    Catalogo catalogo;
+    Despensa despensa;
+
+    Receita receita("Bolo", 60, "Assar", Categoria::Sobremesa);
+    receita.adicionarIngrediente(
+        Ingredientes("Farinha", 200, Unidade::Grama)
+    );
+
+    catalogo.adicionarReceita(receita);
+
+    auto resultado = filtro.buscarReceitas(catalogo, despensa);
+
+    CHECK(resultado.empty());
+}
