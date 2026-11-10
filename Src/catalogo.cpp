@@ -7,7 +7,11 @@
 #include <algorithm>
 Catalogo::Catalogo(){
 }
-
+/**
+ * @brief Adiciona uma receita ao catálogo.
+ * @param receita A receita a ser adicionada.
+ * @return true se a receita foi adicionada com sucesso, false se já existe uma receita com o mesmo nome.
+ */
 bool Catalogo::adicionarReceita(const Receita& receita){
     // Checa se já existe receita de mesmo nome
     for (const auto& r : receitas) {
@@ -22,7 +26,11 @@ bool Catalogo::adicionarReceita(const Receita& receita){
 const std::vector<Receita>& Catalogo::getReceitas() const{
     return receitas;
 }
-
+/**
+ * @brief remove uma receita do catálogo com base no nome da receita.
+ * @param nome nome da receita a ser removida.
+ * @return true se a receita foi encontrada e removida com sucesso, false caso contrário.
+ */
 bool Catalogo::removerReceita(const std::string& nome){
     for (size_t i = 0; i < receitas.size(); i++) {
         if (paraMinusculas(receitas[i].getNome()) == paraMinusculas(nome)){
@@ -33,17 +41,6 @@ bool Catalogo::removerReceita(const std::string& nome){
     return false;
 }
 
-/*
-std::vector<Receita> Catalogo::pesquisarPorNome(const std::string& nome) const{
-    std::vector<Receita> resultado;
-    for (int i = 0; i < receitas.size(); i++) {
-        if (paraMinusculas(receitas[i].getNome()).find(paraMinusculas(nome)) != std::string::npos) { //vê se a busca por nome dentro do nome da receita não deu ‘não encontrado’
-            resultado.push_back(receitas[i]);
-        }
-    }
-    return resultado;
-}
-*/
 const Receita* Catalogo::pesquisarPorNome(const std::string& nome) const {
     std::string nomeBusca = tirarAcentosParaOrdenar(nome);
     for (size_t i = 0; i < receitas.size(); i++) {
@@ -53,7 +50,11 @@ const Receita* Catalogo::pesquisarPorNome(const std::string& nome) const {
     }
     return nullptr;
 }
-
+/**
+ * @brief Ordena as receitas do catálogo com base em um critério de ordenação especificado.
+ * @param criterio critério escolhido pelo usuário para ordenar as receitas.
+ * @return std::vector<Receita> vetor ordenado de acordo com o critério escolhido.
+ */
 std::vector<Receita> Catalogo::ordenar(CriterioOrdenacao criterio) const{
     std::vector<Receita> resultado = receitas;
     std::sort(resultado.begin(), resultado.end(), [criterio](const Receita& a, const Receita& b){
@@ -106,7 +107,13 @@ bool Catalogo::salvarEmArquivo() const {
     arquivo.close();
     return true;
 }
-
+/**
+ * @brief Carrega as receitas do usuário a partir de um arquivo
+ * @param nomeArquivo nome do arquivo de onde as receitas serão carregadas
+ * @return true se as receitas foram carregadas com sucesso, false caso contrário
+ * @note used: std::ifstream da biblioteca <fstream> para abrir e ler o arquivo
+ * @note "receitas.txt" é o nome do arquivo de onde as receitas serão carregadas
+ */
 bool Catalogo::carregarDeArquivo() {
     std::ifstream arquivo("receitas.txt");
     if(!arquivo.is_open()) {
@@ -161,7 +168,12 @@ bool Catalogo::carregarDeArquivo() {
     arquivo.close();
     return true;
 }
-
+/**
+ * @brief Atualiza uma receita no catálogo com base no índice fornecido.
+ * @param index índice da receita a ser atualizada.
+ * @param receitaModificada a nova receita que substituirá a existente.
+ * @return true se a receita foi atualizada com sucesso, false se o índice for inválido.
+ */
 bool Catalogo::atualizarReceita(size_t index, const Receita& receitaModificada) {
     if (index >= receitas.size()) {
         return false; // Índice inválido
