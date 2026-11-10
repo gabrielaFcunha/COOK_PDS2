@@ -1,0 +1,2 @@
+Bolo de Laranja;100;Coloque duas laranjas descascadas no liquidificador com os ovos. Depois junte com os ingredientes secos. Coloque para assar.;Sobremesa;4;4;farinha;200;g;ovo;2;un;laranja;2;un;fermento;20;g
+Ratatouille;120;legumes cortados no forno;PratoPrincipal;3;1;tomate;3;un

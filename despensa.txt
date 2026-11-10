@@ -1,0 +1,4 @@
+laranja;4;un
+ovo;4;un
+farinha;700;g
+fermento;50;g

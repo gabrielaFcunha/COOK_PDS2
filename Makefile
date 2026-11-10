@@ -1,36 +1,22 @@
-# =====================================================================
-# Makefile do COOK++
-#
-#   make                    -> compila o programa (gera ./receitas)
-#   make run                -> compila e executa o programa
-#   make tests-all          -> compila e roda TODOS os testes
-#   make test-ingredientes  -> compila e roda so tests/test_ingredientes.cpp
-#                              (o que vem depois de "test-" e o nome do
-#                               arquivo de teste, sem "test_" e sem ".cpp")
-#   make clean              -> apaga tudo que foi gerado
-#
-# =====================================================================
-CXX := g++
+CXX = g++
+CXXFLAGS = -std=c++11 -Wall -Wextra -I. -IInclude
+TARGET = cook_app
 
-# -MMD -MP: o compilador gera um arquivo .d com a lista de headers de cada
-#           .cpp, para o make saber o que recompilar quando um .hpp mudar.
-CXXFLAGS := -std=c++17 -Wall -Wextra -Iinclude -Ithird_party -MMD -MP
-SRC_DIR := src
-TEST_DIR := tests
-BUILD_DIR := build
+SRC = Src/main.cpp \
+      Src/interface.cpp \
+      Src/catalogo.cpp \
+      Src/despensa.cpp \
+      Src/receita.cpp \
+      Src/ingredientes.cpp \
+      Src/filtro.cpp \
+      Src/texto.cpp \
+      Src/unidade.cpp \
+      Src/categoria.cpp
 
+all: $(TARGET)
 
-APP_SRC = $(filter-out src/main.cpp,$(SRC))
-
-APP := receitas
-TEST := $(BUILD_DIR)/testes
-
-# --- Arquivos do programa ---------------------------------------------
-# A main fica separada: os testes tem a main deles (tests/main.cpp) e
-# reaproveitam todo o resto do programa.
-APP_SRC  := $(filter-out $(SRC_DIR)/main.cpp,$(wildcard $(SRC_DIR)/*.cpp))
-APP_OBJ  := $(APP_SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
-MAIN_OBJ := $(BUILD_DIR)/main.o
+$(TARGET): $(SRC)
+	$(CXX) $(CXXFLAGS) $(SRC) -o $(TARGET)
 
 # --- Arquivos dos testes ----------------------------------------------
 TEST_SRC      := $(wildcard $(TEST_DIR)/test_*.cpp)
@@ -75,7 +61,4 @@ $(TEST_OBJ) $(TEST_MAIN_OBJ): $(BUILD_DIR)/tests/%.o: $(TEST_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
  
 clean:
-	rm -rf $(BUILD_DIR) $(APP)
- 
-# Inclui as dependencias de headers geradas pelo compilador (se existirem)
--include $(DEPS)
+	rm -f $(TARGET)

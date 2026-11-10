@@ -8,7 +8,7 @@
  * @author Gabriela Fialho Cunha
  * @date 16-10-2026
  */
-
+#include "texto.hpp"
 #include "ingredientes.hpp"
 #include <stdexcept>
 
@@ -19,7 +19,7 @@ Ingredientes::Ingredientes()
 
 Ingredientes::Ingredientes(const std::string& nome, float quantidade,
                            Unidade unidade) : _nome(nome), _quantidade(quantidade), _unidade(unidade) {
-    if (nome.empty() || (unidade != Unidade::Grama &&
+    if (!(nomeValido(nome)) || (unidade != Unidade::Grama &&
          unidade != Unidade::Mililitro && unidade != Unidade::Unidade) 
         || quantidade <= 0) {
         throw std::invalid_argument("Dados invalidos para ingrediente");
@@ -46,7 +46,7 @@ bool Ingredientes::editar(const std::string& nome, float quantidade, Unidade uni
  * de uma receita, para que o ingrediente seja editado nela.
  * @note funcao ainda em desenvolvimento
 */
-    if (nome.empty() || quantidade <= 0 ||
+    if (!(nomeValido(nome)) || quantidade <= 0 ||
         (unidade != Unidade::Grama &&
          unidade != Unidade::Mililitro &&
          unidade != Unidade::Unidade)) {
