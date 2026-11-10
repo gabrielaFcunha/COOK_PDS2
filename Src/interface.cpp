@@ -23,11 +23,13 @@ Interface::Interface(bool usarArquivos) : usarArquivos_(usarArquivos) {
 }
 
 //FUNÇÕES AUXILIARES
-void Interface::limparTela () {
-#ifdef _WIN32
-    system("cls");  
-#else
-    system("clear"); 
+void Interface::limparTela() {
+#ifndef TESTANDO
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
 #endif
 }
 
@@ -141,9 +143,13 @@ void Interface::menu() {
                 break;
         }
     }
-    } catch (const FimDeEntrada&){
-        
+    } catch (const FimDeEntrada&) {
+    std::cout << "\nFim da entrada detectado. Saindo do programa...\n";
+    if (usarArquivos_) {
+        catalogo.salvarEmArquivo();
+        despensa.salvarEmArquivo();
     }
+}
 }
 
 void Interface::menuCatalogo () {
@@ -575,7 +581,8 @@ void Interface::filtrarIngredientePorReceita() {
 float Interface::lerQuantidade() {
     float quantidade;
     while (!(std::cin >> quantidade) || quantidade <= 0) {
-        std::cin.clear();
+    if (std::cin.eof()) throw FimDeEntrada();
+    std::cin.clear();
         std::cin.ignore(10000, '\n');
         std::cout << " Valor invalido. Digite um numero maior que zero: ";
     }

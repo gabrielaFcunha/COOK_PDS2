@@ -1,54 +1,63 @@
+
 #include "doctest.h"
 #include "ingredientes.hpp"
 #include <string>
+#include <stdexcept>
 
 // TESTES DO MODULO DE INGREDIENTES
 
-TEST_CASE("Teste 01: Ingrediente - Inicializacao padrao e acesso") {
-    Ingredientes ingrediente("Tomate", 50, "gramas");
+TEST_CASE("Teste 01: Ingrediente - Inicializacao e acesso") {
+    Ingredientes ingrediente("Tomate", 50, Unidade::Grama);
+
     CHECK(ingrediente.getNome() == "Tomate");
     CHECK(ingrediente.getQuantidade() == 50);
-    CHECK(ingrediente.getUnidade() == "gramas");
+    CHECK(ingrediente.getUnidade() == Unidade::Grama);
 }
 
 TEST_CASE("Teste 02: Ingrediente - Atualizacao de quantidade") {
-    Ingredientes ingrediente("Tomate", 50, "gramas");
-    ingrediente.editar("Tomate", 100, "gramas");
+    Ingredientes ingrediente("Tomate", 50, Unidade::Grama);
+
+    CHECK(ingrediente.editar("Tomate", 100, Unidade::Grama) == true);
     CHECK(ingrediente.getQuantidade() == 100);
 }
 
 TEST_CASE("Teste 03: Ingrediente - Nome vazio") {
-    Ingredientes ingrediente("", 50, "gramas");
-    ingrediente.cadastrar("", 50, "gramas");
-    CHECK(ingrediente.cadastrar("", 50, "gramas") == false);
+    CHECK_THROWS_AS(
+        Ingredientes("", 50, Unidade::Grama),
+        std::invalid_argument
+    );
 }
 
+TEST_CASE("Teste 04: Quantidades invalidas") {
+    Ingredientes ingrediente("Tomate", 50, Unidade::Grama);
 
-
-TEST_CASE("Teste 04: Quantidades inválidas") {
-    Ingredientes ingrediente("Tomate", 50, "gramas");
-    ingrediente.cadastrar("Tomate", 50, "gramas");
-    ingrediente.editar("Tomate", -10, "gramas");
-    
-    // Complete com o valor esperado para esse teste
+    CHECK(ingrediente.editar("Tomate", -10, Unidade::Grama) == false);
     CHECK(ingrediente.getQuantidade() == 50);
 }
 
-TEST_CASE("Teste 05: Cadastro inválido") {
-    Ingredientes ingrediente("Tomate", 0, "gramas");
-    ingrediente.cadastrar("Tomate", 0, "gramas");
-    // Complete com o valor esperado para esse teste
-    CHECK(ingrediente.cadastrar("Tomate", 0, "gramas") == false);
+TEST_CASE("Teste 05: Ingrediente - Quantidade inicial zero") {
+    CHECK_THROWS_AS(
+        Ingredientes("Tomate", 0, Unidade::Grama),
+        std::invalid_argument
+    );
 }
 
-TEST_CASE("Teste 06: Ingrediente - sem nada na inicialização") {
-    Ingredientes ingrediente;
-    ingrediente.cadastrar("Tomate", 50, "gramas");
-    CHECK(ingrediente.cadastrar("Tomate", 50, "gramas") == true);
+TEST_CASE("Teste 06: Ingrediente - Edicao valida") {
+    Ingredientes ingrediente("Tomate", 50, Unidade::Grama);
+
+    CHECK(ingrediente.editar("Cebola", 100, Unidade::Unidade) == true);
+
+    CHECK(ingrediente.getNome() == "Cebola");
+    CHECK(ingrediente.getQuantidade() == 100);
+    CHECK(ingrediente.getUnidade() == Unidade::Unidade);
 }
 
-TEST_CASE("Teste 06: Ingrediente - sem nada na inicialização") {
-    Ingredientes ingrediente;
-    ingrediente.cadastrar("Tomate", 50, "gramas");
+TEST_CASE("Teste 07: Ingrediente - Edicao com nome vazio") {
+    Ingredientes ingrediente("Tomate", 50, Unidade::Grama);
+
+    CHECK(ingrediente.editar("", 100, Unidade::Grama) == false);
+
     CHECK(ingrediente.getNome() == "Tomate");
+    CHECK(ingrediente.getQuantidade() == 50);
+    CHECK(ingrediente.getUnidade() == Unidade::Grama);
 }

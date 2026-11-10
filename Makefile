@@ -1,7 +1,7 @@
 CXX = g++
 
 CXXFLAGS = -std=c++11 -Wall -Wextra -I. -IInclude
-COVERAGE_FLAGS = --coverage -g -O0
+COVERAGE_FLAGS = --coverage -g -O0 -DTESTANDO
 
 TARGET = cook_app
 TEST_TARGET = build/coverage/testes
@@ -31,8 +31,9 @@ COVERAGE_OBJ = $(patsubst %.cpp,$(COVERAGE_DIR)/%.o,$(COVERAGE_SRC))
 
 DEPS = $(APP_OBJ:.o=.d) $(COVERAGE_OBJ:.o=.d)
 
-.PHONY: all clean test cobertura
+.PHONY: all clean test cobertura relatorio
 
+# Compila a aplicação
 all: $(TARGET)
 
 $(TARGET): $(APP_OBJ)
@@ -42,19 +43,25 @@ $(BUILD_DIR)/%.o: Src/%.cpp
 	mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@
 
+# Compila os arquivos dos testes com suporte à cobertura
 $(COVERAGE_DIR)/%.o: %.cpp
 	mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(COVERAGE_FLAGS) -MMD -MP -c $< -o $@
 
+# Gera o executável de testes, sem executá-lo
 $(TEST_TARGET): $(COVERAGE_OBJ)
 	$(CXX) $(CXXFLAGS) $(COVERAGE_FLAGS) $^ -o $@
 
-test: $(TEST_TARGET)
-	./$(TEST_TARGET)
-
+# Apenas compila os testes
 cobertura: $(TEST_TARGET)
+
+# Executa os testes explicitamente
+test: $(TEST_TARGET)
 	find $(COVERAGE_DIR) -name "*.gcda" -delete
 	./$(TEST_TARGET)
+
+# Gera o relatório após a execução dos testes
+relatorio:
 	gcovr -r . --filter 'Src/' --object-directory $(COVERAGE_DIR) --html-details coverage.html
 
 -include $(DEPS)
