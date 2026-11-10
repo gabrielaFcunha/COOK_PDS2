@@ -85,3 +85,16 @@ std::string normalizar(const std::string& texto){
     }
     return textoNormalizado.substr(inicio, fim - inicio + 1);
 }
+
+bool nomeValido(const std::string& nome) {
+    std::string texto = normalizar(nome);
+
+    for (char caractere : texto) {
+        if ((caractere >= 'a' && caractere <= 'z') ||
+            (caractere >= '0' && caractere <= '9')) {
+            return true;
+        }
+    }
+
+    return false;
+}

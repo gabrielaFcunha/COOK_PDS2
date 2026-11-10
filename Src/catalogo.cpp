@@ -1,9 +1,12 @@
 #include "catalogo.hpp"
 #include "categoria.hpp"
 #include "texto.hpp"
+
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <algorithm>
+#include <stdexcept>
 
 Catalogo::Catalogo(){
 }
@@ -184,14 +187,20 @@ bool Catalogo::carregarDeArquivo() {
             std::getline(dados, nomeIngrediente, ';');
             std::getline(dados, quantidadeTexto, ';');
             std::getline(dados, unidadeTexto, ';');
-
-            float quantidade = std::stof(quantidadeTexto);
-            Unidade unidade;
-
-            if(converterUnidade(quantidade, unidadeTexto, unidade)) {
-                Ingredientes ingrediente(nomeIngrediente, quantidade, unidade);
-                ingredientes.push_back(ingrediente);
+            try{
+                float quantidade = std::stof(quantidadeTexto);
+                Unidade unidade;
+                if(converterUnidade(quantidade, unidadeTexto, unidade)) {
+                    Ingredientes ingrediente(nomeIngrediente, quantidade, unidade);
+                    ingredientes.push_back(ingrediente);
+                }
+            }catch(const std::exception& e){
+                std::cout << "\n Erro ao cadastrar ingrediente: " << e.what() << "\n";
+                std::cout << " Tente cadastrar novamente.\n";
             }
+            
+
+            
         }
 
         Receita receita(nome, tempo, modo, categoria, ingredientes);

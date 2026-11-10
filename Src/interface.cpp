@@ -1,7 +1,17 @@
+/**
+ * @file interface.cpp
+ * @author Amanda Gonçalves
+ * @brief todas as funções de impressão no terminal do projeto estão reunidas aqui.
+ * Diferentemente de uma interface comum, essa não é uma classe puramente virtual.
+ * @version 0.1
+ * @date 2026-11-06
+ * 
+ */
 #include <iostream>
 #include <string>
 #include <vector>
 #include <cstdlib>
+#include <stdexcept>
 
 #include "interface.hpp"
 #include "despensa.hpp"
@@ -325,8 +335,13 @@ void Interface::cadastrarReceita () {
         std::cout << "  Quantidade: ";
         float quantidade = lerQuantidade();
         Unidade unidade = lerUnidade();
-
-        ingredientes.push_back(Ingredientes(nomeIngrediente, quantidade, unidade));
+        try{
+            ingredientes.push_back(Ingredientes(nomeIngrediente, quantidade, unidade));
+        }catch(const std::invalid_argument& e){
+            std::cout << "\n Erro ao cadastrar ingrediente: " << e.what() << "\n";
+            std::cout << " Tente cadastrar novamente.\n";
+        }
+       
     }
 
     Receita receita = Receita(nome, tempo, preparo, categoria, ingredientes);
@@ -615,8 +630,8 @@ void Interface::adicionarNovoIngrediente() {
     std::string nome;
     std::getline(std::cin, nome);
 
-    if (nome.empty()) {
-        std::cout << "\n O nome nao pode ficar vazio.\n";
+    if (!(nomeValido(nome))) {
+        std::cout << "\n Nome inválido.\n";
         pausar();
         return;
     }
@@ -631,13 +646,16 @@ void Interface::adicionarNovoIngrediente() {
     std::cout << " Quantidade: ";
     float quantidade = lerQuantidade();
     Unidade unidade = lerUnidade();
-
-    if (despensa.adicionarIngrediente(Ingredientes(nome, quantidade, unidade))) {
-        std::cout << "\n Ingrediente adicionado!\n";
-    } else {
-        std::cout << "\n Nao foi possivel adicionar o ingrediente.\n";
+    try{
+        if (despensa.adicionarIngrediente(Ingredientes(nome, quantidade, unidade))) {
+            std::cout << "\n Ingrediente adicionado!\n";
+        } else {
+            std::cout << "\n Nao foi possivel adicionar o ingrediente.\n";
+        }
+    }catch(const std::exception& e){
+        std::cout << "\n Erro ao cadastrar ingrediente: " << e.what() << "\n";
     }
-
+    
     pausar();
 }
 
@@ -649,7 +667,7 @@ void Interface::removerIngredientes() {
 
     std::string nome;
     std::getline(std::cin, nome);
-    if (nome.empty()) return;
+    if (!(nomeValido(nome))) return;
 
     if (despensa.removerIngrediente(nome)) {
         std::cout << "\n Ingrediente removido!\n";
@@ -667,7 +685,7 @@ void Interface::editarQuantidade() {
 
     std::string nome;
     std::getline(std::cin, nome);
-    if (nome.empty()) return;
+    if (!(nomeValido(nome))) return;
 
     if (!despensa.possuiIngrediente(nome)) {
         std::cout << "\n Ingrediente nao encontrado na despensa.\n";
