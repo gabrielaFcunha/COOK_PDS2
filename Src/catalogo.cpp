@@ -45,24 +45,32 @@ bool Catalogo::removerReceita(const std::string& nome){
  * @param nome nome a ser comparado para a busca; pode ser só uma parte.
  * @return const Receita*: ponteiro para a receita encontrada, ou nullptr se não for encontrada.
  */
-const Receita* Catalogo::pesquisarPorNome(const std::string& nome) const {
+std::vector<const Receita*> Catalogo::pesquisarPorNome(const std::string& nome) const {
+    std::vector<const Receita*> encontradas;
+
     std::string nomeBusca = tirarAcentosParaOrdenar(nome);
+
     for (size_t i = 0; i < receitas.size(); i++) {
         std::string nomeReceita = tirarAcentosParaOrdenar(receitas[i].getNome());
+
         for (size_t p = 0; p + nomeBusca.size() <= nomeReceita.size(); p++) {
             bool achou = true;
+
             for (size_t j = 0; j < nomeBusca.size(); j++) {
                 if (nomeReceita[p + j] != nomeBusca[j]) {
                     achou = false;
                     break;
                 }
             }
+
             if (achou) {
-                return &receitas[i];
+                encontradas.push_back(&receitas[i]);
+                break;
             }
         }
     }
-    return nullptr;
+
+    return encontradas;
 }
 /**
  * @brief Ordena as receitas do catálogo com base em um critério de ordenação especificado.

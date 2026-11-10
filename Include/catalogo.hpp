@@ -58,8 +58,7 @@ public:
      * @param nome nome a ser comparado para a busca; pode ser so uma parte.
      * @return const Receita*: ponteiro para a receita encontrada, ou nullptr se não for encontrada.
      */
-    const Receita* pesquisarPorNome(const std::string& nome) const;
-
+    std::vector<const Receita*> Catalogo::pesquisarPorNome(const std::string& nome) const;
     /**
      * @brief função que ordena as receitas do catálogo com base em um critério de ordenação especificado.
      *        essa função não altera o vetor receitas original, mas retorna um novo vetor ordenado.
