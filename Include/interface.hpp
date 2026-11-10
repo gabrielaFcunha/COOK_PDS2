@@ -17,6 +17,8 @@
 #include <vector>
 #include <string>
 
+struct FimDeEntrada {};
+
 class Interface {
 private:
     Unidade unidade;
@@ -24,6 +26,7 @@ private:
     Catalogo catalogo;
     Despensa despensa;
 
+    bool usarArquivos_;
 
     void limparTela();
     void pausar();
@@ -63,6 +66,7 @@ private:
 
 public:
     Interface();
+    explicit Interface(bool usarArquivos);
     void menu();
 
 };
