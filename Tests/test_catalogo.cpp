@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <fstream>
 #include <cstdio>
+#include <sys/stat.h>
+#include <unistd.h>
 
 TEST_CASE("Teste 01 - Catálogo novo"){
     Catalogo catalogo;
@@ -660,6 +662,75 @@ TEST_CASE("Teste 35 - Carregar substitui receitas anteriores") {
     REQUIRE(catalogoExistente.getReceitas().size() == 1);
 
     CHECK(catalogoExistente.getReceitas()[0].getNome() == "Bolo");
+
+    std::remove("receitas.txt");
+}
+
+TEST_CASE("Teste 36 - Ordenar com criterio invalido") {
+    Catalogo catalogo;
+
+    Receita receita1("Bolo", 40, "Assar.", Categoria::Sobremesa);
+    Receita receita2("Salada", 15, "Misturar.", Categoria::Entrada);
+
+    catalogo.adicionarReceita(receita1);
+    catalogo.adicionarReceita(receita2);
+
+    CriterioOrdenacao criterioInvalido =
+        static_cast<CriterioOrdenacao>(999);
+
+    std::vector<Receita> resultado = catalogo.ordenar(criterioInvalido);
+
+    CHECK(resultado.size() == 2);
+}
+
+TEST_CASE("Teste 37 - Falha ao salvar arquivo") {
+    Catalogo catalogo;
+
+    std::remove("receitas.txt");
+
+    // Cria um diretório com o nome do arquivo esperado.
+    int resultado = mkdir("receitas.txt", 0700);
+    REQUIRE(resultado == 0);
+
+    CHECK(catalogo.salvarEmArquivo() == false);
+
+    // Remove o diretório criado.
+    CHECK(rmdir("receitas.txt") == 0);
+}
+
+TEST_CASE("Teste 38 - Atualizar receita com indice invalido") {
+    Catalogo catalogo;
+
+    Receita receita("Bolo", 40, "Assar.", Categoria::Sobremesa);
+    catalogo.adicionarReceita(receita);
+
+    Receita modificada("Bolo novo", 50, "Assar novamente.", Categoria::Sobremesa);
+
+    CHECK(catalogo.atualizarReceita(1, modificada) == false);
+    CHECK(catalogo.atualizarReceita(100, modificada) == false);
+
+    CHECK(catalogo.getReceitas().size() == 1);
+    CHECK(catalogo.getReceitas()[0].getNome() == "Bolo");
+}
+
+TEST_CASE("Teste 39 - Carregar receita com unidade invalida") {
+    std::ofstream arquivo("receitas.txt");
+
+    REQUIRE(arquivo.is_open());
+
+    arquivo << "Receita teste;10;Modo de preparo;Entrada;4;1;"
+            << "Ingrediente;2;UNIDADE_INVALIDA\n";
+
+    arquivo.close();
+
+    Catalogo catalogo;
+
+    CHECK(catalogo.carregarDeArquivo() == true);
+
+    REQUIRE(catalogo.getReceitas().size() == 1);
+
+    // O ingrediente com unidade inválida deve ser ignorado.
+    CHECK(catalogo.getReceitas()[0].getIngredientes().empty());
 
     std::remove("receitas.txt");
 }

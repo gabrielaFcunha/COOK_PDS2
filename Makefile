@@ -8,6 +8,7 @@ TEST_TARGET = build/coverage/testes
 
 BUILD_DIR = build/app
 COVERAGE_DIR = build/coverage
+REPORT_DIR = build/relatorios
 
 SRC = Src/main.cpp \
       Src/interface.cpp \
@@ -31,7 +32,7 @@ COVERAGE_OBJ = $(patsubst %.cpp,$(COVERAGE_DIR)/%.o,$(COVERAGE_SRC))
 
 DEPS = $(APP_OBJ:.o=.d) $(COVERAGE_OBJ:.o=.d)
 
-.PHONY: all clean test cobertura relatorio
+.PHONY: all clean clean-coverage clean-relatorio test cobertura relatorio
 
 # Compila a aplicação
 all: $(TARGET)
@@ -48,23 +49,32 @@ $(COVERAGE_DIR)/%.o: %.cpp
 	mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(COVERAGE_FLAGS) -MMD -MP -c $< -o $@
 
-# Gera o executável de testes, sem executá-lo
+# Gera o executável de testes
 $(TEST_TARGET): $(COVERAGE_OBJ)
 	$(CXX) $(CXXFLAGS) $(COVERAGE_FLAGS) $^ -o $@
 
-# Apenas compila os testes
+# Compila os testes, sem executá-los
 cobertura: $(TEST_TARGET)
 
-# Executa os testes explicitamente
-test: $(TEST_TARGET)
-	find $(COVERAGE_DIR) -name "*.gcda" -delete
+# Executa os testes já compilados
+test:
 	./$(TEST_TARGET)
 
-# Gera o relatório após a execução dos testes
+# Gera o relatório com os dados de cobertura existentes
 relatorio:
-	gcovr -r . --filter 'Src/' --object-directory $(COVERAGE_DIR) --html-details coverage.html
+	mkdir -p $(REPORT_DIR)
+	gcovr -r . --filter 'Src/' --object-directory $(COVERAGE_DIR) --html-details $(REPORT_DIR)/coverage.html
+
+# Remove arquivos e dados da cobertura
+clean-coverage:
+	rm -rf $(COVERAGE_DIR)
+
+# Remove somente os relatórios do gcovr
+clean-relatorio:
+	rm -rf $(REPORT_DIR)
+
+# Remove todos os arquivos de compilação e cobertura
+clean:
+	rm -rf build $(TARGET)
 
 -include $(DEPS)
-
-clean:
-	rm -rf build $(TARGET) coverage.html
