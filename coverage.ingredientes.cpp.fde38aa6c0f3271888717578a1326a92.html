@@ -27,7 +27,7 @@
     </tr>
     <tr>
       <th scope="row">Date:</th>
-      <td>2026-11-10 10:49:33</td>
+      <td>2026-11-10 11:00:06</td>
     </tr>
   </table>
 </div>
@@ -73,11 +73,11 @@
       <th>Call count</th>
       <th>Block coverage</th>
     </tr>
-    <tr><td><a href="#l20">Ingredientes::Ingredientes(std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;, float, Unidade) (line 20)</a></td><td>called 195 times, returned 191 times</td><td>89.0%</td></tr>
+    <tr><td><a href="#l20">Ingredientes::Ingredientes(std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;, float, Unidade) (line 20)</a></td><td>called 215 times, returned 212 times</td><td>89.0%</td></tr>
     <tr><td><a href="#l43">Ingredientes::editar(std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;, float, Unidade) (line 43)</a></td><td>called 6 times, returned 6 times</td><td>100.0%</td></tr>
-    <tr><td><a href="#l29">Ingredientes::getNome[abi:cxx11]() const (line 29)</a></td><td>called 450 times, returned 450 times</td><td>100.0%</td></tr>
-    <tr><td><a href="#l33">Ingredientes::getQuantidade() const (line 33)</a></td><td>called 107 times, returned 107 times</td><td>100.0%</td></tr>
-    <tr><td><a href="#l37">Ingredientes::getUnidade() const (line 37)</a></td><td>called 187 times, returned 187 times</td><td>100.0%</td></tr>
+    <tr><td><a href="#l29">Ingredientes::getNome[abi:cxx11]() const (line 29)</a></td><td>called 498 times, returned 498 times</td><td>100.0%</td></tr>
+    <tr><td><a href="#l33">Ingredientes::getQuantidade() const (line 33)</a></td><td>called 112 times, returned 112 times</td><td>100.0%</td></tr>
+    <tr><td><a href="#l37">Ingredientes::getUnidade() const (line 37)</a></td><td>called 191 times, returned 191 times</td><td>100.0%</td></tr>
   </table>
 </details>
 
@@ -229,14 +229,14 @@
       <td class="lineno"><a id="l20" href="#l20">20</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">195</td>
+      <td class="linecount coveredLine">215</td>
       <td class="src coveredLine"><span class="n">Ingredientes</span><span class="o">::</span><span class="n">Ingredientes</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">quantidade</span><span class="p">,</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l21" href="#l21">21</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">195</td>
+      <td class="linecount coveredLine">215</td>
       <td class="src coveredLine"><span class="w">                           </span><span class="n">Unidade</span><span class="w"> </span><span class="n">unidade</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">_nome</span><span class="p">(</span><span class="n">nome</span><span class="p">),</span><span class="w"> </span><span class="n">_quantidade</span><span class="p">(</span><span class="n">quantidade</span><span class="p">),</span><span class="w"> </span><span class="n">_unidade</span><span class="p">(</span><span class="n">unidade</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
@@ -245,14 +245,14 @@
         <details class="linebranchDetails">
         <summary class="linebranchSummary">4/4</summary>
         <div class="linebranchContents">
-          <div class="takenBranch">&check; Branch 1 taken 59 times.</div>
-          <div class="takenBranch">&check; Branch 2 taken 134 times.</div>
-          <div class="takenBranch">&check; Branch 3 taken 41 times.</div>
+          <div class="takenBranch">&check; Branch 1 taken 70 times.</div>
+          <div class="takenBranch">&check; Branch 2 taken 143 times.</div>
+          <div class="takenBranch">&check; Branch 3 taken 52 times.</div>
           <div class="takenBranch">&check; Branch 4 taken 18 times.</div>
         </div>
         </details>
       </td>
-      <td class="linecount coveredLine">388</td>
+      <td class="linecount coveredLine">428</td>
       <td class="src coveredLine"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nome</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="n">unidade</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Unidade</span><span class="o">::</span><span class="n">Grama</span><span class="w"> </span><span class="o">&amp;&amp;</span></td>
     </tr>
     <tr class="source-line">
@@ -261,12 +261,12 @@
         <details class="linebranchDetails">
         <summary class="linebranchSummary">1/2</summary>
         <div class="linebranchContents">
-          <div class="takenBranch">&check; Branch 0 taken 41 times.</div>
+          <div class="takenBranch">&check; Branch 0 taken 52 times.</div>
           <div class="notTakenBranch">&cross; Branch 1 not taken.</div>
         </div>
         </details>
       </td>
-      <td class="linecount partialCoveredLine">41</td>
+      <td class="linecount partialCoveredLine">52</td>
       <td class="src partialCoveredLine"><span class="w">         </span><span class="n">unidade</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Unidade</span><span class="o">::</span><span class="n">Mililitro</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">unidade</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Unidade</span><span class="o">::</span><span class="n">Unidade</span><span class="p">)</span><span class="w"> </span></td>
     </tr>
     <tr class="source-line">
@@ -275,16 +275,16 @@
         <details class="linebranchDetails">
         <summary class="linebranchSummary">6/6</summary>
         <div class="linebranchContents">
-          <div class="takenBranch">&check; Branch 0 taken 193 times.</div>
+          <div class="takenBranch">&check; Branch 0 taken 213 times.</div>
           <div class="takenBranch">&check; Branch 1 taken 2 times.</div>
           <div class="takenBranch">&check; Branch 2 taken 1 times.</div>
-          <div class="takenBranch">&check; Branch 3 taken 192 times.</div>
+          <div class="takenBranch">&check; Branch 3 taken 212 times.</div>
           <div class="takenBranch">&check; Branch 4 taken 3 times.</div>
-          <div class="takenBranch">&check; Branch 5 taken 192 times.</div>
+          <div class="takenBranch">&check; Branch 5 taken 212 times.</div>
         </div>
         </details>
       </td>
-      <td class="linecount coveredLine">388</td>
+      <td class="linecount coveredLine">428</td>
       <td class="src coveredLine"><span class="w">        </span><span class="o">||</span><span class="w"> </span><span class="n">quantidade</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
@@ -312,7 +312,7 @@
       <td class="lineno"><a id="l27" href="#l27">27</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">195</td>
+      <td class="linecount coveredLine">215</td>
       <td class="src coveredLine"><span class="p">}</span></td>
     </tr>
     <tr class="source-line">
@@ -326,14 +326,14 @@
       <td class="lineno"><a id="l29" href="#l29">29</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">450</td>
+      <td class="linecount coveredLine">498</td>
       <td class="src coveredLine"><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">Ingredientes</span><span class="o">::</span><span class="n">getNome</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l30" href="#l30">30</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">450</td>
+      <td class="linecount coveredLine">498</td>
       <td class="src coveredLine"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">_nome</span><span class="p">;</span></td>
     </tr>
     <tr class="source-line">
@@ -354,14 +354,14 @@
       <td class="lineno"><a id="l33" href="#l33">33</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">107</td>
+      <td class="linecount coveredLine">112</td>
       <td class="src coveredLine"><span class="kt">float</span><span class="w"> </span><span class="n">Ingredientes</span><span class="o">::</span><span class="n">getQuantidade</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l34" href="#l34">34</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">107</td>
+      <td class="linecount coveredLine">112</td>
       <td class="src coveredLine"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">_quantidade</span><span class="p">;</span></td>
     </tr>
     <tr class="source-line">
@@ -382,14 +382,14 @@
       <td class="lineno"><a id="l37" href="#l37">37</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">187</td>
+      <td class="linecount coveredLine">191</td>
       <td class="src coveredLine"><span class="n">Unidade</span><span class="w"> </span><span class="n">Ingredientes</span><span class="o">::</span><span class="n">getUnidade</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l38" href="#l38">38</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">187</td>
+      <td class="linecount coveredLine">191</td>
       <td class="src coveredLine"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">_unidade</span><span class="p">;</span></td>
     </tr>
     <tr class="source-line">

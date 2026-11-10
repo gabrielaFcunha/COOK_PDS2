@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <fstream>
+#include <cstdio>
 
 TEST_CASE("Teste 01 - Catálogo novo"){
     Catalogo catalogo;
@@ -534,6 +536,132 @@ TEST_CASE("Teste 31 - Pesquisar ignora espaços desnecessários"){
 
     resultado = catalogo.pesquisarPorNome("Bolo   de   Chocolate");
     CHECK(resultado == nullptr);
+}
+
+
+TEST_CASE("Teste 32 - Salvar e carregar catálogo com receitas e ingredientes") {
+    std::remove("receitas.txt");
+
+    Catalogo catalogo;
+
+    Receita receita1("Bolo de Chocolate", 60,
+                     "Misture os ingredientes e asse.",
+                     Categoria::Sobremesa);
+
+    Ingredientes farinha("Farinha", 200, Unidade::Grama);
+    Ingredientes ovos("Ovos", 3, Unidade::Unidade);
+
+    receita1.adicionarIngrediente(farinha);
+    receita1.adicionarIngrediente(ovos);
+    receita1.avaliar(4);
+
+    Receita receita2("Salada", 15,
+                     "Misture os ingredientes.",
+                     Categoria::Entrada);
+
+    receita2.avaliar(5);
+
+    catalogo.adicionarReceita(receita1);
+    catalogo.adicionarReceita(receita2);
+
+    // Salvar o catálogo
+    CHECK(catalogo.salvarEmArquivo());
+
+    // Carregar em um novo catálogo
+    Catalogo novoCatalogo;
+    CHECK(novoCatalogo.carregarDeArquivo());
+
+    REQUIRE(novoCatalogo.getReceitas().size() == 2);
+
+    // Verificar dados da primeira receita
+    const Receita& carregada1 = novoCatalogo.getReceitas()[0];
+
+    CHECK(carregada1.getNome() == "Bolo de Chocolate");
+    CHECK(carregada1.getTempo() == 60);
+    CHECK(carregada1.getModo() == "Misture os ingredientes e asse.");
+    CHECK(carregada1.getCategoria() == Categoria::Sobremesa);
+    CHECK(carregada1.getAvaliacao() == 4);
+
+    // Verificar ingredientes
+    REQUIRE(carregada1.getIngredientes().size() == 2);
+
+    CHECK(carregada1.getIngredientes()[0].getNome() == "Farinha");
+    CHECK(carregada1.getIngredientes()[0].getQuantidade() == 200);
+    CHECK(carregada1.getIngredientes()[0].getUnidade() == Unidade::Grama);
+
+    CHECK(carregada1.getIngredientes()[1].getNome() == "Ovos");
+    CHECK(carregada1.getIngredientes()[1].getQuantidade() == 3);
+    CHECK(carregada1.getIngredientes()[1].getUnidade() == Unidade::Unidade);
+
+    // Verificar segunda receita
+    const Receita& carregada2 = novoCatalogo.getReceitas()[1];
+
+    CHECK(carregada2.getNome() == "Salada");
+    CHECK(carregada2.getTempo() == 15);
+    CHECK(carregada2.getCategoria() == Categoria::Entrada);
+    CHECK(carregada2.getAvaliacao() == 5);
+
+    std::remove("receitas.txt");
+}
+
+
+TEST_CASE("Teste 33 - Salvar e carregar catálogo vazio") {
+    std::remove("receitas.txt");
+
+    Catalogo catalogo;
+
+    CHECK(catalogo.salvarEmArquivo());
+
+    Catalogo novoCatalogo;
+
+    CHECK(novoCatalogo.carregarDeArquivo());
+    CHECK(novoCatalogo.getReceitas().empty());
+
+    std::remove("receitas.txt");
+}
+
+
+TEST_CASE("Teste 34 - Carregar arquivo inexistente") {
+    std::remove("receitas.txt");
+
+    Catalogo catalogo;
+
+    CHECK(catalogo.carregarDeArquivo() == false);
+    CHECK(catalogo.getReceitas().empty());
+}
+
+
+TEST_CASE("Teste 35 - Carregar substitui receitas anteriores") {
+    std::remove("receitas.txt");
+
+    // Criar arquivo com uma receita
+    Catalogo catalogoArquivo;
+
+    Receita receitaArquivo("Bolo", 40,
+                           "Misture e asse.",
+                           Categoria::Sobremesa);
+
+    catalogoArquivo.adicionarReceita(receitaArquivo);
+
+    REQUIRE(catalogoArquivo.salvarEmArquivo());
+
+    // Criar catálogo com outra receita
+    Catalogo catalogoExistente;
+
+    Receita receitaAntiga("Salada", 15,
+                           "Misture tudo.",
+                           Categoria::Entrada);
+
+    catalogoExistente.adicionarReceita(receitaAntiga);
+
+    // Carregar deve substituir o conteúdo anterior
+    CHECK(catalogoExistente.carregarDeArquivo());
+
+    REQUIRE(catalogoExistente.getReceitas().size() == 1);
+
+    CHECK(catalogoExistente.getReceitas()[0].getNome() == "Bolo");
+
+    std::remove("receitas.txt");
 }
 
 //TESTE DE FUNÇÕES FUTURAS
