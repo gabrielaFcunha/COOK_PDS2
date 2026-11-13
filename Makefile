@@ -1,3 +1,12 @@
+#Ordem para utilização
+#make - compila o programa principal
+#make cobertura - compila os testes
+#make test - RODA os testes
+#make relatorio - gera o relatorio de cobertura - tem que dar make cobertura antes
+#make clean - limpa tudo (build/)
+#make clean-coverage - apaga a pasta build/coverage 
+#make clean-relatorio - apaga a pasta build/relatorios
+
 CXX = g++
 
 CXXFLAGS = -std=c++11 -Wall -Wextra -I. -Iinclude
