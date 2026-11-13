@@ -59,7 +59,12 @@ void Receita::setCategoria(Categoria categoria) {
 } 
 
 
-bool Receita::adicionarIngrediente(const Ingredientes& ingrediente) {
+bool Receita::adicionarIngrediente (const Ingredientes& ingrediente) {
+    for (size_t i = 0; i < ingrediente_.size(); i++) {
+        if (tirarAcentosParaOrdenar(ingrediente_[i].getNome()) == tirarAcentosParaOrdenar(ingrediente.getNome())) {
+            return false;
+        }
+    }
     ingrediente_.push_back(ingrediente);
     return true;
 }

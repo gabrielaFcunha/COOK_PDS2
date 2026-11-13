@@ -23,23 +23,17 @@
 #include "categoria.hpp"
 
 //MEXER NAS COISAS DE AVALIACAO
-Interface::Interface() : Interface(true) {}
-
-Interface::Interface(bool usarArquivos) : usarArquivos_(usarArquivos) {
-    if (usarArquivos_) {
-        catalogo.carregarDeArquivo();
-        despensa.carregarDeArquivo();
-    }
+Interface::Interface() {
+    catalogo.carregarDeArquivo();
+    despensa.carregarDeArquivo();
 }
 
 //FUNÇÕES AUXILIARES
-void Interface::limparTela() {
-#ifndef TESTANDO
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
+void Interface::limparTela () {
+#ifdef _WIN32
+    system("cls");  
+#else
+    system("clear"); 
 #endif
 }
 
@@ -50,10 +44,7 @@ void Interface::pausar() {
 
 int Interface::lerOpcao() {
     int opcao;
-    if (!(std::cin >> opcao)) {
-        if (std::cin.eof()) throw FimDeEntrada();   // entrada acabou
-        opcao = -1;                                  // digitou letra
-    }
+    if (!(std::cin >> opcao)) opcao = -1;   // digitou letra
     std::cin.clear();
     std::cin.ignore(10000, '\n');
     return opcao;
@@ -117,7 +108,7 @@ void Interface::menu() {
     limparTela();
 
     bool rodando = true;
-    try{
+
     while (rodando) {
 
         limparTela();
@@ -140,26 +131,18 @@ void Interface::menu() {
 
             case 3: menuCozinhar (); break;
 
-           case 4:
-                if (usarArquivos_) {
+            case 4:
                 catalogo.salvarEmArquivo();
                 despensa.salvarEmArquivo();
-                }
                 rodando = false;
                 break;
+
             default:
                 std::cout << "| OPCAO INVALIDA. Pressione Enter para tentar novamente... ";
                 std::cin.get();
                 break;
         }
     }
-    } catch (const FimDeEntrada&) {
-    std::cout << "\nFim da entrada detectado. Saindo do programa...\n";
-    if (usarArquivos_) {
-        catalogo.salvarEmArquivo();
-        despensa.salvarEmArquivo();
-    }
-}
 }
 
 void Interface::menuCatalogo () {
@@ -564,7 +547,6 @@ void Interface::editarReceita() {
 
 void Interface::excluirReceita() {
     int indice = escolherReceita(catalogo.getReceitas());
-    if (indice == -1) return;
     std::cout << "|======================================================|\n"
                  "| Tem certeza que deseja exluir essa receita? s/n: ";
     if (std::tolower(std::cin.get()) == 's') {
@@ -598,9 +580,9 @@ void Interface::filtrarIngredientePorReceita() {
 
 float Interface::lerQuantidade() {
     float quantidade;
-    while (!(std::cin >> quantidade) || quantidade <= 0) {
-    if (std::cin.eof()) throw FimDeEntrada();
-    std::cin.clear();
+    
+    while (!(std::cin >> quantidade)) {                      // (tirei "|| quantidade <= 0")
+        std::cin.clear();
         std::cin.ignore(10000, '\n');
         std::cout << " Valor invalido. Digite um numero: ";  // (tirei "maior que zero")
     }

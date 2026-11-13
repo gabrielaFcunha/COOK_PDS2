@@ -61,4 +61,3 @@ bool Ingredientes::editar(const std::string& nome, float quantidade, Unidade uni
     return true;
 }
 
-

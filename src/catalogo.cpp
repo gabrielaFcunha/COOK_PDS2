@@ -36,9 +36,7 @@ const std::vector<Receita>& Catalogo::getReceitas() const{
  */
 bool Catalogo::removerReceita(const std::string& nome){
     for (size_t i = 0; i < receitas.size(); i++) {
-        if (tirarAcentosParaOrdenar(receitas[i].getNome()) ==
-            tirarAcentosParaOrdenar(nome)) {
-
+        if (tirarAcentosParaOrdenar(receitas[i].getNome()) == tirarAcentosParaOrdenar(nome)){
             receitas.erase(receitas.begin() + i);
             return true;
         }
@@ -76,6 +74,43 @@ std::vector<const Receita*> Catalogo::pesquisarPorNome(const std::string& nome) 
     }
 
     return encontradas;
+}
+/**
+ * @brief Ordena as receitas do catálogo com base em um critério de ordenação especificado.
+ * @param criterio critério escolhido pelo usuário para ordenar as receitas.
+ * @return std::vector<Receita> vetor ordenado de acordo com o critério escolhido.
+ */
+std::vector<Receita> Catalogo::ordenar(CriterioOrdenacao criterio) const{
+    std::vector<Receita> resultado = receitas;
+
+    for (size_t i = 0; i < resultado.size(); i++) {
+        for (size_t j = 0; j + 1 < resultado.size() - i; j++) {
+            const Receita& a = resultado[j];
+            const Receita& b = resultado[j + 1];
+            bool trocar = false;
+
+            if (criterio == CriterioOrdenacao::NOME) {
+                trocar = tirarAcentosParaOrdenar(b.getNome()) < tirarAcentosParaOrdenar(a.getNome());
+            }
+            if (criterio == CriterioOrdenacao::TEMPO_PREPARO) {
+                trocar = b.getTempo() < a.getTempo();
+            }
+            if (criterio == CriterioOrdenacao::CATEGORIA) {
+                if (a.getCategoria() == b.getCategoria()) {
+                    trocar = tirarAcentosParaOrdenar(b.getNome()) < tirarAcentosParaOrdenar(a.getNome());
+                } else {
+                    trocar = b.getCategoria() < a.getCategoria();
+                }
+            }
+
+            if (trocar) {
+                Receita temp = resultado[j];
+                resultado[j] = resultado[j + 1];
+                resultado[j + 1] = temp;
+            }
+        }
+    }
+    return resultado;
 }
 
 bool Catalogo::salvarEmArquivo() const {
