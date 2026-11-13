@@ -328,7 +328,7 @@ void Interface::cadastrarReceita () {
         std::string nomeIngrediente;
         std::getline(std::cin, nomeIngrediente);
 
-        if (nomeIngrediente == "fim" || nomeIngrediente.empty()) {
+        if (nomeIngrediente == "fim") {     // <-- MUDOU (tirei "|| nomeIngrediente.empty()")
             break; // Sai do loop de ingredientes
         }
 
@@ -341,11 +341,11 @@ void Interface::cadastrarReceita () {
             std::cout << "\n Erro ao cadastrar ingrediente: " << e.what() << "\n";
             std::cout << " Tente cadastrar novamente.\n";
         }
-       
+
     }
 
     Receita receita = Receita(nome, tempo, preparo, categoria, ingredientes);
-    
+
     std::cout << "| Avaliacao (1-5): ";
     int avaliacao;
     avaliacao = lerOpcao();
@@ -357,7 +357,7 @@ void Interface::cadastrarReceita () {
     }
 
     catalogo.adicionarReceita(receita);
-    
+
     pausar();
 }
 
@@ -580,10 +580,11 @@ void Interface::filtrarIngredientePorReceita() {
 
 float Interface::lerQuantidade() {
     float quantidade;
-    while (!(std::cin >> quantidade) || quantidade <= 0) {
+    
+    while (!(std::cin >> quantidade)) {                      // (tirei "|| quantidade <= 0")
         std::cin.clear();
         std::cin.ignore(10000, '\n');
-        std::cout << " Valor invalido. Digite um numero maior que zero: ";
+        std::cout << " Valor invalido. Digite um numero: ";  // (tirei "maior que zero")
     }
     std::cin.ignore(10000, '\n');
     return quantidade;
@@ -630,12 +631,9 @@ void Interface::adicionarNovoIngrediente() {
     std::string nome;
     std::getline(std::cin, nome);
 
-    if (!(nomeValido(nome))) {
-        std::cout << "\n Nome inválido.\n";
-        pausar();
-        return;
-    }
-
+    // <-- MUDOU: tirei o "if (!(nomeValido(nome))) {...}" que ficava aqui.
+    // Se o nome for inválido, o construtor de Ingredientes lança a exceção,
+    // tratada no catch mais abaixo.
     if (despensa.possuiIngrediente(nome)) {
         std::cout << "\n Esse ingrediente ja esta na despensa.\n"
                      " Use a opcao 4 do menu para editar a quantidade.\n";
@@ -655,7 +653,7 @@ void Interface::adicionarNovoIngrediente() {
     }catch(const std::exception& e){
         std::cout << "\n Erro ao cadastrar ingrediente: " << e.what() << "\n";
     }
-    
+
     pausar();
 }
 
@@ -699,7 +697,8 @@ void Interface::editarQuantidade() {
     if (despensa.atualizarQuantidade(nome, quantidade)) {
         std::cout << "\n Quantidade atualizada!\n";
     } else {
-        std::cout << "\n Nao foi possivel atualizar a quantidade.\n";
+        // <-- MUDOU: mensagem agora explica o motivo (quantidade <= 0 passou a chegar aqui)
+        std::cout << "\n Nao foi possivel atualizar a quantidade (use um valor maior que zero).\n";
     }
     pausar();
 }

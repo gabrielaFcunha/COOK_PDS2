@@ -19,11 +19,12 @@ Ingredientes::Ingredientes()
 
 Ingredientes::Ingredientes(const std::string& nome, float quantidade,
                            Unidade unidade) : _nome(nome), _quantidade(quantidade), _unidade(unidade) {
-    if (!(nomeValido(nome)) || (unidade != Unidade::Grama &&
-         unidade != Unidade::Mililitro && unidade != Unidade::Unidade) 
-        || quantidade <= 0) {
-        throw std::invalid_argument("Dados invalidos para ingrediente");
-    }
+    if (!nomeValido(nome))
+        throw std::invalid_argument("Nome invalido");
+    if (unidade != Unidade::Grama && unidade != Unidade::Mililitro && unidade != Unidade::Unidade)
+        throw std::invalid_argument("Unidade invalida");
+    if (quantidade <= 0)
+        throw std::invalid_argument("Quantidade deve ser maior que zero");
 }
 
 const std::string& Ingredientes::getNome() const {
