@@ -11,7 +11,7 @@
 
 TEST_CASE("Teste 01 - Catálogo novo"){
     Catalogo catalogo;
-    CHECK(catalogo.pesquisarPorNome("Qualquer coisa") == nullptr);
+    CHECK(catalogo.pesquisarPorNome("Qualquer coisa").empty());
     //ordenar devolve vazio 
     CHECK(catalogo.ordenar(CriterioOrdenacao::NOME).empty());
     CHECK(catalogo.ordenar(CriterioOrdenacao::TEMPO_PREPARO).empty());
@@ -173,170 +173,201 @@ TEST_CASE("Teste 13 - Casos de borda (primeira, do meio e última receita)"){
 
 }
 
-TEST_CASE("Teste 14 - Pesquisar por nome completo"){
+TEST_CASE("Teste 14 - Pesquisar por nome completo") {
     Catalogo catalogo;
+
     Receita receita1("Bolo de Chocolate", 60, "Misture os ingredientes e asse.", Categoria::Sobremesa);
     Receita receita2("Salada", 15, "Misture os ingredientes.", Categoria::Entrada);
+
     catalogo.adicionarReceita(receita1);
     catalogo.adicionarReceita(receita2);
 
-    const Receita* resultado = catalogo.pesquisarPorNome("Bolo de Chocolate");
-    REQUIRE(resultado != nullptr);
-    CHECK(resultado->getNome() == "Bolo de Chocolate");
+    auto resultado = catalogo.pesquisarPorNome("Bolo de Chocolate");
+
+    REQUIRE(resultado.size() == 1);
+    CHECK(resultado[0]->getNome() == "Bolo de Chocolate");
 }
 
-TEST_CASE("Teste 15 - Pesquisar por parte do nome"){
+TEST_CASE("Teste 15 - Pesquisar por parte do nome") {
     Catalogo catalogo;
+
     Receita receita1("Bolo de Chocolate", 60, "Misture os ingredientes e asse.", Categoria::Sobremesa);
     Receita receita2("Bolo de Baunilha", 50, "Misture os ingredientes e asse.", Categoria::Sobremesa);
     Receita receita3("Salada", 15, "Misture os ingredientes.", Categoria::Entrada);
+
     catalogo.adicionarReceita(receita1);
     catalogo.adicionarReceita(receita2);
     catalogo.adicionarReceita(receita3);
 
-    // A implementação atual exige o nome completo.
-    const Receita* resultado = catalogo.pesquisarPorNome("Bolo");
-    CHECK(resultado == nullptr);
+    auto resultado = catalogo.pesquisarPorNome("Bolo");
+
+    REQUIRE(resultado.size() == 2);
+    CHECK(resultado[0]->getNome() == "Bolo de Chocolate");
+    CHECK(resultado[1]->getNome() == "Bolo de Baunilha");
 }
 
-TEST_CASE("Teste 16 - Pesquisar por nome inexistente"){
+TEST_CASE("Teste 16 - Pesquisar por nome inexistente") {
     Catalogo catalogo;
+
     Receita receita1("Bolo de Chocolate", 60, "Misture os ingredientes e asse.", Categoria::Sobremesa);
     catalogo.adicionarReceita(receita1);
 
-    const Receita* resultado = catalogo.pesquisarPorNome("Salada");
-    CHECK(resultado == nullptr);
+    auto resultado = catalogo.pesquisarPorNome("Salada");
+
+    CHECK(resultado.empty());
 }
 
-TEST_CASE("Teste 17 - Pesquisar por trecho no fim do nome"){
+TEST_CASE("Teste 17 - Pesquisar por trecho no fim do nome") {
     Catalogo catalogo;
+
     Receita receita1("Bolo de Chocolate", 60, "Misture os ingredientes e asse.", Categoria::Sobremesa);
     Receita receita2("Salada de Frutas", 15, "Misture os ingredientes.", Categoria::Entrada);
+
     catalogo.adicionarReceita(receita1);
     catalogo.adicionarReceita(receita2);
 
-    // A implementação atual não pesquisa por trechos do nome.
-    const Receita* resultado = catalogo.pesquisarPorNome("Frutas");
-    CHECK(resultado == nullptr);
+    auto resultado = catalogo.pesquisarPorNome("Frutas");
+
+    REQUIRE(resultado.size() == 1);
+    CHECK(resultado[0]->getNome() == "Salada de Frutas");
 }
 
 TEST_CASE("Teste 18 - Pesquisar por nome ignora maiúsculas") {
     Catalogo catalogo;
+
     Receita receita1("Bolo de Chocolate", 60, "Misture os ingredientes e asse.", Categoria::Sobremesa);
     Receita receita2("Salada de Frutas", 15, "Misture os ingredientes.", Categoria::Entrada);
+
     catalogo.adicionarReceita(receita1);
     catalogo.adicionarReceita(receita2);
 
-    const Receita* resultado = catalogo.pesquisarPorNome("bolo de chocolate");
-    REQUIRE(resultado != nullptr);
-    CHECK(resultado->getNome() == "Bolo de Chocolate");
+    auto resultado1 = catalogo.pesquisarPorNome("bolo de chocolate");
 
-    resultado = catalogo.pesquisarPorNome("SALADA DE FRUTAS");
-    REQUIRE(resultado != nullptr);
-    CHECK(resultado->getNome() == "Salada de Frutas");
+    REQUIRE(resultado1.size() == 1);
+    CHECK(resultado1[0]->getNome() == "Bolo de Chocolate");
 
-    resultado = catalogo.pesquisarPorNome("saladA dE frutAs");
-    REQUIRE(resultado != nullptr);
-    CHECK(resultado->getNome() == "Salada de Frutas");
+    auto resultado2 = catalogo.pesquisarPorNome("SALADA DE FRUTAS");
+
+    REQUIRE(resultado2.size() == 1);
+    CHECK(resultado2[0]->getNome() == "Salada de Frutas");
+
+    auto resultado3 = catalogo.pesquisarPorNome("saladA dE frutAs");
+
+    REQUIRE(resultado3.size() == 1);
+    CHECK(resultado3[0]->getNome() == "Salada de Frutas");
 }
 
-TEST_CASE("Teste 19 - Pesquisar por nome ignora acentos" * doctest::may_fail()) {
+TEST_CASE("Teste 19 - Pesquisar por nome ignora acentos") {
     Catalogo catalogo;
+
     catalogo.adicionarReceita(Receita("Salada de Frutas", 15, "x", Categoria::Entrada));
     catalogo.adicionarReceita(Receita("Pão de Queijo", 30, "x", Categoria::Lanche));
 
-    const Receita* resultado = catalogo.pesquisarPorNome("SALÁDA DE FRUTAS");
-    REQUIRE(resultado != nullptr);
-    CHECK(resultado->getNome() == "Salada de Frutas");
+    auto resultado1 = catalogo.pesquisarPorNome("SALÁDA DE FRUTAS");
 
-    resultado = catalogo.pesquisarPorNome("pao de queijo");
-    REQUIRE(resultado != nullptr);
-    CHECK(resultado->getNome() == "Pão de Queijo");
+    REQUIRE(resultado1.size() == 1);
+    CHECK(resultado1[0]->getNome() == "Salada de Frutas");
+
+    auto resultado2 = catalogo.pesquisarPorNome("pao de queijo");
+
+    REQUIRE(resultado2.size() == 1);
+    CHECK(resultado2[0]->getNome() == "Pão de Queijo");
 }
 
-TEST_CASE("Teste 19 - Pesquisar retorna várias receitas"){
+TEST_CASE("Teste 20 - Pesquisar retorna várias receitas") {
     Catalogo catalogo;
+
     Receita receita1("Bolo de Chocolate", 60, "Misture os ingredientes e asse.", Categoria::Sobremesa);
     Receita receita2("Bolo de Baunilha", 50, "Misture os ingredientes e asse.", Categoria::Sobremesa);
     Receita receita3("Salada de Frutas", 15, "Misture os ingredientes.", Categoria::Entrada);
+
     catalogo.adicionarReceita(receita1);
     catalogo.adicionarReceita(receita2);
     catalogo.adicionarReceita(receita3);
 
-    // A implementação atual retorna uma única receita por nome exato.
-    const Receita* resultado = catalogo.pesquisarPorNome("Bolo");
-    CHECK(resultado == nullptr);
+    auto resultado = catalogo.pesquisarPorNome("Bolo");
+
+    REQUIRE(resultado.size() == 2);
+    CHECK(resultado[0]->getNome() == "Bolo de Chocolate");
+    CHECK(resultado[1]->getNome() == "Bolo de Baunilha");
 }
 
-TEST_CASE("Teste 20 - Nome vazio devolve todas as receitas"){
+TEST_CASE("Teste 21 - Nome vazio devolve todas as receitas") {
     Catalogo catalogo;
+
     Receita receita1("Bolo de Chocolate", 60, "Misture os ingredientes e asse.", Categoria::Sobremesa);
     Receita receita2("Salada de Frutas", 15, "Misture os ingredientes.", Categoria::Entrada);
+
     catalogo.adicionarReceita(receita1);
     catalogo.adicionarReceita(receita2);
 
-    // Nome vazio não corresponde ao nome completo de nenhuma receita.
-    const Receita* resultado = catalogo.pesquisarPorNome("");
-    CHECK(resultado == nullptr);
+    auto resultado = catalogo.pesquisarPorNome("");
+
+    REQUIRE(resultado.size() == 2);
+    CHECK(resultado[0]->getNome() == "Bolo de Chocolate");
+    CHECK(resultado[1]->getNome() == "Salada de Frutas");
 }
 
-TEST_CASE("Teste 21 - Alterar o resultado da pesquisa não altera o catálogo"){
+TEST_CASE("Teste 22 - Resultado da pesquisa aponta para as receitas originais") {
     Catalogo catalogo;
+
     Receita receita1("Bolo de Chocolate", 60, "Misture os ingredientes e asse.", Categoria::Sobremesa);
     Receita receita2("Salada de Frutas", 15, "Misture os ingredientes.", Categoria::Entrada);
+
     catalogo.adicionarReceita(receita1);
     catalogo.adicionarReceita(receita2);
 
-    const Receita* resultado = catalogo.pesquisarPorNome("Bolo de Chocolate");
-    REQUIRE(resultado != nullptr);
-    CHECK(resultado->getNome() == "Bolo de Chocolate");
+    auto resultado = catalogo.pesquisarPorNome("Bolo de Chocolate");
 
-    // A pesquisa retorna um ponteiro constante para a receita original.
-    CHECK(resultado == &catalogo.getReceitas()[0]);
+    REQUIRE(resultado.size() == 1);
+    CHECK(resultado[0]->getNome() == "Bolo de Chocolate");
 
-    // Uma nova pesquisa continua apontando para a receita armazenada.
-    const Receita* resultado2 = catalogo.pesquisarPorNome("Bolo de Chocolate");
-    REQUIRE(resultado2 != nullptr);
-    CHECK(resultado2 == &catalogo.getReceitas()[0]);
-    CHECK(resultado2->getNome() == "Bolo de Chocolate");
+    // O ponteiro aponta para a receita original do catálogo.
+    CHECK(resultado[0] == &catalogo.getReceitas()[0]);
+
+    auto resultado2 = catalogo.pesquisarPorNome("Bolo de Chocolate");
+
+    REQUIRE(resultado2.size() == 1);
+    CHECK(resultado2[0] == &catalogo.getReceitas()[0]);
 }
 
-TEST_CASE("Teste 22 - Avaliar receitas resultadas de pesquisas avalia as originais"){
+TEST_CASE("Teste 23 - Avaliar receitas resultantes de pesquisas acessa as originais") {
     Catalogo catalogo;
-    Receita receita1("Bolo de Chocolate", 60, "Misture os ingredientes e asse.", Categoria::Sobremesa);
-    Receita receita2("Salada de Frutas", 15, "Misture os ingredientes.", Categoria::Entrada);
-    catalogo.adicionarReceita(receita1);
-    catalogo.adicionarReceita(receita2);
 
-    const Receita* resultado = catalogo.pesquisarPorNome("Bolo de Chocolate");
-    REQUIRE(resultado != nullptr);
-    CHECK(resultado->getNome() == "Bolo de Chocolate");
-
-    // O ponteiro retornado permite consultar, mas não modificar, a receita.
-    CHECK(resultado == &catalogo.getReceitas()[0]);
-
-    // A avaliação original permanece inalterada após a pesquisa.
-    const Receita* resultado2 = catalogo.pesquisarPorNome("Bolo de Chocolate");
-    REQUIRE(resultado2 != nullptr);
-    CHECK(resultado2->getNome() == "Bolo de Chocolate");
-    CHECK(resultado2->getAvaliacao() == catalogo.getReceitas()[0].getAvaliacao());
-}
-
-TEST_CASE("Teste 23 - Editar ingredientes da receita resultante da pesquisa edita a original"){
-    Catalogo catalogo;
     Receita receita1("Bolo de Chocolate", 60, "Misture os ingredientes e asse.", Categoria::Sobremesa);
     catalogo.adicionarReceita(receita1);
 
-    const Receita* resultado = catalogo.pesquisarPorNome("Bolo de Chocolate");
-    REQUIRE(resultado != nullptr);
-    CHECK(resultado->getNome() == "Bolo de Chocolate");
-    CHECK(resultado == &catalogo.getReceitas()[0]);
+    auto resultado = catalogo.pesquisarPorNome("Bolo de Chocolate");
 
-    // A pesquisa disponibiliza acesso somente para leitura.
-    const Receita* resultado2 = catalogo.pesquisarPorNome("Bolo de Chocolate");
-    REQUIRE(resultado2 != nullptr);
-    CHECK(resultado2->getNome() == "Bolo de Chocolate");
-    CHECK(resultado2->getIngredientes().empty());
+    REQUIRE(resultado.size() == 1);
+    CHECK(resultado[0]->getNome() == "Bolo de Chocolate");
+    CHECK(resultado[0] == &catalogo.getReceitas()[0]);
+
+    auto resultado2 = catalogo.pesquisarPorNome("Bolo de Chocolate");
+
+    REQUIRE(resultado2.size() == 1);
+    CHECK(resultado2[0]->getNome() == "Bolo de Chocolate");
+    CHECK(resultado2[0]->getAvaliacao() == catalogo.getReceitas()[0].getAvaliacao());
+}
+
+TEST_CASE("Teste 24 - Pesquisa não permite modificar as receitas originais") {
+    Catalogo catalogo;
+
+    Receita receita1("Bolo de Chocolate", 60, "Misture os ingredientes e asse.", Categoria::Sobremesa);
+    catalogo.adicionarReceita(receita1);
+
+    auto resultado = catalogo.pesquisarPorNome("Bolo de Chocolate");
+
+    REQUIRE(resultado.size() == 1);
+    CHECK(resultado[0]->getNome() == "Bolo de Chocolate");
+    CHECK(resultado[0] == &catalogo.getReceitas()[0]);
+
+    // O ponteiro é const: permite consultar, mas não modificar a receita.
+    auto resultado2 = catalogo.pesquisarPorNome("Bolo de Chocolate");
+
+    REQUIRE(resultado2.size() == 1);
+    CHECK(resultado2[0]->getNome() == "Bolo de Chocolate");
+    CHECK(resultado2[0]->getIngredientes().empty());
 }
 
 TEST_CASE("Teste 24 - Ordenar por nome"){
@@ -527,17 +558,17 @@ TEST_CASE("Teste 30 - Consistência de Ordenar"){
     }
 }
 
-TEST_CASE("Teste 31 - Pesquisar ignora espaços desnecessários"){
+TEST_CASE("Teste 31 - Pesquisar ignora espaços desnecessários") {
     Catalogo catalogo;
+
     Receita receita1("Bolo de Chocolate", 60, "Misture os ingredientes e asse.", Categoria::Sobremesa);
     catalogo.adicionarReceita(receita1);
 
-    // A implementação atual não remove nem compacta espaços na busca.
-    const Receita* resultado = catalogo.pesquisarPorNome("  Bolo de Chocolate  ");
-    CHECK(resultado == nullptr);
+    auto resultado1 = catalogo.pesquisarPorNome("  Bolo de Chocolate  ");
+    CHECK(resultado1.empty());
 
-    resultado = catalogo.pesquisarPorNome("Bolo   de   Chocolate");
-    CHECK(resultado == nullptr);
+    auto resultado2 = catalogo.pesquisarPorNome("Bolo   de   Chocolate");
+    CHECK(resultado2.empty());
 }
 
 

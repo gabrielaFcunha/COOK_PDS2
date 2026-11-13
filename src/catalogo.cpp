@@ -53,18 +53,6 @@ bool Catalogo::removerReceita(const std::string& nome){
 std::vector<const Receita*> Catalogo::pesquisarPorNome(const std::string& nome) const {
     std::vector<const Receita*> encontradas;
 
-/*
-std::vector<Receita> Catalogo::pesquisarPorNome(const std::string& nome) const{
-    std::vector<Receita> resultado;
-    for (int i = 0; i < receitas.size(); i++) {
-        if (tirarAcentosParaOrdenar(receitas[i].getNome()).find(tirarAcentosParaOrdenar(nome)) != std::string::npos) { //vê se a busca por nome dentro do nome da receita não deu ‘não encontrado’
-            resultado.push_back(receitas[i]);
-        }
-    }
-    return resultado;
-}
-*/
-const Receita* Catalogo::pesquisarPorNome(const std::string& nome) const {
     std::string nomeBusca = tirarAcentosParaOrdenar(nome);
 
     for (size_t i = 0; i < receitas.size(); i++) {
@@ -88,30 +76,6 @@ const Receita* Catalogo::pesquisarPorNome(const std::string& nome) const {
     }
 
     return encontradas;
-}
-/**
- * @brief Ordena as receitas do catálogo com base em um critério de ordenação especificado.
- * @param criterio critério escolhido pelo usuário para ordenar as receitas.
- * @return std::vector<Receita> vetor ordenado de acordo com o critério escolhido.
- */
-std::vector<Receita> Catalogo::ordenar(CriterioOrdenacao criterio) const{
-    std::vector<Receita> resultado = receitas;
-    std::sort(resultado.begin(), resultado.end(), [criterio](const Receita& a, const Receita& b){
-        if ((criterio) == CriterioOrdenacao::NOME){
-            return paraMinusculas(a.getNome()) < paraMinusculas(b.getNome());
-        }
-        if (criterio == CriterioOrdenacao::TEMPO_PREPARO){
-            return a.getTempo() < b.getTempo();
-        }
-        if (criterio == CriterioOrdenacao::CATEGORIA){
-            if(a.getCategoria() == b.getCategoria()){
-                return paraMinusculas(a.getNome()) < paraMinusculas(b.getNome());
-            }else{
-                return a.getCategoria() < b.getCategoria();
-            }
-        }
-    }
-    return resultado;
 }
 
 bool Catalogo::salvarEmArquivo() const {
