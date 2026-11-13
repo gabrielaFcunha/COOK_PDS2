@@ -1,7 +1,17 @@
+/**
+ * @file interface.cpp
+ * @author Amanda Gonçalves
+ * @brief todas as funções de impressão no terminal do projeto estão reunidas aqui.
+ * Diferentemente de uma interface comum, essa não é uma classe puramente virtual.
+ * @version 0.1
+ * @date 2026-11-06
+ * 
+ */
 #include <iostream>
 #include <string>
 #include <vector>
 #include <cstdlib>
+#include <stdexcept>
 
 #include "interface.hpp"
 #include "despensa.hpp"
@@ -335,19 +345,24 @@ void Interface::cadastrarReceita () {
         std::string nomeIngrediente;
         std::getline(std::cin, nomeIngrediente);
 
-        if (nomeIngrediente == "fim" || nomeIngrediente.empty()) {
+        if (nomeIngrediente == "fim") {     // <-- MUDOU (tirei "|| nomeIngrediente.empty()")
             break; // Sai do loop de ingredientes
         }
 
         std::cout << "  Quantidade: ";
         float quantidade = lerQuantidade();
         Unidade unidade = lerUnidade();
+        try{
+            ingredientes.push_back(Ingredientes(nomeIngrediente, quantidade, unidade));
+        }catch(const std::invalid_argument& e){
+            std::cout << "\n Erro ao cadastrar ingrediente: " << e.what() << "\n";
+            std::cout << " Tente cadastrar novamente.\n";
+        }
 
-        ingredientes.push_back(Ingredientes(nomeIngrediente, quantidade, unidade));
     }
 
     Receita receita = Receita(nome, tempo, preparo, categoria, ingredientes);
-    
+
     std::cout << "| Avaliacao (1-5): ";
     int avaliacao;
     avaliacao = lerOpcao();
@@ -359,7 +374,7 @@ void Interface::cadastrarReceita () {
     }
 
     catalogo.adicionarReceita(receita);
-    
+
     pausar();
 }
 
@@ -407,9 +422,12 @@ void Interface::procurarReceita() {
                   << "| Pesquisar: "; 
         std::string nome;
         std::getline(std::cin, nome); 
-        const Receita* encontrada = catalogo.pesquisarPorNome(nome);
-        if (encontrada != nullptr) {
-            receitasEncontradas.push_back(*encontrada);
+        auto encontradas = catalogo.pesquisarPorNome(nome);
+
+        if (!encontradas.empty()) {
+            for (size_t i = 0; i < encontradas.size(); i++) {
+                receitasEncontradas.push_back(*encontradas[i]);
+            }
             break;
         } else {
             std::cout << "| RESULTADOS DA PESQUISA\n"
@@ -584,7 +602,7 @@ float Interface::lerQuantidade() {
     if (std::cin.eof()) throw FimDeEntrada();
     std::cin.clear();
         std::cin.ignore(10000, '\n');
-        std::cout << " Valor invalido. Digite um numero maior que zero: ";
+        std::cout << " Valor invalido. Digite um numero: ";  // (tirei "maior que zero")
     }
     std::cin.ignore(10000, '\n');
     return quantidade;
@@ -631,12 +649,9 @@ void Interface::adicionarNovoIngrediente() {
     std::string nome;
     std::getline(std::cin, nome);
 
-    if (nome.empty()) {
-        std::cout << "\n O nome nao pode ficar vazio.\n";
-        pausar();
-        return;
-    }
-
+    // <-- MUDOU: tirei o "if (!(nomeValido(nome))) {...}" que ficava aqui.
+    // Se o nome for inválido, o construtor de Ingredientes lança a exceção,
+    // tratada no catch mais abaixo.
     if (despensa.possuiIngrediente(nome)) {
         std::cout << "\n Esse ingrediente ja esta na despensa.\n"
                      " Use a opcao 4 do menu para editar a quantidade.\n";
@@ -647,11 +662,14 @@ void Interface::adicionarNovoIngrediente() {
     std::cout << " Quantidade: ";
     float quantidade = lerQuantidade();
     Unidade unidade = lerUnidade();
-
-    if (despensa.adicionarIngrediente(Ingredientes(nome, quantidade, unidade))) {
-        std::cout << "\n Ingrediente adicionado!\n";
-    } else {
-        std::cout << "\n Nao foi possivel adicionar o ingrediente.\n";
+    try{
+        if (despensa.adicionarIngrediente(Ingredientes(nome, quantidade, unidade))) {
+            std::cout << "\n Ingrediente adicionado!\n";
+        } else {
+            std::cout << "\n Nao foi possivel adicionar o ingrediente.\n";
+        }
+    }catch(const std::exception& e){
+        std::cout << "\n Erro ao cadastrar ingrediente: " << e.what() << "\n";
     }
 
     pausar();
@@ -665,7 +683,7 @@ void Interface::removerIngredientes() {
 
     std::string nome;
     std::getline(std::cin, nome);
-    if (nome.empty()) return;
+    if (!(nomeValido(nome))) return;
 
     if (despensa.removerIngrediente(nome)) {
         std::cout << "\n Ingrediente removido!\n";
@@ -683,7 +701,7 @@ void Interface::editarQuantidade() {
 
     std::string nome;
     std::getline(std::cin, nome);
-    if (nome.empty()) return;
+    if (!(nomeValido(nome))) return;
 
     if (!despensa.possuiIngrediente(nome)) {
         std::cout << "\n Ingrediente nao encontrado na despensa.\n";
@@ -697,7 +715,8 @@ void Interface::editarQuantidade() {
     if (despensa.atualizarQuantidade(nome, quantidade)) {
         std::cout << "\n Quantidade atualizada!\n";
     } else {
-        std::cout << "\n Nao foi possivel atualizar a quantidade.\n";
+        // <-- MUDOU: mensagem agora explica o motivo (quantidade <= 0 passou a chegar aqui)
+        std::cout << "\n Nao foi possivel atualizar a quantidade (use um valor maior que zero).\n";
     }
     pausar();
 }
